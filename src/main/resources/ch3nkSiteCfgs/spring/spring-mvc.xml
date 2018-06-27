@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--SpringMVC的配置文件，包含网站跳转逻辑的控制，配置 （跟网站逻辑有关的，放在这）-->
+    <!--扫描控制器-->
+    <context:component-scan base-package="com.ch3nk.ch3nkSite.modules.*.controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!--开启注解
+    并注册自定义的转换器-->
+    <mvc:annotation-driven conversion-service="conversionService"/>
+
+    <!---->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <!--此处加载自定义的转换器-->
+            <list>
+            </list>
+        </property>
+    </bean>
+
+
+    <!--配置视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--//视图前缀-->
+        <property name="prefix" value="/WEB-INF/ch3nkSite/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <mvc:view-controller path="/" view-name="sys/home-manage"/>
+    <mvc:view-controller path="/tologin" view-name="sys/login"/>
+    <mvc:view-controller path="/tohome" view-name="sys/home"/>
+    <mvc:view-controller path="/users" view-name="sys/user_list"/>
+
+    <!--配置全局异常处理器
+        只要实现HandlerExceptionResolver,如果配置多个，只有一个起作用
+    -->
+    <!--<bean class="com.ch3N.exception.MyExceptionResolver"/>-->
+
+<!--配置拦截器-->
+  <!--  <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+
+
+    <!-- 开启aop，对类代理 -->
+    <aop:config proxy-target-class="true"></aop:config>
+    <!-- 开启shiro注解支持 -->
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager" />
+    </bean>
+</beans>

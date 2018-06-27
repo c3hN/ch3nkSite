@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ch3nk.ch3nkSite.modules.sys.mapper.SysRoleMapper">
+    <resultMap id="sysroleResultMap" type="sysRole">
+        <id property="roleId" javaType="String" column="ROLE_ID" jdbcType="VARCHAR"/>
+        <result property="officeId" javaType="String" column="OFFICE_ID" jdbcType="VARCHAR"/>
+        <result property="zhName" javaType="String" column="ZH_NAME" jdbcType="VARCHAR"/>
+        <result property="enName" javaType="String" column="EN_NAME" jdbcType="VARCHAR"/>
+        <result property="useableFlag" javaType="int" column="USEABLE_FLAG" jdbcType="INTEGER"/>
+        <result property="createBy" javaType="String" column="CREATE_BY" jdbcType="VARCHAR"/>
+        <result property="createDate" javaType="Date" column="CREATE_DATE" jdbcType="DATE"/>
+        <result property="updateBy" javaType="String" column="UPDATE_BY" jdbcType="VARCHAR"/>
+        <result property="updateDate" javaType="Date" column="UPDATE_DATE" jdbcType="DATE"/>
+        <result property="remark" javaType="String" column="REMARK" jdbcType="VARCHAR"/>
+        <result property="deleteFlag" javaType="int" column="DELETE_FLAG" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="sysRoleColumns">
+        r.`ROLE_ID`,
+        r.`OFFICE_ID`,
+        r.`ZH_NAME`,
+        r.`EN_NAME`,
+        r.`USEABLE_FLAG`,
+        r.`CREATE_BY`,
+        r.`CREATE_DATE`,
+        r.`UPDATE_BY`,
+        r.`UPDATE_DATE`,
+        r.`REMARK`,
+        r.`ROLE_ID`,
+        r.`DELETE_FLAG`
+    </sql>
+
+    <insert id="add" parameterType="sysRole">
+        insert into sys_role(
+            <if test="roleId != null and roleId != ''">ROLE_ID</if>
+            <if test="officeId != null and officeId != ''">,OFFICE_ID</if>
+            <if test="zhName != null and zhName != ''">,ZH_NAME</if>
+            <if test="enName != null and enName != ''">,EN_NAME</if>
+            <if test="useableFlag != null and useableFlag != ''">,USEABLE_FLAG</if>
+            <if test="createBy != null and createBy != ''">,CREATE_BY</if>
+            <if test="createDate != null and createDate != ''">,CREATE_DATE</if>
+            <if test="updateBy != null and updateBy != ''">,UPDATE_BY</if>
+            <if test="updateDate != null and updateDate != ''">,UPDATE_DATE</if>
+            <if test="remark != null">,REMARK</if>
+            <if test="deleteFlag != null and deleteFlag != ''">,DELETE_FLAG</if>
+        ) values(
+        <if test="roleId != null and roleId != ''">#{roleId}</if>
+        <if test="officeId != null and officeId != ''">,#{officeId}</if>
+        <if test="zhName != null and zhName != ''">,#{zhName}</if>
+        <if test="enName != null and enName != ''">,#{enName}</if>
+        <if test="useableFlag != null and useableFlag != ''">,#{useableFlag}</if>
+        <if test="createBy != null and createBy != ''">,#{createBy}</if>
+        <if test="createDate != null and createDate != ''">,#{createDate}</if>
+        <if test="updateBy != null and updateBy != ''">,#{updateBy}</if>
+        <if test="updateDate != null and updateDate != ''">,#{updateDate}</if>
+        <if test="remark != null">,#{remark}</if>
+        <if test="deleteFlag != null and deleteFlag != ''">,#{deleteFlag}</if>
+        )
+    </insert>
+
+    <update id="update" parameterType="sysRole">
+        update sys_role set
+        <if test="roleId != null and roleId != ''">ROLE_ID = #{roleId}</if>
+        <if test="officeId != null and officeId != ''">,OFFICE_ID = #{officeId}</if>
+        <if test="zhName != null and zhName != ''">,ZHNAME = #{zhName}</if>
+        <if test="enName != null and enName != ''">,ENNAME = #{enName}</if>
+        <if test="useableFlag != null and useableFlag != ''">,USEABLEFLAG = #{useableFlag}</if>
+        <if test="createBy != null and createBy != ''">,CREATEBY = #{createBy}</if>
+        <if test="createDate != null and createDate != ''">,CREATEDATE = #{createDate}</if>
+        <if test="updateBy != null and updateBy != ''">,UPDATEBY = #{updateBy}</if>
+        <if test="updateDate != null and updateDate != ''">,UPDATEDATE = #{updateDate}</if>
+        <if test="remark != null">,REMARK = #{remark}</if>
+        <if test="deleteFlag != null and deleteFlag != ''">,DELETEFLAG = #{deleteFlag}</if>
+        where ROLE_ID = #{roleId}
+    </update>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+    <!--配置别名-->
+    <typeAliases>
+        <!--<package name="com.ch3nk.ch3nkSite.modules.sys.entity"/>-->
+        <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysUser" alias="sysUser"/>
+        <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysRole" alias="sysRole"/>
+
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/ch3nkSite"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="test/mappers/SysUserMapper.xml"/>
+    </mappers>
+
+</configuration>

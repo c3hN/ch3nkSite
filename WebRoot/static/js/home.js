@@ -1,0 +1,2 @@
+// Waves.displayEffect();
+Waves.init();

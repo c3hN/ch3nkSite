@@ -1,0 +1,52 @@
+CREATE TABLE `sys_dic` (
+  `DIC_ID` varchar(32) NOT NULL COMMENT '字典主键',
+  `PARENT_ID` varchar(32) NOT NULL COMMENT '父级编号',
+  `DIC_NAME` varchar(100) DEFAULT NULL,
+  `REMARK` varchar(500) DEFAULT NULL COMMENT '描述',
+  `CREATE_BY` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `CREATE_DATE` datetime DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` datetime DEFAULT NULL COMMENT '更新者',
+  `UPDATE_DATE` datetime DEFAULT NULL COMMENT '更新者',
+  `DELETE_FLAG` int(11) DEFAULT '1' COMMENT '删除标记：0：deleted',
+  PRIMARY KEY (`DIC_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统数据字典';
+
+CREATE TABLE `sys_menu` (
+  `MENU_ID` varchar(32) NOT NULL,
+  `ZH_NAME` varchar(100) DEFAULT NULL COMMENT '菜单名称',
+  `EN_NAME` varchar(100) DEFAULT NULL COMMENT '英文名称',
+  `HREF` varchar(200) DEFAULT NULL COMMENT '链接',
+  `ICON` varchar(100) DEFAULT NULL COMMENT '图标',
+  `REMARK` varchar(500) DEFAULT NULL COMMENT '备注',
+  `DELETE_FLAG` int(11) DEFAULT '1' COMMENT '删除标记 0：deleted',
+  PRIMARY KEY (`MENU_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统菜单';
+
+
+CREATE TABLE `sys_role` (
+  `ROLE_ID` varchar(32) NOT NULL COMMENT '主键id',
+  `OFFICE_ID` varchar(32) DEFAULT NULL COMMENT '归属机构',
+  `ZH_NAME` varchar(100) DEFAULT NULL COMMENT '角色名称',
+  `EN_NAME` varchar(100) DEFAULT NULL COMMENT '角色英文名称',
+  `USERABLE_FLAG` int(11) DEFAULT '1' COMMENT '是否可用 0：fales 1:true',
+  `CREATE_BY` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `CREATE_DATE` datetime DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` datetime DEFAULT NULL COMMENT '更新者',
+  `UPDATE_DATE` datetime DEFAULT NULL COMMENT '更新者',
+  `REMARK` varchar(500) DEFAULT NULL COMMENT '备注信息',
+  `DELETE_FLAG` int(11) DEFAULT '1' COMMENT '删除标记 0：deleted ',
+  PRIMARY KEY (`ROLE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
+
+CREATE TABLE `sys_user` (
+  `USER_ID` varchar(32) NOT NULL COMMENT '主键id',
+  `USERCOUNT` varchar(50) NOT NULL COMMENT '登录账户',
+  `NICKNAME` varchar(100) DEFAULT NULL COMMENT '昵称',
+  `USERPWD` varchar(32) NOT NULL COMMENT '密码',
+  `USERPHOTO` varchar(200) DEFAULT NULL COMMENT '头像地址',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `LOGINFLAG` int(11) DEFAULT '1' COMMENT '允许登录标记 0:no 1:yes',
+  `DELETEFLAG` int(11) DEFAULT '1' COMMENT '删除标记 0:删除  1：未删除',
+  PRIMARY KEY (`USER_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
