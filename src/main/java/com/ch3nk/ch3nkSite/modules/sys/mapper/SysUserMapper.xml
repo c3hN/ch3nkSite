@@ -52,6 +52,12 @@
         from sys_user u
         where u.`USERCOUNT` = #{userCount}
     </select>
+    <select id="findAll" resultMap="sysuserResultMap">
+        select
+        <include refid="userColumns"/>
+        from sys_user u
+        order by CREATETIME
+    </select>
 
     <insert id="addUser" parameterType="sysUser">
         insert into sys_user(

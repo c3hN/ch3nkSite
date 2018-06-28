@@ -1,6 +1,7 @@
 package com.ch3nk.ch3nkSite.modules.sys.entity;
 
-import org.apache.ibatis.type.Alias;
+import com.ch3nk.ch3nkSite.common.processor.JsonDate2StringProcessor;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -71,7 +72,7 @@ public class SysUser implements Serializable {
     public void setUserPhoto(String userPhoto) {
         this.userPhoto = userPhoto;
     }
-
+    @JsonSerialize(using = JsonDate2StringProcessor.class)
     public Date getCreateTime() {
         return createTime;
     }
@@ -79,7 +80,7 @@ public class SysUser implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
+    @JsonSerialize(using = JsonDate2StringProcessor.class)
     public Date getUpdateTime() {
         return updateTime;
     }

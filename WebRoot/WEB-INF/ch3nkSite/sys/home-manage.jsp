@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: chenkai
-  Date: 2018/6/26
-  Time: 22:39
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -30,7 +23,6 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <!--<img src="http://t.cn/RCzsdCq" class="layui-nav-img">-->
                     <i class="layui-icon">&#xe66f;</i>
                     超级管理员
                 </a>
@@ -53,50 +45,47 @@
                         首页
                     </a>
                 </li>
-                <%--<li class="layui-nav-item layui-nav-itemed">--%>
-                    <%--<a href="">--%>
-                        <%--<i class="layui-icon layui-icon-set"></i>--%>
-                        <%--设置--%>
-                    <%--</a>--%>
-                    <%--<dl class="layui-nav-child">--%>
-                        <%--<dd><a href="javascript:;">菜单管理</a></dd>--%>
-                        <%--<dd><a href="javascript:;">角色管理</a></dd>--%>
-                        <%--<dd><a href="javascript:;">资源分配</a></dd>--%>
-                        <%--<dd><a href="javascript:;">用户管理</a></dd>--%>
-                        <%--<dd><a href="">超链接</a></dd>--%>
-                    <%--</dl>--%>
-                <%--</li>--%>
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;"><i class="layui-icon layui-icon-set"></i>
                         设置</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">菜单管理</a></dd>
-                        <dd><a href="javascript:;">用户管理</a></dd>
+                        <dd><a href="javascript:;" url="${basePath}/user/toList.do">用户管理</a></dd>
                         <dd><a href="javascript:;">角色管理</a></dd>
                         <dd><a href="javascript:;">资源分配</a></dd>
                         <dd><a href="javascript:;">系统参数</a></dd>
                     </dl>
                 </li>
+            </ul>
         </div>
     </div>
 
     <div class="layui-body">
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">内容主体区域</div>
+        <button id="qq" url="11111">11111111</button>
     </div>
 
-    <!--<div class="layui-footer">
-      <!-- 底部固定区域 -->
-    © layui.com - 底部固定区域
-</div>-->
+    <%--<div class="layui-footer">--%>
+      <%--<!-- 底部固定区域 -->--%>
+    <%--© layui.com - 底部固定区域--%>
+    <%--</div>--%>
 </div>
 <script src="${basePath}/static/plugins/layui/layui.js"></script>
+<script src="${basePath}/static/js/jquery-3.2.1.js"></script>
 <script>
     //JavaScript代码区域
     layui.use('element', function(){
         var element = layui.element;
 
     });
+
+    $(".layui-nav-item a").click(function () {
+        var url = $(this).attr("url");
+        if (url != null) {
+            $(".layui-body").load(url);
+        }
+    })
 </script>
 </body>
 </html>

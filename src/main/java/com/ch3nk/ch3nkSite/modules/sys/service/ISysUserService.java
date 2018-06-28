@@ -18,6 +18,19 @@ public interface  ISysUserService {
     int saveUser(SysUser sysUser);
     int updateUser(SysUser sysUser);
 
+    /**
+     * 分页查询
+     * @param pageNum  当前页
+     * @param pageSize 每页数据
+     * @return
+     */
+    List<SysUser> findByPage(int pageNum,int pageSize);
+
+    /**
+     * 查询总数
+     * @return
+     */
+    int findCount();
 
     /**
      * 根据登录账号查询
