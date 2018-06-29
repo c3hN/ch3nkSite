@@ -52,4 +52,11 @@ public class UserController {
         return tableData;
     }
 
+    @RequestMapping("del")
+    @ResponseBody
+    public String del(String userId) {
+        return "success";
+    }
+
+
 }
