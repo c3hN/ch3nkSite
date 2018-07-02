@@ -29,7 +29,7 @@ public class UserController {
     private ISysUserService sysUserService;
 
     @RequestMapping("/register")
-    @RequiresPermissions("sys:register")
+//    @RequiresPermissions("sys:register")
     public void saveOrUpdate(SysUser sysUser, HttpServletRequest request, HttpServletResponse response,
                              HttpSession session,Model model) throws ServletException, IOException {
         sysUserService.saveUser(sysUser);
