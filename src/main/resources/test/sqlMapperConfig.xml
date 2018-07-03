@@ -11,6 +11,7 @@
         <!--<package name="com.ch3nk.ch3nkSite.modules.sys.entity"/>-->
         <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysUser" alias="sysUser"/>
         <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysRole" alias="sysRole"/>
+        <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysDic" alias="sysDic"/>
 
     </typeAliases>
     <environments default="development">
@@ -26,6 +27,7 @@
     </environments>
     <mappers>
         <mapper resource="test/mappers/SysUserMapper.xml"/>
+        <mapper resource="test/mappers/SysDicMapper.xml"/>
     </mappers>
 
 </configuration>

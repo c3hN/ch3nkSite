@@ -7,28 +7,30 @@ import java.util.Date;
  * @author 
  */
 public class SysDic implements Serializable {
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 1L;
     /**
      * 字典主键
      */
     private Integer id;
 
-    /**字典编号*/
+
     private String dicId;
 
     /**
      * 父级编号
      */
     private String parentId;
-    /**名称*/
+
     private String dicName;
+
+    private String dicEname;
 
     /**
      * 描述
      */
     private String remark;
-    /**排序权重*/
+
     private Integer dicSort;
 
     /**
@@ -55,7 +57,6 @@ public class SysDic implements Serializable {
      * 删除标记：0：deleted
      */
     private Integer deleteFlag;
-
 
 
     public Integer getId() {
@@ -88,6 +89,14 @@ public class SysDic implements Serializable {
 
     public void setDicName(String dicName) {
         this.dicName = dicName;
+    }
+
+    public String getDicEname() {
+        return dicEname;
+    }
+
+    public void setDicEname(String dicEname) {
+        this.dicEname = dicEname;
     }
 
     public String getRemark() {

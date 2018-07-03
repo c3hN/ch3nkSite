@@ -3,11 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-    <!--启动spring 配置文件-->
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:ch3nkSiteCfgs/spring/applicationContext-*.xml</param-value>
-    </context-param>
     <!--编码过滤器-->
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
@@ -75,6 +70,11 @@
         <servlet-name>default</servlet-name>
         <url-pattern>*.woff2</url-pattern>
     </servlet-mapping>
+    <!--加载spring 配置文件-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:ch3nkSiteCfgs/spring/applicationContext-*.xml</param-value>
+    </context-param>
     <!--springmvc前置控制-->
     <servlet>
         <servlet-name>DispatcherServlet</servlet-name>

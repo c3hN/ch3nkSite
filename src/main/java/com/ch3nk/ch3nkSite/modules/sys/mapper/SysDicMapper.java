@@ -6,25 +6,35 @@ import com.ch3nk.ch3nkSite.modules.sys.entity.SysDic;
 import org.apache.ibatis.annotations.Param;
 
 public interface SysDicMapper {
-//    long countByExample(SysDicExample example);
-
-//    int deleteByExample(SysDicExample example);
-
     int deleteByPrimaryKey(Integer id);
 
-    int insert(SysDic record);
+    int insert(SysDic sysDic);
 
-    int insertSelective(SysDic record);
-
-//    List<SysDic> selectByExample(SysDicExample example);
+    int insertSelective(SysDic sysDic);
 
     SysDic selectByPrimaryKey(Integer id);
 
-//    int updateByExampleSelective(@Param("record") SysDic record, @Param("example") SysDicExample example);
+    /**
+     * 查询所有未删除父节点
+     * @return
+     */
+    List<SysDic> selectParentNodes();
 
-//    int updateByExample(@Param("record") SysDic record, @Param("example") SysDicExample example);
+    int updateByPrimaryKeySelective(SysDic sysDic);
 
-    int updateByPrimaryKeySelective(SysDic record);
+    int updateByPrimaryKey(SysDic sysDic);
 
-    int updateByPrimaryKey(SysDic record);
+
+    int deleteByDicId(@Param("dicId")String dicId);
+
+    SysDic selectByDicId(@Param("dicId")String dicId);
+
+    /**
+     * 根据父节点查询
+     * @param perentId
+     * @return
+     */
+    List<SysDic> selectByParentId(@Param("parentId") String perentId);
+
+    int updateByDicIdSelective(SysDic sysDic);
 }
