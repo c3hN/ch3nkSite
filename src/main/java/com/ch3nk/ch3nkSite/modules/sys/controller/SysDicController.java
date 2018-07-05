@@ -22,12 +22,25 @@ public class SysDicController {
     @RequestMapping("loadTree")
     @ResponseBody
     public List list(String dicId) {
+        String resMsg = "";
         //判断是否为初始化树或者获取子节点数据
-        if (StringUtils.isBlank(dicId)){
-            return sysDicService.findAllParentNod();
+//        if (StringUtils.isBlank(dicId)){
+////            return sysDicService.findAllParentNod();
+////        }else {
+////            return sysDicService.findNodeByParentId(dicId);
+////        }
+//        List<SysDic> allParentNod = sysDicService.findAllParentNod();
+//        sysDicService.findNodeByParentId("001");
+//        sysDicService.findNodeByParentId("002");
+//        allParentNod.addAll(sysDicService.findNodeByParentId("001"));
+//        allParentNod.addAll(sysDicService.findNodeByParentId("002"));
+//        return allParentNod;
+        if (StringUtils.isBlank(dicId)) {
+            List<SysDic> allParentNod = sysDicService.findAllParentNod();
         }else {
-            return sysDicService.findNodeByParentId(dicId);
+            sysDicService.findNodeByParentId(dicId);
         }
+        return null;
     }
 
 
