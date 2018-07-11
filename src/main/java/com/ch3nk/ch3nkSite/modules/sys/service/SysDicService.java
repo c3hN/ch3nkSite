@@ -26,4 +26,9 @@ public class SysDicService implements ISysDicService{
     public List<SysDic> findNodeByParentId(String parentId) {
         return sysDicMapper.selectByParentId(parentId);
     }
+
+    @Override
+    public List<SysDic> findAllNodes() {
+        return sysDicMapper.selectAll();
+    }
 }

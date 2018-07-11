@@ -12,6 +12,17 @@ public interface ISysDicService {
      */
     List<SysDic> findAllParentNod();
 
+    /**
+     * 根据父节点查询子节点
+     * @param parentId
+     * @return
+     */
     List<SysDic> findNodeByParentId(String parentId);
+
+    /**
+     * 查询所有节点
+     * @return
+     */
+    List<SysDic> findAllNodes();
 
 }

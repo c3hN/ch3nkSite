@@ -40,7 +40,7 @@
     <mvc:view-controller path="/tologin" view-name="sys/login"/>
     <mvc:view-controller path="/tohome" view-name="sys/home"/>
     <mvc:view-controller path="/users" view-name="sys/user_list"/>
-    <mvc:view-controller path="/tree" view-name="sys/tree"/>
+    <mvc:view-controller path="/dic" view-name="sys/dic"/>
 
     <!--配置全局异常处理器
         只要实现HandlerExceptionResolver,如果配置多个，只有一个起作用

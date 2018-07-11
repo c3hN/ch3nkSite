@@ -31,7 +31,7 @@ public class Act_test_1 {
                 .createDeployment()
                 .name("leaveProcessDeployment")
                 .addClasspathResource("ch3nkSiteCfgs/activitiBpmns/leave.bpmn")
-                .addClasspathResource("ch3nkSiteCfgs/activitiBpmns/leave.png")
+                .addClasspathResource("ch3nkSiteCfgs/ /leave.png")
                 .deploy();
         System.out.println(leaveProcessDeployment.getDeploymentTime());
         System.out.println(leaveProcessDeployment.getId());

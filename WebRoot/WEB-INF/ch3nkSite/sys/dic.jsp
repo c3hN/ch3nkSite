@@ -46,6 +46,7 @@
         },
         callback:{
             onClick:function (event, treeId, treeNode, clickFlag) {
+                alert(treeNode.level);
                 $.ajax({
                     url:'${basePath}/dic/loadTree',
                     type:'post',
@@ -57,7 +58,7 @@
                     success:function (data) {
                         var treeObj = $.fn.zTree.getZTreeObj("dicTree");
 
-                        // treeObj.addNodes(treeNode,data);
+                        treeObj.addNodes(treeNode,data);
                         treeObj.reAsyncChildNodes(treeNode,'refresh');
 
                     }
@@ -74,8 +75,3 @@
 </script>
 </body>
 </html>
-<%--
-1. 初始化树，只显示第一层父节点
-3. 异步加载子节点重复问题
-
---%>

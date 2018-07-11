@@ -7,66 +7,45 @@ import java.util.List;
 
 public interface SysUserMapper {
     /**
-     * 根据用户id查询基本信息 √
-     * @param userId
-     * @return SysUser对象
-     */
-    SysUser findById(@Param("userId") String userId);
-
-    /**
-     * 根据登录账户查询 √
-     * @param userCount
-     * @return SysUser对象
-     */
-    SysUser findByCount(@Param("userCount") String userCount);
-
-    /**
-     * 查询所有
-     * @return
-     */
-    List<SysUser> findAll();
-
-    /**
-     * 新增用户
-     * @param sysUser
-     * @return
-     */
-    int addUser(SysUser sysUser);
-
-    /**
-     * 更新用户 √
-     * @param sysUser
-     * @return
-     */
-    int updateUser(SysUser sysUser);
-
-    /**
-     * 逻辑删除用户 √
+     * 根据主键删除
      * @param userId
      * @return
      */
-    int deleteUser(@Param("userId") String userId);
+    int deleteByPrimaryKey(@Param("userId") String userId);
 
     /**
-     * 添加用户角色关联
-     * @param sysUser
+     * 插入数据
+     * @param record
      * @return
      */
-    int addUserRole(SysUser sysUser);
+    int insert(SysUser record);
 
     /**
-     * 删除用户角色关联
-     * @param user_role_id
+     * 选择性插入数据
+     * @param record
      * @return
      */
-    int deleteUserRole(@Param("user_role_id") String user_role_id);
+    int insertSelective(SysUser record);
 
     /**
-     * 查询所有用户数量
-     * @param
+     * 根据主键查询
+     * @param userId
      * @return
      */
-    int findCount();
+    SysUser selectByPrimaryKey(@Param("userId") String userId);
 
+    /**
+     * 根据主键选择性更新
+     * @param record
+     * @return
+     */
+    int updateByPrimaryKeySelective(SysUser record);
+
+    /**
+     * 根据主键更新
+     * @param record
+     * @return
+     */
+    int updateByPrimaryKey(SysUser record);
 
 }

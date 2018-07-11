@@ -12,26 +12,53 @@ import java.util.List;
  */
 public class SysUser implements Serializable {
     private static final long serialVersionUID = 1L;
-    /* 主键id */
+    /**
+     * 主键id
+     */
     private String userId;
-    /* 用户昵称 */
+
+    /**
+     * 登录账户
+     */
+    private String account;
+
+    /**
+     * 昵称
+     */
     private String nickName;
-    /* 登录账户 */
-    private String userCount;
-    /* 登录密码 */
+
+    /**
+     * 密码
+     */
     private String userPwd;
-    /* 用户头像 */
+
+    /**
+     * 头像地址
+     */
     private String userPhoto;
-    /* 创建时间 */
+
+    /**
+     * 创建时间
+     */
     private Date createTime;
-    /* 更新时间 */
+
+    /**
+     * 更新时间
+     */
     private Date updateTime;
-    /* 是否允许登录 0:不允许 1：允许*/
-    private int loginFlag;
-    /* 删除标记 0:删除 1：未删除 */
-    private int deleteFlag;
-    /* 用户角色列表,在向sys_user_role插入用户角色数据时作为容器 */
-    private List<SysRole> sysRoles;
+
+    /**
+     * 允许登录标记 0:no 1:yes
+     */
+    private Integer loginFlag;
+
+    /**
+     * 删除标记 0:删除  1：未删除
+     */
+    private Integer deleteFlag;
+
+    private List<SysRole> roles;
+
 
     public String getUserId() {
         return userId;
@@ -41,20 +68,20 @@ public class SysUser implements Serializable {
         this.userId = userId;
     }
 
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
     public String getNickName() {
         return nickName;
     }
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
-    }
-
-    public String getUserCount() {
-        return userCount;
-    }
-
-    public void setUserCount(String userCount) {
-        this.userCount = userCount;
     }
 
     public String getUserPwd() {
@@ -72,7 +99,7 @@ public class SysUser implements Serializable {
     public void setUserPhoto(String userPhoto) {
         this.userPhoto = userPhoto;
     }
-    @JsonSerialize(using = JsonDate2StringProcessor.class)
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -80,7 +107,7 @@ public class SysUser implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-    @JsonSerialize(using = JsonDate2StringProcessor.class)
+
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -89,27 +116,86 @@ public class SysUser implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public int getLoginFlag() {
+    public Integer getLoginFlag() {
         return loginFlag;
     }
 
-    public void setLoginFlag(int loginFlag) {
+    public void setLoginFlag(Integer loginFlag) {
         this.loginFlag = loginFlag;
     }
 
-    public int getDeleteFlag() {
+    public Integer getDeleteFlag() {
         return deleteFlag;
     }
 
-    public void setDeleteFlag(int deleteFlag) {
+    public void setDeleteFlag(Integer deleteFlag) {
         this.deleteFlag = deleteFlag;
     }
 
-    public List<SysRole> getSysRoles() {
-        return sysRoles;
+    public List<SysRole> getRoles() {
+        return roles;
     }
 
-    public void setSysRoles(List<SysRole> sysRoles) {
-        this.sysRoles = sysRoles;
+    public void setRoles(List<SysRole> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        SysUser other = (SysUser) that;
+        return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+                && (this.getAccount() == null ? other.getAccount() == null : this.getAccount().equals(other.getAccount()))
+                && (this.getNickName() == null ? other.getNickName() == null : this.getNickName().equals(other.getNickName()))
+                && (this.getUserPwd() == null ? other.getUserPwd() == null : this.getUserPwd().equals(other.getUserPwd()))
+                && (this.getUserPhoto() == null ? other.getUserPhoto() == null : this.getUserPhoto().equals(other.getUserPhoto()))
+                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+                && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
+                && (this.getLoginFlag() == null ? other.getLoginFlag() == null : this.getLoginFlag().equals(other.getLoginFlag()))
+                && (this.getDeleteFlag() == null ? other.getDeleteFlag() == null : this.getDeleteFlag().equals(other.getDeleteFlag()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getAccount() == null) ? 0 : getAccount().hashCode());
+        result = prime * result + ((getNickName() == null) ? 0 : getNickName().hashCode());
+        result = prime * result + ((getUserPwd() == null) ? 0 : getUserPwd().hashCode());
+        result = prime * result + ((getUserPhoto() == null) ? 0 : getUserPhoto().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
+        result = prime * result + ((getLoginFlag() == null) ? 0 : getLoginFlag().hashCode());
+        result = prime * result + ((getDeleteFlag() == null) ? 0 : getDeleteFlag().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", userId=").append(userId);
+        sb.append(", account=").append(account);
+        sb.append(", nickName=").append(nickName);
+        sb.append(", userPwd=").append(userPwd);
+        sb.append(", userPhoto=").append(userPhoto);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
+        sb.append(", loginFlag=").append(loginFlag);
+        sb.append(", deleteFlag=").append(deleteFlag);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 }

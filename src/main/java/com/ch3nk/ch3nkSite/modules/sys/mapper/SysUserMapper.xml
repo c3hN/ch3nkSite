@@ -1,128 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ch3nk.ch3nkSite.modules.sys.mapper.SysUserMapper">
-    <resultMap id="sysuserResultMap" type="sysUser">
-        <id property="userId" javaType="String" column="USER_ID" jdbcType="VARCHAR"/>
-        <result property="userCount" javaType="String" column="USERCOUNT" jdbcType="VARCHAR"/>
-        <result property="nickName" javaType="String" column="NICKNAME" jdbcType="VARCHAR"/>
-        <result property="userPwd" javaType="String" column="USERPWD" jdbcType="VARCHAR"/>
-        <result property="userPhoto" javaType="String" column="USERPHOTO" jdbcType="VARCHAR"/>
-        <result property="createTime" javaType="Date" column="CREATETIME" jdbcType="DATE"/>
-        <result property="updateTime" javaType="Date" column="UPDATETIME" jdbcType="DATE"/>
-        <result property="loginFlag" javaType="int" column="LOGINFLAG" jdbcType="INTEGER"/>
-        <result property="deleteFlag" javaType="int" column="DELETEFLAG" jdbcType="INTEGER"/>
-        <collection property="sysRoles" ofType="sysRole">
-            <id property="roleId" javaType="String" column="ROLE_ID" jdbcType="VARCHAR"/>
-            <result property="officeId" javaType="String" column="OFFICE_ID" jdbcType="VARCHAR"/>
-            <result property="zhName" javaType="String" column="ZH_NAME" jdbcType="VARCHAR"/>
-            <result property="enName" javaType="String" column="EN_NAME" jdbcType="VARCHAR"/>
-            <result property="useableFlag" javaType="int" column="USEABLE_FLAG" jdbcType="INTEGER"/>
-            <result property="createBy" javaType="String" column="CREATE_BY" jdbcType="VARCHAR"/>
-            <result property="createDate" javaType="Date" column="CREATE_DATE" jdbcType="DATE"/>
-            <result property="updateBy" javaType="String" column="UPDATE_BY" jdbcType="VARCHAR"/>
-            <result property="updateDate" javaType="Date" column="UPDATE_DATE" jdbcType="DATE"/>
-            <result property="remark" javaType="String" column="REMARK" jdbcType="VARCHAR"/>
-            <result property="deleteFlag" javaType="int" column="DELETE_FLAG" jdbcType="INTEGER"/>
+    <resultMap id="BaseResultMap" type="sysUser">
+        <id column="USER_ID" jdbcType="VARCHAR" property="userId" />
+        <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+        <result column="NICKNAME" jdbcType="VARCHAR" property="nickName" />
+        <result column="USERPWD" jdbcType="VARCHAR" property="userPwd" />
+        <result column="USERPHOTO" jdbcType="VARCHAR" property="userPhoto" />
+        <result column="CREATETIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="UPDATETIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="LOGINFLAG" jdbcType="INTEGER" property="loginFlag" />
+        <result column="DELETEFLAG" jdbcType="INTEGER" property="deleteFlag" />
+        <collection property="roles" ofType="sysUser">
+            <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+            <result column="OFFICE_ID" jdbcType="VARCHAR" property="officerId" />
+            <result column="ZH_NAME" jdbcType="VARCHAR" property="name" />
+            <result column="EN_NAME" jdbcType="VARCHAR" property="eName" />
+            <result column="USEABLE_FLAG" jdbcType="INTEGER" property="useAbleFlag" />
+            <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+            <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+            <result column="UPDATE_BY" jdbcType="TIMESTAMP" property="updateBy" />
+            <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+            <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+            <result column="DELETE_FLAG" jdbcType="INTEGER" property="deleteFlag" />
         </collection>
     </resultMap>
-    <sql id="userColumns">
-        u.`USER_ID`,
-        u.`USERCOUNT`,
-        u.`NICKNAME`,
-        u.`USERPWD`,
-        u.`USERPHOTO`,
-        u.`CREATETIME`,
-        u.`UPDATETIME`,
-        u.`LOGINFLAG`,
-        u.`DELETEFLAG`
+    <sql id="Base_Column_List">
+        USER_ID,
+        ACCOUNT,
+        NICKNAME,
+        USERPWD,
+        USERPHOTO,
+        CREATETIME,
+        UPDATETIME,
+        LOGINFLAG,
+        DELETEFLAG
     </sql>
-
-    <select id="findById" parameterType="String" resultMap="sysuserResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="userColumns"/>
-        from sys_user u
-        where u.`USER_ID` = #{userId}
+        <include refid="Base_Column_List" />
+        from sys_user
+        where USER_ID = #{userId,jdbcType=VARCHAR}
     </select>
-
-    <select id="findByCount" parameterType="String" resultMap="sysuserResultMap">
-        select
-        <include refid="userColumns"/>
-        from sys_user u
-        where u.`USERCOUNT` = #{userCount}
-    </select>
-    <select id="findAll" resultMap="sysuserResultMap">
-        select
-        <include refid="userColumns"/>
-        from sys_user u
-        order by CREATETIME
-    </select>
-
-    <insert id="addUser" parameterType="sysUser">
-        insert into sys_user(
-        <if test="userId != null and userId != ''">USER_ID</if>
-        <if test="userCount != null and userCount != ''">,USERCOUNT</if>
-        <if test="nickName != null and nickName != ''">,NICKNAME</if>
-        <if test="userPwd != null and userPwd != ''">,USERPWD</if>
-        <if test="userPhoto != null and userPhoto != ''">,USERPHOTO</if>
-        <if test="createTime != null and createTime != ''">,CREATETIME</if>
-        <if test="updateTime != null and updateTime != ''">,UPDATETIME</if>
-        <if test="loginFlag != null and loginFlag != ''">,LOGINFLAG</if>
-        <if test="deleteFlag != null and deleteFlag != ''">,DELETEFLAG</if>
-        ) values (
-        <if test="userId != null and userId != ''">#{userId}</if>
-        <if test="userCount != null and userCount != ''">,#{userCount}</if>
-        <if test="nickName != null and nickName != ''">,#{nickName}</if>
-        <if test="userPwd != null and userPwd != ''">,#{userPwd}</if>
-        <if test="userPhoto != null and userPhoto != ''">,#{userPhoto}</if>
-        <if test="createTime != null and createTime != ''">,#{createTime}</if>
-        <if test="updateTime != null and updateTime != ''">,#{updateTime}</if>
-        <if test="loginFlag != null and loginFlag != ''">,#{loginFlag}</if>
-        <if test="deleteFlag != null and deleteFlag != ''">,#{deleteFlag}</if>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_user
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="sysUser">
+        insert into sys_user (USER_ID, ACCOUNT, NICKNAME,
+        USERPWD, USERPHOTO, CREATETIME,
+        UPDATETIME, LOGINFLAG, DELETEFLAG
+        )
+        values (#{userId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR},
+        #{userPwd,jdbcType=VARCHAR}, #{userPhoto,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}, #{loginFlag,jdbcType=INTEGER}, #{deleteFlag,jdbcType=INTEGER}
         )
     </insert>
-
-    <update id="updateUser" parameterType="sysUser">
-        update sys_user u
-        set
-        <if test="userCount != null and userCount != ''">USERCOUNT = #{userCount}</if>
-        <if test="nickName != null and nickName != ''">,NICKNAME = #{nickName}</if>
-        <if test="userPwd != null and userPwd != ''">,USERPWD = #{userPwd}</if>
-        <if test="userPhoto != null and userPhoto != ''">,USERPHOTO = #{userPhoto}</if>
-        <if test="createTime != null and createTime != ''">,CREATETIME = #{createTime}</if>
-        <if test="updateTime != null and updateTime != ''">,UPDATETIME = #{updateTime}</if>
-        <if test="loginFlag != null and loginFlag != ''">,LOGINFLAG = #{loginFlag}</if>
-        <if test="deleteFlag != null and deleteFlag != ''">,DELETEFLAG = #{deleteFlag}</if>
-        <where>
-            <if test="userId != null and userId != ''">u.`USER_ID` = #{userId}</if>
-        </where>
-    </update>
-
-    <update id="deleteUser">
-        update sys_user u
-        set u.`DELETEFLAG` = 0
-        where u.`USER_ID` = #{userId}
-    </update>
-
-    <insert id="addUserRole" parameterType="sysUser">
-        insert into sys_user_role(USER_ROLE_ID,USER_ID,ROLE_ID)
-        <foreach collection="sysRoles" item="role" separator="UNION ALL">
-            select replace(uuid(),'-',''),
-            #{userId},
-            #{role.roleId}
-        </foreach>
-
+    <insert id="insertSelective" parameterType="sysUser">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="account != null">
+                ACCOUNT,
+            </if>
+            <if test="nickName != null">
+                NICKNAME,
+            </if>
+            <if test="userPwd != null">
+                USERPWD,
+            </if>
+            <if test="userPhoto != null">
+                USERPHOTO,
+            </if>
+            <if test="createTime != null">
+                CREATETIME,
+            </if>
+            <if test="updateTime != null">
+                UPDATETIME,
+            </if>
+            <if test="loginFlag != null">
+                LOGINFLAG,
+            </if>
+            <if test="deleteFlag != null">
+                DELETEFLAG,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPwd != null">
+                #{userPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhoto != null">
+                #{userPhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginFlag != null">
+                #{loginFlag,jdbcType=INTEGER},
+            </if>
+            <if test="deleteFlag != null">
+                #{deleteFlag,jdbcType=INTEGER},
+            </if>
+        </trim>
     </insert>
-
-    <delete id="deleteUserRole">
-        delete from sys_user_role
-        where USER_ROLE_ID = #{user_role_id}
-    </delete>
-
-    <select id="findCount" resultType="int">
-        select count(1)
-        from sys_user
-    </select>
-
+    <update id="updateByPrimaryKeySelective" parameterType="sysUser">
+        update sys_user
+        <set>
+            <if test="account != null">
+                ACCOUNT = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null">
+                NICKNAME = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPwd != null">
+                USERPWD = #{userPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhoto != null">
+                USERPHOTO = #{userPhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATETIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginFlag != null">
+                LOGINFLAG = #{loginFlag,jdbcType=INTEGER},
+            </if>
+            <if test="deleteFlag != null">
+                DELETEFLAG = #{deleteFlag,jdbcType=INTEGER},
+            </if>
+        </set>
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="sysUser">
+        update sys_user
+        set ACCOUNT = #{account,jdbcType=VARCHAR},
+        NICKNAME = #{nickName,jdbcType=VARCHAR},
+        USERPWD = #{userPwd,jdbcType=VARCHAR},
+        USERPHOTO = #{userPhoto,jdbcType=VARCHAR},
+        CREATETIME = #{createTime,jdbcType=TIMESTAMP},
+        UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},
+        LOGINFLAG = #{loginFlag,jdbcType=INTEGER},
+        DELETEFLAG = #{deleteFlag,jdbcType=INTEGER}
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
 </mapper>

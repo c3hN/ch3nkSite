@@ -53,6 +53,7 @@
                         <dd><a href="javascript:;" url="${basePath}/user/toList.do">用户管理</a></dd>
                         <dd><a href="javascript:;">角色管理</a></dd>
                         <dd><a href="javascript:;">资源分配</a></dd>
+                        <dd><a href="javascript:;"url="${basePath}/dic">数据字典</a></dd>
                         <dd><a href="javascript:;">系统参数</a></dd>
                     </dl>
                 </li>

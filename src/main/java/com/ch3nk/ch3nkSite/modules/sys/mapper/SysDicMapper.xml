@@ -2,25 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ch3nk.ch3nkSite.modules.sys.mapper.SysDicMapper">
   <resultMap id="BaseResultMap" type="sysDic">
-    <id column="sys_dic_ID" jdbcType="INTEGER" property="id" />
-    <result column="sys_dic_DIC_ID" jdbcType="VARCHAR" property="dicId" />
-    <result column="sys_dic_PARENT_ID" jdbcType="VARCHAR" property="parentId" />
-    <result column="sys_dic_DIC_NAME" jdbcType="VARCHAR" property="dicName" />
-    <result column="sys_dic_DIC_ENAME" jdbcType="VARCHAR" property="dicEname" />
-    <result column="sys_dic_DIC_SORT" jdbcType="INTEGER" property="dicSort" />
-    <result column="sys_dic_REMARK" jdbcType="VARCHAR" property="remark" />
-    <result column="sys_dic_CREATE_BY" jdbcType="VARCHAR" property="createBy" />
-    <result column="sys_dic_CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="sys_dic_UPDATE_BY" jdbcType="TIMESTAMP" property="updateBy" />
-    <result column="sys_dic_UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="sys_dic_DELETE_FLAG" jdbcType="INTEGER" property="deleteFlag" />
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="DIC_ID" jdbcType="VARCHAR" property="dicId" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="DIC_NAME" jdbcType="VARCHAR" property="dicName" />
+    <result column="DIC_ENAME" jdbcType="VARCHAR" property="dicEname" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="DIC_SORT" jdbcType="INTEGER" property="dicSort" />
+    <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATE_BY" jdbcType="TIMESTAMP" property="updateBy" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="DELETE_FLAG" jdbcType="INTEGER" property="deleteFlag" />
   </resultMap>
   <sql id="Base_Column_List">
-    sys_dic.ID as sys_dic_ID, sys_dic.DIC_ID as sys_dic_DIC_ID, sys_dic.PARENT_ID as sys_dic_PARENT_ID,
-    sys_dic.DIC_NAME as sys_dic_DIC_NAME, sys_dic.DIC_ENAME as sys_dic_DIC_ENAME, sys_dic.DIC_SORT as sys_dic_DIC_SORT,
-    sys_dic.REMARK as sys_dic_REMARK, sys_dic.CREATE_BY as sys_dic_CREATE_BY, sys_dic.CREATE_DATE as sys_dic_CREATE_DATE,
-    sys_dic.UPDATE_BY as sys_dic_UPDATE_BY, sys_dic.UPDATE_DATE as sys_dic_UPDATE_DATE,
-    sys_dic.DELETE_FLAG as sys_dic_DELETE_FLAG
+    ID,
+    DIC_ID,
+    PARENT_ID,
+    DIC_NAME,
+    DIC_ENAME,
+    REMARK,
+    DIC_SORT,
+    CREATE_BY,
+    CREATE_DATE,
+    UPDATE_BY,
+    UPDATE_DATE,
+    DELETE_FLAG
   </sql>
   <!--<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -195,6 +202,7 @@
     <include refid="Base_Column_List"></include>
     from sys_dic sys_dic
     where sys_dic.PARENT_ID IS NULL OR sys_dic.PARENT_ID = ''
+    order by CREATE_DATE desc
   </select>
 
   <select id="selectByParentId" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -202,8 +210,16 @@
     <include refid="Base_Column_List" />
     from sys_dic sys_dic
     where sys_dic.PARENT_ID = #{parentId,jdbcType=VARCHAR}
+    order by CREATE_DATE desc
   </select>
 
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_dic
+    where DELETE_FLAG = 1
+    order by CREATE_DATE desc
+  </select>
   <!--<update id="updateByDicIdSelective" parameterType="sysDic">
     update sys_dic
     <set>

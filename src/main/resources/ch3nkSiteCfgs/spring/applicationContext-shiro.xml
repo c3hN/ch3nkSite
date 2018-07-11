@@ -5,12 +5,21 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--shiro配置文件-->
+
+    <!--加密器-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="md5"/>
+        <property name="hashIterations" value="1"/>
+    </bean>
+
     <!--配置自定义realm-->
-    <bean id="userRealm" class="com.ch3nk.ch3nkSite.common.shiro.realm.SystemRealm"/>
+    <bean id="systemRealm" class="com.ch3nk.ch3nkSite.common.shiro.realm.SystemRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
 
     <!--配置安全管理器SecurityManager-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <property name="realm" ref="userRealm"/>
+        <property name="realm" ref="systemRealm"/>
     </bean>
 
     <!--配置认证过滤器-->

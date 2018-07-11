@@ -36,5 +36,11 @@ public interface SysDicMapper {
      */
     List<SysDic> selectByParentId(@Param("parentId") String perentId);
 
+    /**
+     *
+     * @return
+     */
+    List<SysDic> selectAll();
+
     int updateByDicIdSelective(SysDic sysDic);
 }
