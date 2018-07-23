@@ -1,6 +1,6 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
-import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
+import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,9 @@ public class LoginController {
             } else if (IncorrectCredentialsException.class.getName().equals(
                     exceptionClassName)) {
                 model.addAttribute("errorMsg", "用户名/密码错误");
-            } else {
+            } else if (DisabledAccountException.class.getName().equals(exceptionClassName)){
+                model.addAttribute("errorMsg","账户禁用");
+            }else{
                 model.addAttribute("errorMsg", "其他异常信息");
             }
         }

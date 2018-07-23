@@ -42,6 +42,27 @@
         from sys_user
         where USER_ID = #{userId,jdbcType=VARCHAR}
     </select>
+
+    <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user
+        where ACCOUNT = #{account,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user
+        where DELETEFLAG = 1
+        order by createTime desc
+    </select>
+
+    <select id="selectCount" resultType="int">
+        select count(1)
+        from sys_user
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete from sys_user
         where USER_ID = #{userId,jdbcType=VARCHAR}

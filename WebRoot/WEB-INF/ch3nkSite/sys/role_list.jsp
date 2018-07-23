@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>用户列表</title>
+    <%--<link rel="stylesheet" href="${basePath}/static/plugins/layui/css/layui.css">--%>
 </head>
 <body>
 
@@ -9,7 +10,7 @@
     <div class="list-operates">
         <div class="layui-btn-group">
             <button class="layui-btn layui-btn-sm" id="addUserBtn">新增</button>
-            <button class="layui-btn layui-btn-sm" id="importUsersBtn">导入</button>
+            <button class="layui-btn layui-btn-sm">导入</button>
             <button class="layui-btn layui-btn-sm">导出</button>
         </div>
     </div>
@@ -20,18 +21,8 @@
 
 
 <script>
-    layui.use(['element','upload'], function(){
+    layui.use('element', function(){
         var element = layui.element;
-        var upload = layui.upload;
-
-        upload.render({
-            elem: '#importUsersBtn',
-            url: '${basePath}/user/importUsers.do',
-            accept: 'file', //允许上传的文件类型
-            done: function(res, index, upload){ //上传后的回调
-
-            }
-        })
     });
     /**数据表格渲染*/
     layui.use(['layer','table','layer'],function () {
@@ -64,10 +55,11 @@
                 layer.confirm('确定删除这条数据吗？',
                     {btn:['删除','取消'],
                         yes:function (index,layero) {      //按钮1回调
-                            // 后台交互
+                            //
+                            //  * 与后台交互
                             $.ajax({
                                 type:'post',
-                                url:'${basePath}/user/delete.do?userId='+obj.data.userId,
+                                url:'${basePath}/user/del.do?userId='+obj.data.userId,
                                 error:function () {
                                     layer.alert('请求失败，请重试！');
                                 },
@@ -75,7 +67,7 @@
                                    if (data == 'success') {
                                        obj.del(index);      //删除DOM
                                        layer.close(index);
-                                       layer.msg("删除成功");
+                                       layer.msg("删除成功")
                                    }else {
                                        layer.msg('删除失败，请重试')
                                    }
@@ -90,14 +82,13 @@
             }else if (obj.event == 'edit') {
                 layer.open({
                     id:'userEdit',  //指定id
-                    type:2,
+                    type:1,     //页面
                     title:'用户信息编辑',
-                    closeBtn:1, //右上角关闭按钮显示
-                    area:['700px','600px'],
+                    closeBtn:0, //右上角关闭按钮不显示
+                    area:['500px','600px'],
                     resize :false,
-                    move:false,
                     offset:['auto'],
-                    content:['${basePath}/user/toAddOrEdit.do?userId='+obj.data.userId,'no'],
+                    content:'11111111111',
                     btn:['保存','取消'],
                     yes:function (index,layero) {       //保存按钮回调
                         layer.close(index);
@@ -111,12 +102,12 @@
                     id:'userDetail',  //指定id
                     type:2,     //iframe
                     title:'用户信息',
-                    closeBtn:1, //右上角关闭按钮显示
+                    closeBtn:1, //右上角关闭按钮不显示
                     area:['700px','600px'],
                     resize :false,
                     move:false,
                     offset:['auto'],
-                    content:'${basePath}/user/toDetail.do?userId='+obj.data.userId,
+                    content:'${basePath}/user/detail.do',
                     btn:['保存','取消'],
                     yes:function (index,layero) {       //保存按钮回调
                         layer.close(index);
@@ -129,13 +120,11 @@
         });
     });
 
-    //新增弹窗
-    layui.use(['layer','table'],function () {
+    layui.use(['layer'],function () {
         var layer = layui.layer;
-        var table = layui.table;
         $("#addUserBtn").click(function () {
             layer.open({
-                id:'userAdd',
+                id:'userAdd',  //指定id
                 type:2,     //iframe
                 title:'新增用户',
                 closeBtn:'1', //右上角关闭按钮显示
@@ -144,17 +133,12 @@
                 resize :false,
                 offset:['auto'],
                 move:false,
-                content:['${basePath}/user/toAddOrEdit.do','no'],
+                content:['${basePath}/user/toAdd.do','no'],
                 btn:['立即提交','取消'],
                 yes:function (index,layero) {       //保存按钮回调
                     $("iframe")[0].contentWindow.subForm();//调用子页面提交按钮
                     layer.close(index);
                     layer.msg("添加成功")
-                    table.reload('users',function () {
-                        url: '${basePath},/user/list.do' //数据接口
-                        // ,page: true, //开启分页
-                        limit:10   //每页默认显示10条
-                    })
                 },
                 btn2:function (index,layero) {      //取消按钮回调
                     layer.close(index);

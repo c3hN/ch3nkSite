@@ -50,8 +50,9 @@
                         设置</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">菜单管理</a></dd>
-                        <dd><a href="javascript:;" url="${basePath}/user/toList.do">用户管理</a></dd>
+                        <dd><a href="javascript:;" url="${basePath}/user/tolist.do">用户管理</a></dd>
                         <dd><a href="javascript:;">角色管理</a></dd>
+                        <dd><a href="javascript:;" url="${basePath}/depart/tolist.do">机构管理</a></dd>
                         <dd><a href="javascript:;">资源分配</a></dd>
                         <dd><a href="javascript:;"url="${basePath}/dic">数据字典</a></dd>
                         <dd><a href="javascript:;">系统参数</a></dd>
@@ -61,10 +62,8 @@
         </div>
     </div>
 
-    <div class="layui-body">
+    <div class="layui-body" style="bottom: 0">
         <!-- 内容主体区域 -->
-        <div style="padding: 15px;">内容主体区域</div>
-        <button id="qq" url="11111">11111111</button>
     </div>
 
     <%--<div class="layui-footer">--%>

@@ -1,7 +1,9 @@
 package com.ch3nk.ch3nkSite.modules.sys.service;
 
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -9,51 +11,62 @@ import java.util.List;
  */
 public interface  ISysUserService {
     /**
-     * 根据用户id查询用户
-     * @param userId
-     * @return SysUser对象
-     */
-    SysUser findById(String userId);
-
-    int saveUser(SysUser sysUser);
-    int updateUser(SysUser sysUser);
-
-    /**
-     * 分页查询
-     * @param pageNum  当前页
-     * @param pageSize 每页数据
+     * 分页查询所有用户
+     * @param pageNum   当前页
+     * @param pageSize  每页数量
      * @return
      */
-    List<SysUser> findByPage(int pageNum,int pageSize);
+   List<SysUser> findUserByPage(int pageNum,int pageSize);
 
     /**
-     * 查询总数
+     * 查询用户总数
      * @return
      */
-    int findCount();
+   int findUserCount();
 
     /**
-     * 根据登录账号查询
-     * @param userCount
-     * @return SysUser对象
-     */
-    SysUser findByCount(String userCount);
-
-    /**
-     * 查询所有未删除的用户
-     * @return list
-     */
-    List<SysUser> findAll();
-
-    /**
-     * 禁止/允许用户登录
+     * 根据用户id查询
      * @param userId
+     * @return
      */
-    void updateLoginFlag(String userId);
+   SysUser findUserById(String userId);
 
     /**
-     * 删除/还原用户
-     * @param userId
+     * 根据登录账户查询
+     * @param account
+     * @return
      */
-    void updateDeleteFlag(String userId);
+   SysUser findByAccount(String account);
+
+    /**
+     * 保存用户信息
+     * @param sysUser
+     * @return
+     */
+   int saveUser(SysUser sysUser);
+
+    /**
+     * 更新用户信息
+     * @param sysUser
+     * @return
+     */
+   int updateUser(SysUser sysUser);
+
+    /**
+     * 逻辑删除用户信息
+     * @param userId
+     * @return
+     */
+   int tombstone(String userId);
+
+    /**
+     * 用户导入
+     * @param file
+     */
+   void importUsersFromExc(File file);
+
+    /**
+     * 用户导出
+     */
+   void exportUsers2Exc();
 }

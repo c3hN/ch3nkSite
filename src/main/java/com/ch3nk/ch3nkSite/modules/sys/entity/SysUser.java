@@ -57,6 +57,9 @@ public class SysUser implements Serializable {
      */
     private Integer deleteFlag;
 
+    /**
+     * 角色列表
+     */
     private List<SysRole> roles;
 
 
@@ -99,7 +102,7 @@ public class SysUser implements Serializable {
     public void setUserPhoto(String userPhoto) {
         this.userPhoto = userPhoto;
     }
-
+    @JsonSerialize(using = JsonDate2StringProcessor.class)
     public Date getCreateTime() {
         return createTime;
     }
@@ -108,6 +111,7 @@ public class SysUser implements Serializable {
         this.createTime = createTime;
     }
 
+    @JsonSerialize(using = JsonDate2StringProcessor.class)
     public Date getUpdateTime() {
         return updateTime;
     }

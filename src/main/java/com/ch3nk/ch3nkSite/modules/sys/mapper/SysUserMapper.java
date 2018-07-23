@@ -35,6 +35,25 @@ public interface SysUserMapper {
     SysUser selectByPrimaryKey(@Param("userId") String userId);
 
     /**
+     * 根据登录账号查询
+     * @param account
+     * @return
+     */
+    SysUser selectByAccount(@Param("account") String account);
+
+    /**
+     * 查询所有用户
+     * @return
+     */
+    List<SysUser> selectAll();
+
+    /**
+     * 查询用户总数
+     * @return
+     */
+    int selectCount();
+
+    /**
      * 根据主键选择性更新
      * @param record
      * @return

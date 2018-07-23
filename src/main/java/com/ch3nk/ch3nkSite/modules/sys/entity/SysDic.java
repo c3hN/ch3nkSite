@@ -30,7 +30,9 @@ public class SysDic implements Serializable {
      * 描述
      */
     private String remark;
-
+    /**
+     * 排序
+     */
     private Integer dicSort;
 
     /**
