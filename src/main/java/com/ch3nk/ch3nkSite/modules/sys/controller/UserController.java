@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
 import java.util.List;
+
 
 @Controller
 @RequestMapping(value = "/user")
@@ -92,10 +91,13 @@ public class UserController  {
         return tableData;
     }
 
+
+
     @RequestMapping(value = "/importUsers")
     @ResponseBody
     public String importUsers(@RequestParam("file") MultipartFile file) {
-        System.out.println(file);
+        List<SysUser> list = sysUserService.importUsersFromExc(file);
+
         return  null;
     }
 }

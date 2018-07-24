@@ -1,9 +1,8 @@
 package com.ch3nk.ch3nkSite.modules.sys.service;
 
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -63,7 +62,7 @@ public interface  ISysUserService {
      * 用户导入
      * @param file
      */
-   void importUsersFromExc(File file);
+   List<SysUser> importUsersFromExc(MultipartFile file);
 
     /**
      * 用户导出
