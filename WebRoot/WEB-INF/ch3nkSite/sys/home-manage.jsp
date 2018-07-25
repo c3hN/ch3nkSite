@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <head>
     <title>ch3nksite 管理后台</title>
@@ -24,7 +25,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <i class="layui-icon">&#xe66f;</i>
-                    超级管理员
+                    <shiro:principal property="nickName"/>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -66,10 +67,6 @@
         <!-- 内容主体区域 -->
     </div>
 
-    <%--<div class="layui-footer">--%>
-      <%--<!-- 底部固定区域 -->--%>
-    <%--© layui.com - 底部固定区域--%>
-    <%--</div>--%>
 </div>
 <script src="${basePath}/static/plugins/layui/layui.js"></script>
 <script src="${basePath}/static/js/jquery-3.2.1.js"></script>
