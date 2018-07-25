@@ -44,7 +44,7 @@ public class SystemRealm extends AuthorizingRealm {
         SysUser sysUser = sysUserMapper.selectByAccount(account);
         if (sysUser == null) {
             return null;
-        }else if (sysUser.getLoginFlag() == 0){
+        }else if (sysUser.getLoginFlag() == "0"){
             throw new DisabledAccountException();       //账户禁用异常
         }
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(sysUser, sysUser.getUserPwd(), getName());

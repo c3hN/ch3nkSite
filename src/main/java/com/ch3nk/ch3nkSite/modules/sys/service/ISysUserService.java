@@ -4,6 +4,7 @@ import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户服务接口
@@ -15,13 +16,13 @@ public interface  ISysUserService {
      * @param pageSize  每页数量
      * @return
      */
-   List<SysUser> findUserByPage(int pageNum,int pageSize);
+   List<SysUser> findUserByPage(int pageNum,int pageSize,String deleteFlag);
 
     /**
      * 查询用户总数
      * @return
      */
-   int findUserCount();
+   int findUserCount(String deleteFlag);
 
     /**
      * 根据用户id查询
@@ -62,10 +63,6 @@ public interface  ISysUserService {
      * 用户导入
      * @param file
      */
-   List<SysUser> importUsersFromExc(MultipartFile file);
+   Map<String, Object> importUsersFromExc(MultipartFile file);
 
-    /**
-     * 用户导出
-     */
-   void exportUsers2Exc();
 }

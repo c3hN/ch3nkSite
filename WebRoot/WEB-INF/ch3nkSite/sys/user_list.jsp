@@ -10,7 +10,7 @@
         <div class="layui-btn-group">
             <button class="layui-btn layui-btn-sm" id="addUserBtn">新增</button>
             <button class="layui-btn layui-btn-sm" id="importUsersBtn">导入</button>
-            <button class="layui-btn layui-btn-sm">导出</button>
+            <button class="layui-btn layui-btn-sm">统计报表</button>
         </div>
     </div>
     <div class="list">
@@ -20,16 +20,23 @@
 
 
 <script>
-    layui.use(['element','upload'], function(){
+    layui.use(['element','upload','layer','table'], function(){
         var element = layui.element;
         var upload = layui.upload;
-
+        var layer = layui.layer;
+        var table = layui.table;
+        //创建一个上传组件
         upload.render({
-            elem: '#importUsersBtn',
-            url: '${basePath}/user/importUsers.do',
-            accept: 'file', //允许上传的文件类型
-            done: function(res, index, upload){ //上传后的回调
-
+            elem: '#importUsersBtn'
+            ,url: '${basePath}/user/importUsers.do'
+            ,accept: 'file' //允许上传的文件类型
+            ,done: function(res, index, upload){ //上传后的回调
+                table.reload('users',{
+                    url: '${basePath}/user/list.do',
+                    page: true, //开启分页
+                    limit:10   //每页默认显示10条
+                });
+                layer.msg("导入成功："+res.successCount+"条;</br>导入失败:"+res.failureCount+"条;</br>信息："+res.failureInfo);
             }
         })
     });

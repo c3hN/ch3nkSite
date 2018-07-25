@@ -50,12 +50,12 @@ public class SysUser implements Serializable {
     /**
      * 允许登录标记 0:no 1:yes
      */
-    private Integer loginFlag;
+    private String loginFlag;
 
     /**
      * 删除标记 0:删除  1：未删除
      */
-    private Integer deleteFlag;
+    private String deleteFlag;
 
     /**
      * 角色列表
@@ -120,19 +120,19 @@ public class SysUser implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Integer getLoginFlag() {
+    public String getLoginFlag() {
         return loginFlag;
     }
 
-    public void setLoginFlag(Integer loginFlag) {
+    public void setLoginFlag(String loginFlag) {
         this.loginFlag = loginFlag;
     }
 
-    public Integer getDeleteFlag() {
+    public String getDeleteFlag() {
         return deleteFlag;
     }
 
-    public void setDeleteFlag(Integer deleteFlag) {
+    public void setDeleteFlag(String deleteFlag) {
         this.deleteFlag = deleteFlag;
     }
 

@@ -21,6 +21,13 @@ public interface SysUserMapper {
     int insert(SysUser record);
 
     /**
+     * 批量插入
+     * @param list
+     * @return
+     */
+    int insertBatch(List<SysUser> list);
+
+    /**
      * 选择性插入数据
      * @param record
      * @return
@@ -42,16 +49,16 @@ public interface SysUserMapper {
     SysUser selectByAccount(@Param("account") String account);
 
     /**
-     * 查询所有用户
+     * 条件查询所有用户
      * @return
      */
-    List<SysUser> selectAll();
+    List<SysUser> selectAll(@Param("deleteFlag")String deleteFlag);
 
     /**
-     * 查询用户总数
+     * 条件查询用户总数
      * @return
      */
-    int selectCount();
+    int selectCount(@Param("deleteFlag")String deleteFlag);
 
     /**
      * 根据主键选择性更新

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -82,10 +83,10 @@ public class UserController  {
     @ResponseBody
     public LayuiTableData list(@RequestParam(value = "page",defaultValue = "1") int pageNum,
                                @RequestParam(value = "limit",defaultValue = "10") int pageSize) {
-        List<SysUser> userByPage = sysUserService.findUserByPage(pageNum, pageSize);
+        List<SysUser> userByPage = sysUserService.findUserByPage(pageNum, pageSize,"1");
         LayuiTableData tableData = new LayuiTableData();
         tableData.setCode(0);
-        tableData.setCount(sysUserService.findUserCount());
+        tableData.setCount(sysUserService.findUserCount("1"));
         tableData.setMsg("");
         tableData.setData(userByPage);
         return tableData;
@@ -95,9 +96,8 @@ public class UserController  {
 
     @RequestMapping(value = "/importUsers")
     @ResponseBody
-    public String importUsers(@RequestParam("file") MultipartFile file) {
-        List<SysUser> list = sysUserService.importUsersFromExc(file);
-
-        return  null;
+    public Map<String, Object> importUsers(@RequestParam("file") MultipartFile file) {
+        Map<String, Object> result = sysUserService.importUsersFromExc(file);
+        return result;
     }
 }

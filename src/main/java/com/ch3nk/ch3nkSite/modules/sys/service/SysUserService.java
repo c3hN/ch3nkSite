@@ -5,7 +5,6 @@ import com.ch3nk.ch3nkSite.modules.sys.mapper.SysUserMapper;
 import com.ch3nk.ch3nkSite.modules.utils.UUIDutil;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.management.relation.Role;
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -24,15 +21,15 @@ public class SysUserService implements ISysUserService {
     private SysUserMapper sysUserMapper;
 
     @Override
-    public List<SysUser> findUserByPage(int pageNum, int pageSize) {
+    public List<SysUser> findUserByPage(int pageNum, int pageSize,String deleteFlag) {
         PageHelper.startPage(pageNum,pageSize);
-        List<SysUser> userList = sysUserMapper.selectAll();
+        List<SysUser> userList = sysUserMapper.selectAll(deleteFlag);
         return userList;
     }
 
     @Override
-    public int findUserCount() {
-        return sysUserMapper.selectCount();
+    public int findUserCount(String deleteFlag) {
+        return sysUserMapper.selectCount(deleteFlag);
 
     }
 
@@ -71,10 +68,7 @@ public class SysUserService implements ISysUserService {
     public int tombstone(String userId) {
 //        sysUserMapper.selectByPrimaryKey(userId).getDeleteFlag()   //0:已删除  1：未删除
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        if (sysUser.getDeleteFlag() == 0) {
-            return 1;
-        }
-        sysUser.setDeleteFlag(0);
+        sysUser.setDeleteFlag("0");
         sysUser.setUpdateTime(new Date());
         return sysUserMapper.updateByPrimaryKeySelective(sysUser);
     }
@@ -87,17 +81,18 @@ public class SysUserService implements ISysUserService {
      * @return
      */
     @Override
-    public List<SysUser> importUsersFromExc(MultipartFile file) {
-        Map<String, String> result = new HashMap<>();
+    public Map<String, Object> importUsersFromExc(MultipartFile file) {
+        Map<String, Object> result = new HashMap<>();
         int failureCount = 0;   //失败条数
         int successCount = 0;   //成功条数
         StringBuffer failureInfo = new StringBuffer();      //失败信息
-        List<SysUser> all = sysUserMapper.selectAll();      //已存在的数据信息
+        Workbook workbook = null;
+        List<SysUser> all = sysUserMapper.selectAll("");      //已存在的所有数据信息
         DataFormatter formatter = new DataFormatter();      //单元格数据格式化
         SysUser sysUser = null;
         List<SysUser> users = new ArrayList<>();
         try {
-            Workbook workbook = WorkbookFactory.create(file.getInputStream());
+            workbook = WorkbookFactory.create(file.getInputStream());    //create()兼容xls\xlsx
             Sheet sheet = workbook.getSheetAt(0);
             outter:for (Row row : sheet) {     //循环行,一自动过滤空行
                 if (row.getRowNum() == 0) {     //过滤第一行
@@ -107,7 +102,7 @@ public class SysUserService implements ISysUserService {
                     if (StringUtils.equals(formatter.formatCellValue(row.getCell(0)),user.getAccount())) {  //account不能重复
                         failureCount += 1;
                         failureInfo.append("第"+row.getRowNum()+"行数据重复，"+
-                                formatter.formatCellValue(row.getCell(0))+"已存在");
+                                formatter.formatCellValue(row.getCell(0))+"已存在；");
                         continue outter;
                     }
                 }
@@ -117,22 +112,25 @@ public class SysUserService implements ISysUserService {
                 sysUser.setNickName(formatter.formatCellValue(row.getCell(1)));
                 sysUser.setCreateTime(new Date());
                 sysUser.setUpdateTime(new Date());
-                sysUser.setUserPwd(new SimpleHash("MD5",formatter.getDefaultFormat(row.getCell(2))).toHex());
+                sysUser.setLoginFlag("1");
+                sysUser.setDeleteFlag("1");
+                sysUser.setUserPwd(new SimpleHash("MD5",formatter.formatCellValue(row.getCell(2))).toHex());
                 users.add(sysUser);
-                successCount += 1;
             }
-            return users;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
+            if (users.size() > 0) {     //过滤全部重复的情况
+                successCount = sysUserMapper.insertBatch(users);
+            }
+            result.put("failureCount",failureCount);
+            result.put("successCount",successCount);
+            result.put("failureInfo",failureInfo);
+            return result;
+        }catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    @Override
-    public void exportUsers2Exc() {
-
+        result.put("failureCount",failureCount);
+        result.put("successCount",successCount);
+        result.put("failureInfo","发生错误");
+        return result;
     }
 
 

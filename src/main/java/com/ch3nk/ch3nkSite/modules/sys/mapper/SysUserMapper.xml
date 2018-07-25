@@ -9,8 +9,8 @@
         <result column="USERPHOTO" jdbcType="VARCHAR" property="userPhoto" />
         <result column="CREATETIME" jdbcType="TIMESTAMP" property="createTime" />
         <result column="UPDATETIME" jdbcType="TIMESTAMP" property="updateTime" />
-        <result column="LOGINFLAG" jdbcType="INTEGER" property="loginFlag" />
-        <result column="DELETEFLAG" jdbcType="INTEGER" property="deleteFlag" />
+        <result column="LOGINFLAG" jdbcType="VARCHAR" property="loginFlag" />
+        <result column="DELETEFLAG" jdbcType="VARCHAR" property="deleteFlag" />
         <collection property="roles" ofType="sysUser">
             <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
             <result column="OFFICE_ID" jdbcType="VARCHAR" property="officerId" />
@@ -50,17 +50,26 @@
         where ACCOUNT = #{account,jdbcType=VARCHAR}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from sys_user
-        where DELETEFLAG = 1
+        <where>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                DELETEFLAG = #{deleteFlag}
+            </if>
+        </where>
         order by createTime desc
     </select>
 
-    <select id="selectCount" resultType="int">
+    <select id="selectCount" parameterType="java.lang.String" resultType="int">
         select count(1)
         from sys_user
+        <where>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                DELETEFLAG = #{deleteFlag}
+            </if>
+        </where>
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
@@ -74,9 +83,24 @@
         )
         values (#{userId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR},
         #{userPwd,jdbcType=VARCHAR}, #{userPhoto,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-        #{updateTime,jdbcType=TIMESTAMP}, #{loginFlag,jdbcType=INTEGER}, #{deleteFlag,jdbcType=INTEGER}
+        #{updateTime,jdbcType=TIMESTAMP}, #{loginFlag,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=VARCHAR}
         )
     </insert>
+
+    <insert id="insertBatch" parameterType="sysUser">
+        insert into sys_user (USER_ID, ACCOUNT, NICKNAME,
+        USERPWD, USERPHOTO, CREATETIME,
+        UPDATETIME, LOGINFLAG, DELETEFLAG
+        ) values
+        <foreach collection="list" item="user" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{user.userId,jdbcType=VARCHAR}, #{user.account,jdbcType=VARCHAR}, #{user.nickName,jdbcType=VARCHAR},
+                #{user.userPwd,jdbcType=VARCHAR}, #{user.userPhoto,jdbcType=VARCHAR}, #{user.createTime,jdbcType=TIMESTAMP},
+                #{user.updateTime,jdbcType=TIMESTAMP}, #{user.loginFlag,jdbcType=VARCHAR}, #{user.deleteFlag,jdbcType=VARCHAR}
+            </trim>
+        </foreach>
+    </insert>
+
     <insert id="insertSelective" parameterType="sysUser">
         insert into sys_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -131,10 +155,10 @@
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="loginFlag != null">
-                #{loginFlag,jdbcType=INTEGER},
+                #{loginFlag,jdbcType=VARCHAR},
             </if>
             <if test="deleteFlag != null">
-                #{deleteFlag,jdbcType=INTEGER},
+                #{deleteFlag,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -160,10 +184,10 @@
                 UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="loginFlag != null">
-                LOGINFLAG = #{loginFlag,jdbcType=INTEGER},
+                LOGINFLAG = #{loginFlag,jdbcType=VARCHAR},
             </if>
             <if test="deleteFlag != null">
-                DELETEFLAG = #{deleteFlag,jdbcType=INTEGER},
+                DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR},
             </if>
         </set>
         where USER_ID = #{userId,jdbcType=VARCHAR}
@@ -176,8 +200,8 @@
         USERPHOTO = #{userPhoto,jdbcType=VARCHAR},
         CREATETIME = #{createTime,jdbcType=TIMESTAMP},
         UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},
-        LOGINFLAG = #{loginFlag,jdbcType=INTEGER},
-        DELETEFLAG = #{deleteFlag,jdbcType=INTEGER}
+        LOGINFLAG = #{loginFlag,jdbcType=VARCHAR},
+        DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}
         where USER_ID = #{userId,jdbcType=VARCHAR}
     </update>
 </mapper>
