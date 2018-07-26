@@ -4,20 +4,22 @@
     <resultMap id="BaseResultMap" type="sysMenu">
         <id column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
         <result column="ZH_NAME" jdbcType="VARCHAR" property="name" />
-        <result column="EN_NAME" jdbcType="VARCHAR" property="eName" />
+        <result column="MENU_CODE" jdbcType="VARCHAR" property="menuCode" />
+        <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+        <result column="CATEGORY" jdbcType="VARCHAR" property="category" />
         <result column="HREF" jdbcType="VARCHAR" property="href" />
         <result column="ICON" jdbcType="VARCHAR" property="icon" />
+        <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+        <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
+        <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="DELETE_FLAG" jdbcType="VARCHAR" property="deleteFlag" />
         <result column="REMARK" jdbcType="VARCHAR" property="remark" />
-        <result column="DELETE_FLAG" jdbcType="INTEGER" property="deleteFlag" />
+        <result column="PERMISSION" jdbcType="VARCHAR" property="permission" />
     </resultMap>
     <sql id="Base_Column_List">
-        MENU_ID,
-        ZH_NAME,
-        EN_NAME,
-        HREF,
-        ICON,
-        REMARK,
-        DELETE_FLAG
+        MENU_ID, ZH_NAME, MENU_CODE, PARENT_ID, CATEGORY, HREF, ICON, CREATE_BY, CREATE_DATE,
+        UPDATE_BY, UPDATE_DATE, DELETE_FLAG, REMARK, PERMISSION
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -30,12 +32,16 @@
         where MENU_ID = #{menuId,jdbcType=VARCHAR}
     </delete>
     <insert id="insert" parameterType="sysMenu">
-        insert into sys_menu (MENU_ID, ZH_NAME, EN_NAME,
-        HREF, ICON, REMARK,
-        DELETE_FLAG)
-        values (#{menuId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{eName,jdbcType=VARCHAR},
-        #{href,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
-        #{deleteFlag,jdbcType=INTEGER})
+        insert into sys_menu (MENU_ID, ZH_NAME, MENU_CODE,
+        PARENT_ID, CATEGORY, HREF,
+        ICON, CREATE_BY, CREATE_DATE,
+        UPDATE_BY, UPDATE_DATE, DELETE_FLAG,
+        REMARK, PERMISSION)
+        values (#{menuId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{menuCode,jdbcType=VARCHAR},
+        #{parentId,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{href,jdbcType=VARCHAR},
+        #{icon,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+        #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{deleteFlag,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="sysMenu">
         insert into sys_menu
@@ -47,7 +53,13 @@
                 ZH_NAME,
             </if>
             <if test="eName != null">
-                EN_NAME,
+                MENU_CODE,
+            </if>
+            <if test="parentId != null">
+                PARENT_ID,
+            </if>
+            <if test="category != null">
+                CATEGORY,
             </if>
             <if test="href != null">
                 HREF,
@@ -55,11 +67,26 @@
             <if test="icon != null">
                 ICON,
             </if>
-            <if test="remark != null">
-                REMARK,
+            <if test="createBy != null">
+                CREATE_BY,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="updateBy != null">
+                UPDATE_BY,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
             </if>
             <if test="deleteFlag != null">
                 DELETE_FLAG,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="permission != null">
+                PERMISSION,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -70,7 +97,13 @@
                 #{name,jdbcType=VARCHAR},
             </if>
             <if test="eName != null">
-                #{eName,jdbcType=VARCHAR},
+                #{menuCode,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="category != null">
+                #{category,jdbcType=VARCHAR},
             </if>
             <if test="href != null">
                 #{href,jdbcType=VARCHAR},
@@ -78,11 +111,26 @@
             <if test="icon != null">
                 #{icon,jdbcType=VARCHAR},
             </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteFlag != null">
+                #{deleteFlag,jdbcType=VARCHAR},
+            </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="deleteFlag != null">
-                #{deleteFlag,jdbcType=INTEGER},
+            <if test="permission != null">
+                #{permission,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -93,7 +141,13 @@
                 ZH_NAME = #{name,jdbcType=VARCHAR},
             </if>
             <if test="eName != null">
-                EN_NAME = #{eName,jdbcType=VARCHAR},
+                MENU_CODE = #{eName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                PARENT_ID = #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="category != null">
+                CATEGORY = #{category,jdbcType=VARCHAR},
             </if>
             <if test="href != null">
                 HREF = #{href,jdbcType=VARCHAR},
@@ -101,11 +155,26 @@
             <if test="icon != null">
                 ICON = #{icon,jdbcType=VARCHAR},
             </if>
+            <if test="createBy != null">
+                CREATE_BY = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                UPDATE_BY = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteFlag != null">
+                DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR},
+            </if>
             <if test="remark != null">
                 REMARK = #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="deleteFlag != null">
-                DELETE_FLAG = #{deleteFlag,jdbcType=INTEGER},
+            <if test="permission != null">
+                PERMISSION = #{permission,jdbcType=VARCHAR},
             </if>
         </set>
         where MENU_ID = #{menuId,jdbcType=VARCHAR}
@@ -113,11 +182,18 @@
     <update id="updateByPrimaryKey" parameterType="sysMenu">
         update sys_menu
         set ZH_NAME = #{name,jdbcType=VARCHAR},
-        EN_NAME = #{eName,jdbcType=VARCHAR},
+        MENU_CODE = #{menuCode,jdbcType=VARCHAR},
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+        CATEGORY = #{category,jdbcType=VARCHAR},
         HREF = #{href,jdbcType=VARCHAR},
         ICON = #{icon,jdbcType=VARCHAR},
+        CREATE_BY = #{createBy,jdbcType=VARCHAR},
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+        UPDATE_BY = #{updateBy,jdbcType=VARCHAR},
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+        DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR},
         REMARK = #{remark,jdbcType=VARCHAR},
-        DELETE_FLAG = #{deleteFlag,jdbcType=INTEGER}
+        PERMISSION = #{permission,jdbcType=VARCHAR}
         where MENU_ID = #{menuId,jdbcType=VARCHAR}
     </update>
 </mapper>

@@ -6,6 +6,14 @@
 <body>
 
 <div class="contents" style="margin: 10px 0 0 10px">
+    <div class="positaion" style="background-color: #5e5e5e;margin-bottom: 30px" >
+        <span class="layui-breadcrumb" lay-separator="-">
+          <a href="">首页</a>
+          <a href="">国际新闻</a>
+          <a href="">亚太地区</a>
+          <a><cite>正文</cite></a>
+        </span>
+    </div>
     <div class="list-operates">
         <div class="layui-btn-group">
             <button class="layui-btn layui-btn-sm" id="addUserBtn">新增</button>
@@ -41,9 +49,10 @@
         })
     });
     /**数据表格渲染*/
-    layui.use(['layer','table','layer'],function () {
+    layui.use(['layer','table','layer','laytpl'],function () {
         var userTable = layui.table;
         var layer = layui.layer;
+        var laytpl = layui.laytpl;
         userTable.render({
             elem:'#users'    //html容器ID
             ,height:470
@@ -61,7 +70,7 @@
                 ,{field: 'nickName', title: '用户昵称', width:120,align:'center'}
                 ,{field: 'createTime', title: '注册时间', width:200, align:'center',sort: true}
                 ,{field: 'updateTime', title: '上次登录时间', width:200,align:'center',sort:true}
-                ,{field: 'loginFlag', title: '禁止登录', width:200,align:'center',sort:true}
+                ,{field: 'loginFlag', title: '禁止登录', width:200,align:'center',sort:true,templet:'#loginFlag'}
                 ,{title:'操作',width:250, align:'center', toolbar: '#operations'}
             ]]
         });
@@ -158,10 +167,8 @@
                     layer.close(index);
                     layer.msg("添加成功")
                     table.reload('users',function () {
-                        url: '${basePath},/user/list.do' //数据接口
-                        // ,page: true, //开启分页
-                        limit:10   //每页默认显示10条
-                    })
+                        url: "${basePath},/user/list.do"
+                    });
                 },
                 btn2:function (index,layero) {      //取消按钮回调
                     layer.close(index);
@@ -176,6 +183,13 @@
     <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="loginFlag">
+    {{# if(d.loginFlag == "1") {            }}
+    {{# return "否";                         }}
+    {{# }else {                              }}
+    {{# return "是";                          }}
+    {{# }                                    }}
 </script>
 </body>
 </html>

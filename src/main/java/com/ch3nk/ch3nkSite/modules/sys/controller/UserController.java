@@ -1,6 +1,5 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
-import com.ch3nk.ch3nkSite.common.entity.LayuiTableData;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,15 +82,16 @@ public class UserController  {
     //加载用户列表
     @RequestMapping(value = "/list")
     @ResponseBody
-    public LayuiTableData list(@RequestParam(value = "page",defaultValue = "1") int pageNum,
-                               @RequestParam(value = "limit",defaultValue = "10") int pageSize) {
-        List<SysUser> userByPage = sysUserService.findUserByPage(pageNum, pageSize,"1");
-        LayuiTableData tableData = new LayuiTableData();
-        tableData.setCode(0);
-        tableData.setCount(sysUserService.findUserCount("1"));
-        tableData.setMsg("");
-        tableData.setData(userByPage);
-        return tableData;
+    public Map<String, Object> list(@RequestParam(value = "page",defaultValue = "1") int pageNum,
+                                    @RequestParam(value = "limit",defaultValue = "10") int pageSize) {
+        Map<String,Object> result = new HashMap<String,Object>();
+        List<SysUser> users = sysUserService.findUserByPage(pageNum,pageSize,"1");
+        int count = sysUserService.findUserCount("1");
+        result.put("code",0);
+        result.put("msg","操作成功");
+        result.put("count",count);
+        result.put("data",users);
+        return result;
     }
 
 

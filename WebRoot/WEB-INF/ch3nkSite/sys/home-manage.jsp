@@ -50,7 +50,7 @@
                     <a class="" href="javascript:;"><i class="layui-icon layui-icon-set"></i>
                         设置</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">菜单管理</a></dd>
+                        <dd><a href="javascript:;" url="${basePath}/menu/tolist.do">菜单管理</a></dd>
                         <dd><a href="javascript:;" url="${basePath}/user/tolist.do">用户管理</a></dd>
                         <dd><a href="javascript:;">角色管理</a></dd>
                         <dd><a href="javascript:;" url="${basePath}/depart/tolist.do">机构管理</a></dd>
