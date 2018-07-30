@@ -234,7 +234,7 @@ public class SysMenu implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", menuId=").append(menuId);
         sb.append(", name=").append(name);
-        sb.append(", eName=").append(menuCode);
+        sb.append(", menuCode=").append(menuCode);
         sb.append(", parentId=").append(parentId);
         sb.append(", category=").append(category);
         sb.append(", href=").append(href);

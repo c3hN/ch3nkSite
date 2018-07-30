@@ -1,11 +1,13 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
+import com.ch3nk.ch3nkSite.common.controller.BaseControllrt;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +22,11 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/user")
-public class UserController  {
+public class UserController extends BaseControllrt{
+
+    @Qualifier("sysUserServiceImpl")
     @Autowired
     private ISysUserService sysUserService;
-
-
 
 
     @RequestMapping(value = "/register")
@@ -84,14 +86,14 @@ public class UserController  {
     @ResponseBody
     public Map<String, Object> list(@RequestParam(value = "page",defaultValue = "1") int pageNum,
                                     @RequestParam(value = "limit",defaultValue = "10") int pageSize) {
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String,Object> jsonResult = new HashMap<String, Object>();
         List<SysUser> users = sysUserService.findUserByPage(pageNum,pageSize,"1");
         int count = sysUserService.findUserCount("1");
-        result.put("code",0);
-        result.put("msg","操作成功");
-        result.put("count",count);
-        result.put("data",users);
-        return result;
+        jsonResult.put("code",0);
+        jsonResult.put("msg","操作成功");
+        jsonResult.put("count",count);
+        jsonResult.put("data",users);
+        return jsonResult;
     }
 
 
@@ -99,7 +101,8 @@ public class UserController  {
     @RequestMapping(value = "/importUsers")
     @ResponseBody
     public Map<String, Object> importUsers(@RequestParam("file") MultipartFile file) {
-        Map<String, Object> result = sysUserService.importUsersFromExc(file);
-        return result;
+        Map<String,Object> jsonResult = new HashMap<String, Object>();
+        jsonResult = sysUserService.importUsersFromExc(file);
+        return jsonResult;
     }
 }

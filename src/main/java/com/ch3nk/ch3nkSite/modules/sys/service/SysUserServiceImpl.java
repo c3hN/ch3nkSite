@@ -16,7 +16,7 @@ import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
-public class SysUserService implements ISysUserService {
+public class SysUserServiceImpl implements ISysUserService {
     @Autowired
     private SysUserMapper sysUserMapper;
 

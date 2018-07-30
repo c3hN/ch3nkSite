@@ -186,9 +186,9 @@
 </script>
 <script type="text/html" id="loginFlag">
     {{# if(d.loginFlag == "1") {            }}
-    {{# return "否";                         }}
+    <p>否</p>
     {{# }else {                              }}
-    {{# return "是";                          }}
+    <p>是</p>
     {{# }                                    }}
 </script>
 </body>

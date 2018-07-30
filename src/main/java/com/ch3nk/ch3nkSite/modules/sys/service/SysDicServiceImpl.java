@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Service
 @Transactional(readOnly = true)
-public class SysDicService implements ISysDicService{
+public class SysDicServiceImpl implements ISysDicService{
     @Autowired
     private SysDicMapper sysDicMapper;
 

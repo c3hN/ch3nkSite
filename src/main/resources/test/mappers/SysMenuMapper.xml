@@ -32,54 +32,23 @@
         <include refid="Base_Column_List"/>
         from sys_menu
         <where>
-            <if test="menuId != null and menuId != ''">MENU_ID = #{menuId}</if>
-            <if test="name != null and name != ''">and ZH_NAME = #{name}</if>
-            <if test="menuCode != null and menuCode != ''">and MENU_CODE = #{menuCode}</if>
-            <if test="parentId != null and parentId != ''">and PARENT_ID = #{parentId}</if>
-            <if test="category != null and category != ''">and CATEGORY = #{category}</if>
-            <if test="href != null and href != ''">and HREF = #{href}</if>
-            <if test="icon != null and icon != ''">and ICON = #{icon}</if>
-            <if test="createBy != null and createBy != ''">and CREATE_BY = #{createBy}</if>
-            <if test="createDate != null and createDate != ''">and CREATE_DATE = #{createDate}</if>
-            <if test="updateBy != null and updateBy != ''">and UPDATE_BY = #{updateBy}</if>
-            <if test="updateDate != null and updateDate != ''">and UPDATE_DATE = #{updateDate}</if>
-            <if test="deleteFlag != null and deleteFlag != ''">and DELETE_FLAG = #{deleteFlag}</if>
-            <if test="remark != null and remark != ''">and REMARK = #{remark}</if>
-            <if test="permission != null and permission != ''">and PERMISSION = #{permission}</if>
+            <if test="category != null and category != ''">CATEGORY = #{category}</if>
+            <if test="category != null and category != ''">and DELETE_FLAG = #{deleteFlag}</if>
         </where>
-        order by CREATE_DATE desc
     </select>
     <select id="selectCountSelective" parameterType="sysMenu" resultType="int">
         select
         count(1)
         from sys_menu
         <where>
-            <if test="menuId != null and menuId != ''">MENU_ID = #{menuId}</if>
-            <if test="name != null and name != ''">and ZH_NAME = #{name}</if>
-            <if test="menuCode != null and menuCode != ''">and MENU_CODE = #{menuCode}</if>
-            <if test="parentId != null and parentId != ''">and PARENT_ID = #{parentId}</if>
-            <if test="category != null and category != ''">and CATEGORY = #{category}</if>
-            <if test="href != null and href != ''">and HREF = #{href}</if>
-            <if test="icon != null and icon != ''">and ICON = #{icon}</if>
-            <if test="createBy != null and createBy != ''">and CREATE_BY = #{createBy}</if>
-            <if test="createDate != null and createDate != ''">and CREATE_DATE = #{createDate}</if>
-            <if test="updateBy != null and updateBy != ''">and UPDATE_BY = #{updateBy}</if>
-            <if test="updateDate != null and updateDate != ''">and UPDATE_DATE = #{updateDate}</if>
-            <if test="deleteFlag != null and deleteFlag != ''">and DELETE_FLAG = #{deleteFlag}</if>
-            <if test="remark != null and remark != ''">and REMARK = #{remark}</if>
-            <if test="permission != null and permission != ''">and PERMISSION = #{permission}</if>
+            <if test="category != null and category != ''">CATEGORY = #{category}</if>
+            <if test="category != null and category != ''">and DELETE_FLAG = #{deleteFlag}</if>
         </where>
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete from sys_menu
         where MENU_ID = #{menuId,jdbcType=VARCHAR}
-    </delete>
-    <delete id="deleteByPrimaryKeyBatch" parameterType="java.util.Arrays">
-        delete from sys_menu where MENU_ID in
-        <foreach collection="menuIds" item="menuId" open="(" separator="," close=")">
-            #{menuId}
-        </foreach>
     </delete>
     <insert id="insert" parameterType="sysMenu">
         insert into sys_menu (MENU_ID, ZH_NAME, MENU_CODE,
@@ -102,7 +71,7 @@
             <if test="name != null">
                 ZH_NAME,
             </if>
-            <if test="menuCode != null">
+            <if test="eName != null">
                 MENU_CODE,
             </if>
             <if test="parentId != null">
@@ -146,7 +115,7 @@
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
             </if>
-            <if test="menuCode != null">
+            <if test="eName != null">
                 #{menuCode,jdbcType=VARCHAR},
             </if>
             <if test="parentId != null">
@@ -190,8 +159,8 @@
             <if test="name != null">
                 ZH_NAME = #{name,jdbcType=VARCHAR},
             </if>
-            <if test="menuCode != null">
-                MENU_CODE = #{menuCode,jdbcType=VARCHAR},
+            <if test="eName != null">
+                MENU_CODE = #{eName,jdbcType=VARCHAR},
             </if>
             <if test="parentId != null">
                 PARENT_ID = #{parentId,jdbcType=VARCHAR},
@@ -245,80 +214,5 @@
         REMARK = #{remark,jdbcType=VARCHAR},
         PERMISSION = #{permission,jdbcType=VARCHAR}
         where MENU_ID = #{menuId,jdbcType=VARCHAR}
-    </update>
-
-    <update id="updateByPrimaryKeyBatch" parameterType="java.util.List">
-        update sys_menu
-        <set>
-            <foreach collection="list" item="menu" separator=",">
-                <if test="menu.name != null">
-                    ZH_NAME = #{menu.name,jdbcType=VARCHAR}
-                </if>
-                <if test="menu.menuCode != null">
-                    MENU_CODE = #{menu.menuCode,jdbcType=VARCHAR}
-                </if>
-                <if test="menu.parentId != null">
-                    PARENT_ID = #{menu.parentId,jdbcType=VARCHAR}
-                </if>
-                <if test="menu.category != null">
-                    CATEGORY = #{menu.category,jdbcType=VARCHAR}
-                </if>
-                <if test="menu.href != null">
-                    HREF = #{menu.href,jdbcType=VARCHAR}
-                </if>
-                <if test="menu.icon != null">
-                    ICON = #{menu.icon,jdbcType=VARCHAR}
-                </if>
-                <if test="menu.createBy != null">
-                    CREATE_BY = #{menu.createBy,jdbcType=VARCHAR}
-                </if>
-                <if test="menu.createDate != null">
-                    CREATE_DATE = #{menu.createDate,jdbcType=TIMESTAMP}
-                </if>
-                <if test="menu.updateBy != null">
-                    UPDATE_BY = #{menu.updateBy,jdbcType=VARCHAR}
-                </if>
-                <if test="menu.updateDate != null">
-                    UPDATE_DATE = #{menu.updateDate,jdbcType=TIMESTAMP}
-                </if>
-                <if test="menu.deleteFlag != null">
-                    DELETE_FLAG = #{menu.deleteFlag,jdbcType=VARCHAR}
-                </if>
-                <if test="menu.remark != null">
-                    REMARK = #{menu.remark,jdbcType=VARCHAR}
-                </if>
-                <if test="menu.permission != null">
-                    PERMISSION = #{menu.permission,jdbcType=VARCHAR}
-                </if>
-            </foreach>
-        </set>
-        <where>
-            MENU_ID in
-            <foreach collection="list" item="menu" open="(" close=")" separator=",">
-                #{menu.menuId}
-            </foreach>
-        </where>
-    </update>
-
-
-    <update id="tombstoneByPKBatch" parameterType="java.util.Arrays">
-        update sys_menu
-        set DELETE_FLAG = '0'
-        <where>
-            MENU_ID in
-            <foreach collection="menuIds" item="menuId" open="(" close=")" separator=",">
-                #{menuId}
-            </foreach>
-        </where>
-    </update>
-    <update id="recoveByPKBatch" parameterType="java.util.Arrays">
-        update sys_menu
-        set DELETE_FLAG = '1'
-        <where>
-            MENU_ID in
-            <foreach collection="menuIds" item="menuId" open="(" close=")" separator=",">
-                #{menuId}
-            </foreach>
-        </where>
     </update>
 </mapper>
