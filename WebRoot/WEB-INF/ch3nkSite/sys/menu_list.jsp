@@ -9,18 +9,15 @@
 <html>
 <head>
     <title>菜单列表</title>
+    <link rel="stylesheet" href="${basePath}/static/plugins/layui/css/layui.css">
+    <link rel="stylesheet" href="${basePath}/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<div class="" style="margin: 10px;">
-    <div class="position" style="background-color: #dbdbdb;margin-bottom: 10px">
-        <span class="layui-breadcrumb">
-           <a href="">首页</a>
-              <a href="">国际新闻</a>
-              <a href="">亚太地区</a>
-              <a><cite>正文</cite></a>
-        </span>
+<div class="" style="margin: 0px;">
+    <div class="position" style="width: 100%; height: 50px; background-color: #dbdbdb; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
+        <div class="postion-content"><i class="fa fa-bars"></i>菜单管理</div>
     </div>
-    <div class="contents">
+    <div class="contents" style="margin: 10px 0 0 10px">
         <div class="list-operates">
             <div class="layui-btn-group">
                 <button class="layui-btn layui-btn-sm" id="addMenuBtn">新增</button>
@@ -32,10 +29,13 @@
         </div>
     </div>
 </div>
+<script src="${basePath}/static/plugins/layui/layui.js"></script>
+<script src="${basePath}/static/js/jquery-3.2.1.js"></script>
 <script>
-    layui.use(['table','layer'],function () {
+    layui.use(['table','layer','element'],function () {
         var table = layui.table;
         var layer = layui.layer;
+        var element = layui.element;
         table.render({
             elem:'#menus',
             height:470,

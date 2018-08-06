@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ch3nk.ch3nkSite.modules.sys.mapper.SysInstitutionMapper">
+    <resultMap id="BaseResultMap" type="sysInstitution">
+        <id column="INST_ID" jdbcType="VARCHAR" property="inst_id" />
+        <result column="INST_NAME" jdbcType="VARCHAR" property="inst_name" />
+        <result column="FULL_NAME" jdbcType="VARCHAR" property="fullName" />
+        <result column="INST_ABBREVIATION" jdbcType="VARCHAR" property="abbreviation" />
+        <result column="INST_CODE" jdbcType="VARCHAR" property="inst_code" />
+        <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <result column="CRATE_BY" jdbcType="VARCHAR" property="createBy" />
+        <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
+        <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        INST_ID, INST_NAME, FULL_NAME, INST_ABBREVIATION, INST_CODE, PARENT_ID, `STATUS`,
+        CRATE_BY, CREATE_DATE, UPDATE_BY, UPDATE_DATE
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_institutions
+        where INST_ID = #{inst_id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_institutions
+        where INST_ID = #{inst_id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="sysInstitution">
+        insert into sys_institutions (INST_ID, INST_NAME, FULL_NAME,
+        INST_ABBREVIATION, INST_CODE, PARENT_ID,
+        `STATUS`, CRATE_BY, CREATE_DATE,
+        UPDATE_BY, UPDATE_DATE)
+        values (#{inst_id,jdbcType=VARCHAR}, #{inst_name,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR},
+        #{abbreviation,jdbcType=VARCHAR}, #{inst_code,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR},
+        #{status,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+        #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="sysInstitution">
+        insert into sys_institutions
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inst_id != null">
+                INST_ID,
+            </if>
+            <if test="inst_name != null">
+                INST_NAME,
+            </if>
+            <if test="fullName != null">
+                FULL_NAME,
+            </if>
+            <if test="abbreviation != null">
+                INST_ABBREVIATION,
+            </if>
+            <if test="inst_code != null">
+                INST_CODE,
+            </if>
+            <if test="parentId != null">
+                PARENT_ID,
+            </if>
+            <if test="status != null">
+                `STATUS`,
+            </if>
+            <if test="createBy != null">
+                CRATE_BY,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="updateBy != null">
+                UPDATE_BY,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inst_id != null">
+                #{inst_id,jdbcType=VARCHAR},
+            </if>
+            <if test="inst_name != null">
+                #{inst_name,jdbcType=VARCHAR},
+            </if>
+            <if test="fullName != null">
+                #{fullName,jdbcType=VARCHAR},
+            </if>
+            <if test="abbreviation != null">
+                #{abbreviation,jdbcType=VARCHAR},
+            </if>
+            <if test="inst_code != null">
+                #{inst_code,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="sysInstitution">
+        update sys_institutions
+        <set>
+            <if test="inst_name != null">
+                INST_NAME = #{inst_name,jdbcType=VARCHAR},
+            </if>
+            <if test="fullName != null">
+                FULL_NAME = #{fullName,jdbcType=VARCHAR},
+            </if>
+            <if test="abbreviation != null">
+                INST_ABBREVIATION = #{abbreviation,jdbcType=VARCHAR},
+            </if>
+            <if test="inst_code != null">
+                INST_CODE = #{inst_code,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                PARENT_ID = #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                `STATUS` = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                CRATE_BY = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                UPDATE_BY = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where INST_ID = #{inst_id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="sysInstitution">
+        update sys_institutions
+        set INST_NAME = #{inst_name,jdbcType=VARCHAR},
+        FULL_NAME = #{fullName,jdbcType=VARCHAR},
+        INST_ABBREVIATION = #{abbreviation,jdbcType=VARCHAR},
+        INST_CODE = #{inst_code,jdbcType=VARCHAR},
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+        `STATUS` = #{status,jdbcType=VARCHAR},
+        CRATE_BY = #{createBy,jdbcType=VARCHAR},
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+        UPDATE_BY = #{updateBy,jdbcType=VARCHAR},
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+        where INST_ID = #{inst_id,jdbcType=VARCHAR}
+    </update>
+</mapper>

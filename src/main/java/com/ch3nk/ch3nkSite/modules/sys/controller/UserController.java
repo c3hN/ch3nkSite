@@ -1,6 +1,5 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
-import com.ch3nk.ch3nkSite.common.controller.BaseControllrt;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -19,15 +18,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @Controller
 @RequestMapping(value = "/user")
-public class UserController extends BaseControllrt{
+public class UserController  {
+
+    private Map<String,Object> jsonResult;
 
     @Qualifier("sysUserServiceImpl")
     @Autowired
     private ISysUserService sysUserService;
-
 
     @RequestMapping(value = "/register")
     public String register(SysUser sysUser,Model model){
@@ -42,15 +41,19 @@ public class UserController extends BaseControllrt{
         }
     }
 
-    //用户列表页
+    @RequestMapping(value = "/saveOne")
+    @ResponseBody
+    public String saveOne(SysUser sysUser) {
+        return "success";
+    }
+
     @RequestMapping(value = "/tolist")
-    public String tolist() {
+    public String tolist(){
         return "sys/user_list";
     }
 
-    //新增页面
-    @RequestMapping(value = "/toAddOrEdit")
-    public String toAdd(@RequestParam(required = false) String userId,Model model) {
+    @RequestMapping(value = "toAddOrEdit")
+    public String toAdd(@RequestParam(required = false)String userId,Model model) {
         if (StringUtils.isNotBlank(userId)) {
             SysUser userById = sysUserService.findUserById(userId);
             model.addAttribute("sysUser",userById);
@@ -59,14 +62,19 @@ public class UserController extends BaseControllrt{
         return "sys/user_addOrEdit";
     }
 
-    //查看
     @RequestMapping(value = "/toDetail")
-    public String show(String userId,Model model) {
+    public String detail(String userId,Model model) {
         SysUser userById = sysUserService.findUserById(userId);
         model.addAttribute("sysUser",userById);
         return "sys/user_detail";
     }
 
+    @RequestMapping(value = "/toEdit")
+    public String edit(String userId,Model model) {
+        SysUser userById = sysUserService.findUserById(userId);
+        model.addAttribute("sysUser",userById);
+        return "sys/user_addOrEdit";
+    }
 
     @RequestMapping(value = "/delete")
     @ResponseBody
@@ -81,12 +89,11 @@ public class UserController extends BaseControllrt{
     }
 
 
-    //加载用户列表
     @RequestMapping(value = "/list")
     @ResponseBody
     public Map<String, Object> list(@RequestParam(value = "page",defaultValue = "1") int pageNum,
-                                    @RequestParam(value = "limit",defaultValue = "10") int pageSize) {
-        Map<String,Object> jsonResult = new HashMap<String, Object>();
+                                    @RequestParam(value = "limit",defaultValue = "10") int pageSize){
+        jsonResult = new HashMap<String,Object>();
         List<SysUser> users = sysUserService.findUserByPage(pageNum,pageSize,"1");
         int count = sysUserService.findUserCount("1");
         jsonResult.put("code",0);
@@ -96,13 +103,24 @@ public class UserController extends BaseControllrt{
         return jsonResult;
     }
 
-
-
     @RequestMapping(value = "/importUsers")
     @ResponseBody
     public Map<String, Object> importUsers(@RequestParam("file") MultipartFile file) {
-        Map<String,Object> jsonResult = new HashMap<String, Object>();
         jsonResult = sysUserService.importUsersFromExc(file);
+        return jsonResult;
+    }
+
+
+    @RequestMapping(value = "/switchLoginFlag")
+    @ResponseBody
+    public Map<String, Object> switchLoginFlag(String userId, String loginFlag) {
+        jsonResult = new HashMap<String, Object>();
+        SysUser sysUser = new SysUser();
+        sysUser.setUserId(userId);
+        sysUser.setLoginFlag(loginFlag);
+        int i = sysUserService.updateUser(sysUser);
+        jsonResult.put("count",i);
+        jsonResult.put("msg","success");
         return jsonResult;
     }
 }

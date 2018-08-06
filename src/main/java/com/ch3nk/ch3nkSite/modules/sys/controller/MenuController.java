@@ -43,18 +43,14 @@ public class MenuController {
         return "sys/menu_addOrEdit";
     }
 
-    @RequestMapping(value = "/tolistchildren")
-    public String tolistchildren() {
-        return "sys/menu_list_children";
-    }
 
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Map<String, Object> list(String category, Model model,@RequestParam(value = "page")int pageNum,
-                                    @RequestParam(value = "limit")int pageSize) {
+    public Map<String, Object> list(@RequestParam(value = "page") int pageNum,
+                                    @RequestParam(value = "limit") int pageSize) {
         jsonResult = new HashMap<String, Object>();
         SysMenu sysMenu = new SysMenu();
-        sysMenu.setCategory(category);
+//        sysMenu.setCategory(category);
         sysMenu.setDeleteFlag("1");
         List<SysMenu> list = sysMenuService.findBy(sysMenu, pageNum, pageSize);
         int count = sysMenuService.findCount(sysMenu);

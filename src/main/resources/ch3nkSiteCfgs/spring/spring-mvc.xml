@@ -36,7 +36,7 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <mvc:view-controller path="/" view-name="sys/home-manage"/>
+    <mvc:view-controller path="/" view-name="sys/index"/>
     <mvc:view-controller path="/tologin" view-name="sys/login"/>
     <mvc:view-controller path="/tohome" view-name="sys/home"/>
     <mvc:view-controller path="/users" view-name="sys/user_list"/>
