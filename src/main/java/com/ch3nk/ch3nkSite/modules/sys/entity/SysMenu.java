@@ -27,7 +27,7 @@ public class SysMenu implements Serializable {
     private String parentId;
 
     /**
-     * 类别 0:管理菜单
+     * 类别 0:管理菜单 1:操作权限
      */
     private String category;
 
@@ -177,77 +177,5 @@ public class SysMenu implements Serializable {
         this.permission = permission;
     }
 
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        SysMenu other = (SysMenu) that;
-        return (this.getMenuId() == null ? other.getMenuId() == null : this.getMenuId().equals(other.getMenuId()))
-                && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-                && (this.getMenuCode() == null ? other.getMenuCode() == null : this.getMenuCode().equals(other.getMenuCode()))
-                && (this.getParentId() == null ? other.getParentId() == null : this.getParentId().equals(other.getParentId()))
-                && (this.getCategory() == null ? other.getCategory() == null : this.getCategory().equals(other.getCategory()))
-                && (this.getHref() == null ? other.getHref() == null : this.getHref().equals(other.getHref()))
-                && (this.getIcon() == null ? other.getIcon() == null : this.getIcon().equals(other.getIcon()))
-                && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
-                && (this.getCreateDate() == null ? other.getCreateDate() == null : this.getCreateDate().equals(other.getCreateDate()))
-                && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
-                && (this.getUpdateDate() == null ? other.getUpdateDate() == null : this.getUpdateDate().equals(other.getUpdateDate()))
-                && (this.getDeleteFlag() == null ? other.getDeleteFlag() == null : this.getDeleteFlag().equals(other.getDeleteFlag()))
-                && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
-                && (this.getPermission() == null ? other.getPermission() == null : this.getPermission().equals(other.getPermission()));
-    }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getMenuId() == null) ? 0 : getMenuId().hashCode());
-        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getMenuCode() == null) ? 0 : getMenuCode().hashCode());
-        result = prime * result + ((getParentId() == null) ? 0 : getParentId().hashCode());
-        result = prime * result + ((getCategory() == null) ? 0 : getCategory().hashCode());
-        result = prime * result + ((getHref() == null) ? 0 : getHref().hashCode());
-        result = prime * result + ((getIcon() == null) ? 0 : getIcon().hashCode());
-        result = prime * result + ((getCreateBy() == null) ? 0 : getCreateBy().hashCode());
-        result = prime * result + ((getCreateDate() == null) ? 0 : getCreateDate().hashCode());
-        result = prime * result + ((getUpdateBy() == null) ? 0 : getUpdateBy().hashCode());
-        result = prime * result + ((getUpdateDate() == null) ? 0 : getUpdateDate().hashCode());
-        result = prime * result + ((getDeleteFlag() == null) ? 0 : getDeleteFlag().hashCode());
-        result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
-        result = prime * result + ((getPermission() == null) ? 0 : getPermission().hashCode());
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", menuId=").append(menuId);
-        sb.append(", name=").append(name);
-        sb.append(", menuCode=").append(menuCode);
-        sb.append(", parentId=").append(parentId);
-        sb.append(", category=").append(category);
-        sb.append(", href=").append(href);
-        sb.append(", icon=").append(icon);
-        sb.append(", createBy=").append(createBy);
-        sb.append(", createDate=").append(createDate);
-        sb.append(", updateBy=").append(updateBy);
-        sb.append(", updateDate=").append(updateDate);
-        sb.append(", deleteFlag=").append(deleteFlag);
-        sb.append(", remark=").append(remark);
-        sb.append(", permission=").append(permission);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
-    }
 }

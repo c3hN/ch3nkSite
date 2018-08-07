@@ -36,46 +36,6 @@
         LOGINFLAG,
         DELETEFLAG
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from sys_user
-        where USER_ID = #{userId,jdbcType=VARCHAR}
-    </select>
-
-    <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from sys_user
-        where ACCOUNT = #{account,jdbcType=VARCHAR}
-    </select>
-
-    <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from sys_user
-        <where>
-            <if test="deleteFlag != null and deleteFlag != ''">
-                DELETEFLAG = #{deleteFlag}
-            </if>
-        </where>
-        order by createTime desc
-    </select>
-
-    <select id="selectCount" parameterType="java.lang.String" resultType="int">
-        select count(1)
-        from sys_user
-        <where>
-            <if test="deleteFlag != null and deleteFlag != ''">
-                DELETEFLAG = #{deleteFlag}
-            </if>
-        </where>
-    </select>
-
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete from sys_user
-        where USER_ID = #{userId,jdbcType=VARCHAR}
-    </delete>
     <insert id="insert" parameterType="sysUser">
         insert into sys_user (USER_ID, ACCOUNT, NICKNAME,
         USERPWD, USERPHOTO, CREATETIME,
@@ -104,97 +64,43 @@
     <insert id="insertSelective" parameterType="sysUser">
         insert into sys_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="userId != null">
-                USER_ID,
-            </if>
-            <if test="account != null">
-                ACCOUNT,
-            </if>
-            <if test="nickName != null">
-                NICKNAME,
-            </if>
-            <if test="userPwd != null">
-                USERPWD,
-            </if>
-            <if test="userPhoto != null">
-                USERPHOTO,
-            </if>
-            <if test="createTime != null">
-                CREATETIME,
-            </if>
-            <if test="updateTime != null">
-                UPDATETIME,
-            </if>
-            <if test="loginFlag != null">
-                LOGINFLAG,
-            </if>
-            <if test="deleteFlag != null">
-                DELETEFLAG,
-            </if>
+            <if test="userId != null">USER_ID,</if>
+            <if test="account != null">ACCOUNT,</if>
+            <if test="nickName != null">NICKNAME,</if>
+            <if test="userPwd != null">USERPWD,</if>
+            <if test="userPhoto != null">USERPHOTO,</if>
+            <if test="createTime != null">CREATETIME,</if>
+            <if test="updateTime != null">UPDATETIME,</if>
+            <if test="loginFlag != null">LOGINFLAG,</if>
+            <if test="deleteFlag != null">DELETEFLAG,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="userId != null">
-                #{userId,jdbcType=VARCHAR},
-            </if>
-            <if test="account != null">
-                #{account,jdbcType=VARCHAR},
-            </if>
-            <if test="nickName != null">
-                #{nickName,jdbcType=VARCHAR},
-            </if>
-            <if test="userPwd != null">
-                #{userPwd,jdbcType=VARCHAR},
-            </if>
-            <if test="userPhoto != null">
-                #{userPhoto,jdbcType=VARCHAR},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="loginFlag != null">
-                #{loginFlag,jdbcType=VARCHAR},
-            </if>
-            <if test="deleteFlag != null">
-                #{deleteFlag,jdbcType=VARCHAR},
-            </if>
+            <if test="userId != null">#{userId,jdbcType=VARCHAR},</if>
+            <if test="account != null">#{account,jdbcType=VARCHAR},</if>
+            <if test="nickName != null">#{nickName,jdbcType=VARCHAR},</if>
+            <if test="userPwd != null">#{userPwd,jdbcType=VARCHAR},</if>
+            <if test="userPhoto != null">#{userPhoto,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+            <if test="loginFlag != null">#{loginFlag,jdbcType=VARCHAR},</if>
+            <if test="deleteFlag != null">#{deleteFlag,jdbcType=VARCHAR},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="sysUser">
+
+    <delete id="deleteByPK" parameterType="java.lang.String">
+        delete from sys_user where USER_ID = #{userId,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteBatchByPK" parameterType="java.util.Arrays">
+        delete from sys_user where USER_ID in
+        <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+            #{userId,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
+    <update id="updateByPK" parameterType="sysUser">
         update sys_user
-        <set>
-            <if test="account != null">
-                ACCOUNT = #{account,jdbcType=VARCHAR},
-            </if>
-            <if test="nickName != null">
-                NICKNAME = #{nickName,jdbcType=VARCHAR},
-            </if>
-            <if test="userPwd != null">
-                USERPWD = #{userPwd,jdbcType=VARCHAR},
-            </if>
-            <if test="userPhoto != null">
-                USERPHOTO = #{userPhoto,jdbcType=VARCHAR},
-            </if>
-            <if test="createTime != null">
-                CREATETIME = #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="loginFlag != null">
-                LOGINFLAG = #{loginFlag,jdbcType=VARCHAR},
-            </if>
-            <if test="deleteFlag != null">
-                DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where USER_ID = #{userId,jdbcType=VARCHAR}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="sysUser">
-        update sys_user
-        set ACCOUNT = #{account,jdbcType=VARCHAR},
+        set
+        ACCOUNT = #{account,jdbcType=VARCHAR},
         NICKNAME = #{nickName,jdbcType=VARCHAR},
         USERPWD = #{userPwd,jdbcType=VARCHAR},
         USERPHOTO = #{userPhoto,jdbcType=VARCHAR},
@@ -204,4 +110,71 @@
         DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}
         where USER_ID = #{userId,jdbcType=VARCHAR}
     </update>
+
+    <update id="updateByPKSelective" parameterType="sysUser">
+        update sys_user
+        <set>
+            <if test="account != null">ACCOUNT = #{account,jdbcType=VARCHAR}</if>
+            <if test="nickName != null">NICKNAME = #{nickName,jdbcType=VARCHAR}</if>
+            <if test="userPwd != null">USERPWD = #{userPwd,jdbcType=VARCHAR}</if>
+            <if test="userPhoto != null">USERPHOTO = #{userPhoto,jdbcType=VARCHAR}</if>
+            <if test="createTime != null">CREATETIME = #{createTime,jdbcType=TIMESTAMP}</if>
+            <if test="updateTime != null">UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
+            <if test="loginFlag != null">LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
+            <if test="deleteFlag != null">DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
+        </set>
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectCountBy" parameterType="sysUser" resultType="int">
+        select count(1)
+        from sys_user
+        <where>
+            <if test="account != null">ACCOUNT = #{account,jdbcType=VARCHAR}</if>
+            <if test="nickName != null">and NICKNAME = #{nickName,jdbcType=VARCHAR}</if>
+            <if test="userPwd != null">and USERPWD = #{userPwd,jdbcType=VARCHAR}</if>
+            <if test="userPhoto != null">and USERPHOTO = #{userPhoto,jdbcType=VARCHAR}</if>
+            <if test="createTime != null">and CREATETIME = #{createTime,jdbcType=TIMESTAMP}</if>
+            <if test="updateTime != null">and UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
+            <if test="loginFlag != null">and LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
+            <if test="deleteFlag != null">and DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
+            <if test="likeAccount != null">and ACCOUNT like #{likeAccount,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeNickName != null">and NICKNAME like #{likeNickName,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeCreateTime != null">and CREATETIME like #{likeCreateTime,jdbcType=VARCHAR} escape '/' </if>
+        </where>
+    </select>
+
+    <select id="selectAllBy" parameterType="sysUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        <where>
+            <if test="account != null">ACCOUNT = #{account,jdbcType=VARCHAR}</if>
+            <if test="nickName != null">and NICKNAME = #{nickName,jdbcType=VARCHAR}</if>
+            <if test="userPwd != null">and USERPWD = #{userPwd,jdbcType=VARCHAR}</if>
+            <if test="userPhoto != null">and USERPHOTO = #{userPhoto,jdbcType=VARCHAR}</if>
+            <if test="createTime != null">and CREATETIME = #{createTime,jdbcType=TIMESTAMP}</if>
+            <if test="updateTime != null">and UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
+            <if test="loginFlag != null">and LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
+            <if test="deleteFlag != null">and DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
+            <if test="likeAccount != null">and ACCOUNT like #{likeAccount,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeNickName != null">and NICKNAME like #{likeNickName,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeCreateTime != null">and CREATETIME like #{likeCreateTime,jdbcType=VARCHAR} escape '/' </if>
+        </where>
+        order by CREATETIME desc
+    </select>
+
+    <select id="selectByPK" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        where ACCOUNT = #{account,jdbcType=VARCHAR}
+    </select>
 </mapper>

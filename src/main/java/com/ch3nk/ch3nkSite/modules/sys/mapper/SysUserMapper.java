@@ -7,71 +7,78 @@ import java.util.List;
 
 public interface SysUserMapper {
     /**
-     * 根据主键删除
-     * @param userId
+     * 新增用户
+     * @param sysUser
      * @return
      */
-    int deleteByPrimaryKey(@Param("userId") String userId);
+    int insert(SysUser sysUser);
 
     /**
-     * 插入数据
-     * @param record
-     * @return
-     */
-    int insert(SysUser record);
-
-    /**
-     * 批量插入
+     * 批量新增
      * @param list
      * @return
      */
     int insertBatch(List<SysUser> list);
 
     /**
-     * 选择性插入数据
-     * @param record
+     * 选择新增
+     * @param sysUser
      * @return
      */
-    int insertSelective(SysUser record);
+    int insertSelective(SysUser sysUser);
 
     /**
-     * 根据主键查询
+     * 根据主键删除
+     * @param userId
+     */
+    void deleteByPK(@Param("userId") String userId);
+
+    /**
+     * 根据主键批量删除
+     * @param userIds
+     */
+    void deleteBatchByPK(String[] userIds);
+
+    /**
+     * 根据主键更新
+     * @param sysUser
+     * @return
+     */
+    int updateByPK(SysUser sysUser);
+
+    /**
+     * 根据主键选择更新
+     * @param sysUser
+     * @return
+     */
+    int updateByPKSelective(SysUser sysUser);
+
+    /**
+     * 条件查询数量
+     * @param sysUser
+     * @return
+     */
+    int selectCountBy(SysUser sysUser);
+
+    /**
+     * 条件查询
+     * @param sysUser
+     * @return
+     */
+    List<SysUser> selectAllBy(SysUser sysUser);
+
+    /**
+     * 根据主键查找
      * @param userId
      * @return
      */
-    SysUser selectByPrimaryKey(@Param("userId") String userId);
+    SysUser selectByPK(@Param("userId") String userId);
 
     /**
-     * 根据登录账号查询
+     * 根据account字段查找
      * @param account
      * @return
      */
     SysUser selectByAccount(@Param("account") String account);
-
-    /**
-     * 条件查询所有用户
-     * @return
-     */
-    List<SysUser> selectAll(@Param("deleteFlag")String deleteFlag);
-
-    /**
-     * 条件查询用户总数
-     * @return
-     */
-    int selectCount(@Param("deleteFlag")String deleteFlag);
-
-    /**
-     * 根据主键选择性更新
-     * @param record
-     * @return
-     */
-    int updateByPrimaryKeySelective(SysUser record);
-
-    /**
-     * 根据主键更新
-     * @param record
-     * @return
-     */
-    int updateByPrimaryKey(SysUser record);
 
 }

@@ -62,6 +62,14 @@ public class SysUser implements Serializable {
      */
     private List<SysRole> roles;
 
+    /**
+     * 模糊查询字段
+     * @return
+     */
+    private String likeAccount;
+    private String likeNickName;
+    private String likeCreateTime;
+
 
     public String getUserId() {
         return userId;
@@ -144,62 +152,27 @@ public class SysUser implements Serializable {
         this.roles = roles;
     }
 
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        SysUser other = (SysUser) that;
-        return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-                && (this.getAccount() == null ? other.getAccount() == null : this.getAccount().equals(other.getAccount()))
-                && (this.getNickName() == null ? other.getNickName() == null : this.getNickName().equals(other.getNickName()))
-                && (this.getUserPwd() == null ? other.getUserPwd() == null : this.getUserPwd().equals(other.getUserPwd()))
-                && (this.getUserPhoto() == null ? other.getUserPhoto() == null : this.getUserPhoto().equals(other.getUserPhoto()))
-                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-                && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
-                && (this.getLoginFlag() == null ? other.getLoginFlag() == null : this.getLoginFlag().equals(other.getLoginFlag()))
-                && (this.getDeleteFlag() == null ? other.getDeleteFlag() == null : this.getDeleteFlag().equals(other.getDeleteFlag()));
+    public String getLikeAccount() {
+        return likeAccount;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
-        result = prime * result + ((getAccount() == null) ? 0 : getAccount().hashCode());
-        result = prime * result + ((getNickName() == null) ? 0 : getNickName().hashCode());
-        result = prime * result + ((getUserPwd() == null) ? 0 : getUserPwd().hashCode());
-        result = prime * result + ((getUserPhoto() == null) ? 0 : getUserPhoto().hashCode());
-        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
-        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
-        result = prime * result + ((getLoginFlag() == null) ? 0 : getLoginFlag().hashCode());
-        result = prime * result + ((getDeleteFlag() == null) ? 0 : getDeleteFlag().hashCode());
-        return result;
+    public void setLikeAccount(String likeAccount) {
+        this.likeAccount = likeAccount;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", userId=").append(userId);
-        sb.append(", account=").append(account);
-        sb.append(", nickName=").append(nickName);
-        sb.append(", userPwd=").append(userPwd);
-        sb.append(", userPhoto=").append(userPhoto);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append(", loginFlag=").append(loginFlag);
-        sb.append(", deleteFlag=").append(deleteFlag);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+    public String getLikeNickName() {
+        return likeNickName;
+    }
+
+    public void setLikeNickName(String likeNickName) {
+        this.likeNickName = likeNickName;
+    }
+
+    public String getLikeCreateTime() {
+        return likeCreateTime;
+    }
+
+    public void setLikeCreateTime(String likeCreateTime) {
+        this.likeCreateTime = likeCreateTime;
     }
 }
