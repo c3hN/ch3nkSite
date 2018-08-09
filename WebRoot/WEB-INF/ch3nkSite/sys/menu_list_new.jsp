@@ -1,216 +1,104 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <html>
 <head>
     <title>菜单列表</title>
-    <link rel="stylesheet" href="${basePath}/static/plugins/ztree/css/metroStyle/metroStyle.css">
-    <script src="${basePath}/static/plugins/ztree/js/jquery.ztree.core.js"></script>
+    <link rel="stylesheet" href="${basePath}/static/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${basePath}/static/plugins/jquery-treetable/css/jquery.treetable.theme.default.css">
+    <link rel="stylesheet" href="${basePath}/static/plugins/jquery-treetable/css/jquery.treetable.css">
     <style>
-        .form-item{
-            width: 450px;
-            height: 75px;
-            border: 1px solid black;
-            float: left;
-            line-height: 50px;
+        #menus{
+            width: 1060px;
         }
-        .form-item label{
-            display: block;
-            float: left;
-            padding: 9px 15px;
-            width: 60px;
-            line-height: 30px;
-            font-weight: 400;
+        table.treetable thead tr th{
+            height: 39px;
+            border: 1px solid #e6e6e6;
+            font-size: 14px;
             text-align: center;
+            padding: 5px 0 5px 0;
         }
-        .input-block{
-            display: inline-block;
-            line-height: 50px;
+        table.treetable thead{
+            height: 39px;
+            border: 1px solid #e6e6e6;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding: 5px 15px 5px 15px;
+        }
+        table.treetable tbody tr:hover{
+            background-color: #f2f2f2;
+        }
+        table.treetable tbody tr td{
+            height: 39px;
+            border: 1px solid #e6e6e6;
+            text-align: center;
+            font-size: 14px;
+            padding: 5px 15px 5px 15px;
         }
     </style>
 </head>
-<body style="background-color: #9F9F9F">
-<div class="layui-fluid">
-    <div class="layui-row layui-col-space10">
-        <div class="layui-col-md2" style="overflow:auto;height: 600px;">
-                <ul id="treeDemo" class="ztree"></ul>
-        </div>
-        <div class="layui-col-md10">
-            <%--<form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
-                <div class="layui-form-item">
-                    <label class="layui-form-label">输入框</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">下拉选择框</label>
-                    <div class="layui-input-block">
-                        <select name="interest" lay-filter="aihao">
-                            <option value="0">写作</option>
-                            <option value="1">阅读</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">复选框</label>
-                    <div class="layui-input-block">
-                        <input type="checkbox" name="like[write]" title="写作">
-                        <input type="checkbox" name="like[read]" title="阅读">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">开关关</label>
-                    <div class="layui-input-block">
-                        <input type="checkbox" lay-skin="switch">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">开关开</label>
-                    <div class="layui-input-block">
-                        <input type="checkbox" checked lay-skin="switch">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">单选框</label>
-                    <div class="layui-input-block">
-                        <input type="radio" name="sex" value="0" title="男">
-                        <input type="radio" name="sex" value="1" title="女" checked>
-                    </div>
-                </div>
-                <div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">请填写描述</label>
-                    <div class="layui-input-block">
-                        <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                    </div>
-                </div>
-                <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
-            </form>--%>
-            <form action="">
-                <div class="form-item">
-                    <label for="">名称</label>
-                    <div class="input-block">
-                        <input type="text" name="name" class="layui-input">
-                    </div>
-                </div>
-                <div class="form-item">
-                    <label for="">名称</label>
-                    <div class="input-block">
-                        <input type="text" name="name" class="layui-input">
-                    </div>
-                </div>
-                <div class="form-item">
-                    <label for="">名称</label>
-                    <div class="input-block">
-                        <input type="text" name="name" class="layui-input">
-                    </div>
-                </div>
-                <div class="form-item">
-                    <label for="">名称</label>
-                    <div class="input-block">
-                        <input type="text" name="name" class="layui-input">
-                    </div>
-                </div>
-                <div class="form-item">
-                    <label for="">名称</label>
-                    <div class="input-block">
-                        <input type="text" name="name" class="layui-input">
-                    </div>
-                </div>
-                <div class="form-item">
-                    <label for="">名称</label>
-                    <div class="input-block">
-                        <input type="text" name="name" class="layui-input">
-                    </div>
-                </div>
-            </form>
+<body>
+<div class="content">
+    <div class="operations">
+        <div class="btn-group">
+            <button class="btn btn-default" onclick="window.location.reload(true)">新增</button>
+            <button class="btn btn-default" onclick="window.location.reload(true)">删除</button>
+            <button class="btn btn-default" onclick="window.location.reload(true)">刷新</button>
         </div>
     </div>
+    <div class="menu-list">
+        <table id="menus">
+            <thead>
+                <tr>
+                    <th style="width: 200px !important;">菜单名称</th>
+                    <th style="width: 90px;">类别</th>
+                    <th style="width: 100px;">资源路径</th>
+                    <th style="width: 80px;">权限标识</th>
+                    <th style="width: 70px;">创建时间</th>
+                    <th style="width: 70px;">状态</th>
+                    <th style="width: 200px;">备注</th>
+                    <th style="width: 250px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach items="${list}" var="menu">
+                    <tr data-tt-id="${menu.menuId}" data-tt-parent-id="${menu.parentId}">
+                        <td style="text-align: left">${menu.name}</td>
+                        <td hidden="hidden">${menu.menuId}</td>
+                        <td>
+                            <c:if test="${menu.category == '0'}">菜单</c:if>
+                            <c:if test="${menu.category == '1'}">操作权限</c:if>
+                        </td>
+                        <td>${menu.href}</td>
+                        <td>${menu.permission}</td>
+                        <td>${menu.createDate}</td>
+                        <td>
+                            <c:if test="${menu.deleteFlag == '0'}">禁用</c:if>
+                            <c:if test="${menu.deleteFlag == '1'}">启用</c:if>
+                        </td>
+                        <td>${menu.remark}</td>
+                        <td><button onclick="editMenu(this)">编辑</button><button onclick="disableMenu(this)">禁用</button></td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
 </div>
+<script src="${basePath}/static/js/jquery-3.2.1.js"></script>
+<script src="${basePath}/static/plugins/jquery-treetable/jquery.treetable.js"></script>
 <script>
-    var zTreeObj;
-    // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
-    var setting = {};
-    // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
-    var zNodes = [
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-        {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-
-        {name:"test2", open:true, children:[
-                {name:"test2_1"}, {name:"test2_2"}]}
-    ];
-    $(document).ready(function(){
-        zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    $("#menus").treetable({
+        expandable: true,
+        clickableNodeNames:true,
+        indent:19
     });
-
-    layui.use('form', function(){
-        var form = layui.form;
-
-        //各种基于事件的操作，下面会有进一步介绍
-    });
+    function editMenu(obj) {
+        var menuId = $(obj).parent().parent().find("td").eq(1).text();
+        $(location).attr('href', '${basePath}/menu/toAddOrEdit.do?menuId='+menuId);
+    };
+    function disableMenu(obj) {
+        var menuId = $(obj).parent().parent().find("td").eq(1).text();
+        $(location).attr('href', '${basePath}/menu/disableMenu.do?menuId='+menuId);
+    }
 </script>
-</body>
-</html>
-
 </body>
 </html>

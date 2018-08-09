@@ -2,17 +2,16 @@ package com.ch3nk.ch3nkSite.modules.sys.controller;
 
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysMenuService;
-import com.ch3nk.ch3nkSite.modules.utils.UUIDutil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.plugin.util.UIUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,32 +33,27 @@ public class MenuController {
     }
 
     @RequestMapping(value = "/tolist")
-    public String toList() {
-        return "sys/menu_list";
+    public String toList(Model model) {
+        List<SysMenu> list = sysMenuService.findAll();
+        model.addAttribute("list",list);
+        return "sys/menu_list_new";
     }
 
-    @RequestMapping(value = "/toAddOrEdit")
-    public String toAddOrEdit() {
+
+    @RequestMapping(value = "toAddOrEdit")
+    public String toEdit(@RequestParam(required = false)String menuId, Model model) {
+        if (StringUtils.isNotEmpty(menuId)) {
+            SysMenu sysMenu = new SysMenu();
+            sysMenu.setMenuId(menuId);
+            List<SysMenu> list = sysMenuService.findBy(sysMenu);
+            model.addAttribute("sysMenu",list);
+            return "sys/menu_addOrEdit";
+        }
         return "sys/menu_addOrEdit";
     }
 
 
-    @RequestMapping(value = "/list")
-    @ResponseBody
-    public Map<String, Object> list(@RequestParam(value = "page") int pageNum,
-                                    @RequestParam(value = "limit") int pageSize) {
-        jsonResult = new HashMap<String, Object>();
-        SysMenu sysMenu = new SysMenu();
-//        sysMenu.setCategory(category);
-        sysMenu.setDeleteFlag("1");
-        List<SysMenu> list = sysMenuService.findBy(sysMenu, pageNum, pageSize);
-        int count = sysMenuService.findCount(sysMenu);
-        jsonResult.put("code",0);
-        jsonResult.put("msg","操作成功");
-        jsonResult.put("count",count);
-        jsonResult.put("data",list);
-        return jsonResult;
-    }
+
 
     @RequestMapping(value = "/deleteBatch")
     @ResponseBody
@@ -85,6 +79,7 @@ public class MenuController {
             return jsonResult;
         }
     }
+
 
 
 }

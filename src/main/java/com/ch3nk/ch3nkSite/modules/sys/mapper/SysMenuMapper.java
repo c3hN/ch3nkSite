@@ -8,6 +8,12 @@ import java.util.List;
 public interface SysMenuMapper {
     int deleteByPrimaryKey(@Param("menuId") String menuId);
 
+    /**
+     * 批量删除
+     * @return
+     */
+    int deleteByPrimaryKeyBatch(@Param("menuIds") String[] menuIds);
+
     int insert(SysMenu record);
 
     int insertSelective(SysMenu record);
@@ -22,6 +28,13 @@ public interface SysMenuMapper {
     List<SysMenu> selectBy(SysMenu record);
 
     /**
+     * 查询所有
+     * @return
+     */
+    List<SysMenu> selectAll();
+
+
+    /**
      * 选择查询条数
      * @param record
      * @return
@@ -33,16 +46,24 @@ public interface SysMenuMapper {
     int updateByPrimaryKey(SysMenu record);
 
     /**
-     * 批量逻辑删除
-     * @param menuIds
+     * 批量选择更新
+     * @param list
      * @return
      */
-    int tombstoneByPKBatch(@Param("menuIds") String [] menuIds);
+    int updateByPrimaryKeyBatch(List<SysMenu> list);
 
     /**
-     * 批量逻辑恢复
+     * 批量修改删除标记
      * @param menuIds
      * @return
      */
-    int recoveByPKBatch(@Param("menuIds") String [] menuIds);
+    int tombstoneByPKBatch(@Param("menuIds") String[] menuIds);
+
+    /**
+     * 批量修改删除标记
+     * @param menuIds
+     * @return
+     */
+    int recoveByPKBatch(@Param("menuIds") String[] menuIds);
 }
+

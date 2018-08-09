@@ -15,7 +15,20 @@ public interface ISysMenuService {
      * @param sysMenu
      * @return
      */
-    List<SysMenu> findBy(SysMenu sysMenu, int pageNum, int pageSize);
+    List<SysMenu> findByPage(SysMenu sysMenu, int pageNum, int pageSize);
+
+    /**
+     * 选择查询
+     * @param sysMenu
+     * @return
+     */
+    List<SysMenu> findBy(SysMenu sysMenu);
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<SysMenu> findAll();
 
     /**
      * 批量逻辑删除
@@ -37,6 +50,7 @@ public interface ISysMenuService {
      * @return
      */
     int saveSysMenu(SysMenu sysMenu);
+
+
+
 }
-
-

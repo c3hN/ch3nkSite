@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="${basePath}/static/plugins/layui/css/layui.css">
 <div class="content" style="width: 450px;height: 200px; margin: 50px 100px 150px 50px;">
 
-    <form action="${basePath}/user/register.do" method="post" class="layui-form layui-form-pane" id="userForm" lay-filter="userForm">
+    <form action="${basePath}/user/saveUser.do" method="post" class="layui-form layui-form-pane" id="userForm" lay-filter="userForm">
         <div class="layui-form-item">
             <lable class="layui-form-label">账号</lable>
             <div class="layui-input-block">

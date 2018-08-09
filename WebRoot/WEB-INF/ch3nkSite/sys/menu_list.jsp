@@ -11,17 +11,52 @@
     <title>菜单列表</title>
     <link rel="stylesheet" href="${basePath}/static/plugins/layui/css/layui.css">
     <link rel="stylesheet" href="${basePath}/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+    <style>
+        .contents .table-operations .layui-btn-group , .table-search,.inputs{
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+        }
+        .table-search{
+            margin-left: 200px;
+        }
+        .inputs{
+            margin: 0 10px 0 0;
+        }
+        .table-search-input{
+            width: 100px;
+            height: 30px;
+            margin: 0;
+            padding-left: 10px;
+            line-height: 30px;
+            border: 1px solid #e6e6e6;
+            background-color: #fff;
+            border-radius: 2px;
+        }
+    </style>
 </head>
 <body>
-<div class="" style="margin: 0px;">
+<div class="container">
     <div class="position" style="width: 100%; height: 50px; background-color: #dbdbdb; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
-        <div class="postion-content"><i class="fa fa-bars"></i>菜单管理</div>
+        <div class="postion-content"><i class="fa fa-cog"></i> 菜单管理</div>
     </div>
-    <div class="contents" style="margin: 10px 0 0 10px">
-        <div class="list-operates">
+    <div class="contents" style="margin: 30px 0 0 15px;">
+        <div class="table-operations">
             <div class="layui-btn-group">
                 <button class="layui-btn layui-btn-sm" id="addMenuBtn">新增</button>
                 <button class="layui-btn layui-btn-sm" id="deleteMenusBtn" onclick="deleteBatch()">批量删除</button>
+            </div>
+            <div class="table-search">
+                <div class="inputs">
+                    <input type="text" name="likeName" placeholder="菜单名称" class="table-search-input">
+                    <input type="text" name="likeMenuCode" placeholder="菜单代码" class="table-search-input">
+                    <input type="text" name="likeCategory" placeholder="类别" class="table-search-input">
+                    <input type="text" name="likePermission" placeholder="权限代码" class="table-search-input">
+                </div>
+                <div class="layui-btn-group">
+                    <button class="layui-btn layui-btn-sm" id="searchBtn">搜索</button>
+                    <button class="layui-btn layui-btn-sm" id="recoverBtn" onclick="window.location.reload(true)">重置</button>
+                </div>
             </div>
         </div>
         <div class="menu-list">
@@ -100,7 +135,7 @@
                     area:['700px','600px'],
                     resize :false,
                     move:false,
-                    offset:['auto'],
+                    offset:['100px'],
                     content:'${basePath}/menu/toAddOrEdit.do',
                     btn:['保存','取消'],
                     yes:function (index,layero) {       //保存按钮回调
@@ -119,7 +154,7 @@
                     area:['700px','600px'],
                     resize :false,
                     move:false,
-                    offset:['auto'],
+                    offset:['100px'],
                     content:'${basePath}/menu/toDetail.do?menuId='+obj.data.menuId,
                     btn:['保存','取消'],
                     yes:function (index,layero) {       //保存按钮回调
@@ -191,7 +226,7 @@
                 move:false,
                 area:['800px','600px'],
                 resize :false,
-                offset:['auto'],
+                offset:['100px'],
                 content:['${basePath}/menu/toAddOrEdit.do','yes'],
                 btn:['立即提交','取消'],
                 yes:function (index,layero) {       //提交按钮回调
@@ -209,7 +244,6 @@
             });
         });
     })
-
 </script>
 <script type="text/html" id="operations">
     <button class="layui-btn layui-btn-xs" lay-event="detail">查看</button>

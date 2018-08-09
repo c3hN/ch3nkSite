@@ -27,7 +27,17 @@ public class SysMenuServiceImpl implements ISysMenuService {
     }
 
     @Override
-    public List<SysMenu> findBy(SysMenu sysMenu,int pageNum,int pageSize) {
+    public List<SysMenu> findBy(SysMenu sysMenu) {
+        return sysMenuMapper.selectBy(sysMenu);
+    }
+
+    @Override
+    public List<SysMenu> findAll() {
+        return sysMenuMapper.selectAll();
+    }
+
+    @Override
+    public List<SysMenu> findByPage(SysMenu sysMenu,int pageNum,int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return sysMenuMapper.selectBy(sysMenu);
     }

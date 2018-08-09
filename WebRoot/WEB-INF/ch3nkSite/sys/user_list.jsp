@@ -3,31 +3,55 @@
 <head>
     <title>用户列表</title>
     <link rel="stylesheet" href="${basePath}/static/plugins/layui/css/layui.css">
+    <link rel="stylesheet" href="${basePath}/static/plugins/layui/css/layui.css">
     <link rel="stylesheet" href="${basePath}/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
     <style>
-        .layui-btn-group , .table-search{
+        .contents .table-operations .layui-btn-group , .table-search,.inputs{
+            margin: 0;
+            padding: 0;
             display: inline-block;
+        }
+        .table-search{
+            margin-left: 200px;
+        }
+        .inputs{
+            margin: 0 10px 0 0;
+        }
+        .table-search-input{
+            width: 100px;
+            height: 30px;
+            margin: 0;
+            padding-left: 10px;
+            line-height: 30px;
+            border: 1px solid #e6e6e6;
+            background-color: #fff;
+            border-radius: 2px;
         }
     </style>
 </head>
 <body>
-<div class="" style="">
+<div class="container">
     <div class="position" style="width: 100%; height: 50px; background-color: #dbdbdb; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
         <div class="postion-content"><i class="fa fa-user"></i> 用户管理</div>
     </div>
-    <div class="contents" style="margin: 40px 0 0 10px">
-        <div class="layui-btn-group">
-            <button class="layui-btn layui-btn-sm" id="addUserBtn">新增</button>
-            <button class="layui-btn layui-btn-sm" id="userImportBtn">导入</button>
-            <button class="layui-btn layui-btn-sm" id="userExprotBtn">统计报表</button>
-        </div>
-        <%--表格搜索--%>
-        <div class="table-search" style="width: 158px; height: 30px;margin-left: 400px;">
-                <input type="text" name="account" placeholder="账号" class="layui-input" style="display: inline-block;">
-                <input type="text" name="nickName" placeholder="昵称" class="layui-input" style="display: inline-block;">
-                <input type="text" name="createTime" placeholder="创建时间" class="layui-input" id="createTime">
-            <%--<button class="layui-btn layui-btn-sm" id="userImportBtn1">搜索</button>--%>
-            <%--<button class="layui-btn layui-btn-sm" id="userExprotBtn1">重置</button>--%>
+    <div class="contents" style="margin: 30px 0 0 15px;">
+        <div class="table-operations">
+            <div class="layui-btn-group">
+                <button class="layui-btn layui-btn-sm" id="addUserBtn">新增</button>
+                <button class="layui-btn layui-btn-sm" id="userImportBtn">导入</button>
+                <button class="layui-btn layui-btn-sm" id="userExprotBtn">统计报表</button>
+            </div>
+            <div class="table-search">
+                <div class="inputs">
+                    <input type="text" name="likeAccount" placeholder="账号" class="table-search-input">
+                    <input type="text" name="likeNickName" placeholder="昵称" class="table-search-input">
+                    <input type="text" name="likeCreateTime" placeholder="创建时间" id="createTime" class="table-search-input">
+                </div>
+                <div class="layui-btn-group">
+                    <button class="layui-btn layui-btn-sm" id="searchBtn">搜索</button>
+                    <button class="layui-btn layui-btn-sm" id="recoverBtn" onclick="window.location.reload(true)">重置</button>
+                </div>
+            </div>
         </div>
         <div class="user-list">
             <table id="users" lay-filter="usersTableFilter"></table>
@@ -64,6 +88,7 @@
             }
         })
     });
+
     /**数据表格渲染*/
     layui.use(['layer','table','layer','laytpl','form'],function () {
         var userTable = layui.table;
@@ -72,7 +97,8 @@
         form = layui.form;
         userTable.render({
             elem:'#users'    //html容器ID
-            ,height:470
+            ,height:472
+            ,width:893
             ,url: '${basePath}/user/list.do' //数据接口
             ,page: true //开启分页
             ,limit:10   //每页默认显示10条
@@ -80,7 +106,6 @@
             ,text: {
                 none: '暂无相关数据' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
             }
-            ,even:false      //开启隔行背景
             ,cols: [[ //表头
                 {type:'numbers',title:'序号'}
                 ,{field: 'account', title: '登录账号',align:'center', width:115, sort: true}
@@ -107,7 +132,7 @@
                                     if (data == 'success') {
                                         obj.del(index);      //删除DOM
                                         layer.close(index);
-                                        layer.msg("删除成功")
+                                        layer.msg("删除成功");
                                     }else {
                                         layer.msg('删除失败，请重试')
                                     }
@@ -128,7 +153,7 @@
                     area:['700px','600px'],
                     resize :false,
                     move:false,
-                    offset:['auto'],
+                    offset:['100px'],
                     content:'${basePath}/user/toAddOrEdit.do?userId='+obj.data.userId,
                     btn:['保存','取消'],
                     yes:function (index,layero) {       //保存按钮回调
@@ -147,7 +172,7 @@
                     area:['700px','600px'],
                     resize :false,
                     move:false,
-                    offset:['auto'],
+                    offset:['100px'],
                     content:'${basePath}/user/toDetail.do?userId='+obj.data.userId,
                     btn:['保存','取消'],
                     yes:function (index,layero) {       //保存按钮回调
@@ -159,7 +184,7 @@
                 });
             }
         });
-
+        //监听表格开关
         form.on('switch(loginFlagFilter)',function (obj) {
             var userId = this.value;
             var loginFlag = obj.elem.checked ? "1" : "0";
@@ -179,13 +204,7 @@
             });
         });
     });
-    layui.use('laydate',function () {
-       var laydate = layui.laydate;
-        laydate.render({
-            elem:'#createTime',
-            theme: 'grid'
-        });
-    });
+    //新增弹层
     layui.use(['layer','table'],function () {
         var layer = layui.layer;
         var table = layui.table;
@@ -198,7 +217,7 @@
                 move:false,
                 area:['600px','500px'],
                 resize :false,
-                offset:['auto'],
+                offset:['100px'],
                 content:['${basePath}/user/toAddOrEdit.do','no'],
                 btn:['立即提交','取消'],
                 yes:function (index,layero) {       //提交按钮回调
@@ -216,7 +235,31 @@
             });
         });
     });
+    //表格搜索
+    layui.use(['laydate','table'],function () {
+        var laydate = layui.laydate;
+        var table = layui.table;
+        laydate.render({
+            elem:'#createTime',
+            theme:'grid'
+        });
+        $("#searchBtn").click(function () {
+            //模糊查询条件
+            var likeAccount = $("input[name='likeAccount']").val();
+            var likeNickName = $("input[name='likeNickName']").val();
+            var likeCreateTime = $("input[name='likeCreateTime']").val();
+            table.reload("users",{
+                where:{
+                    "likeAccount":likeAccount,
+                    "likeNickName":likeNickName,
+                    "likeCreateTime":likeCreateTime
+                }
+            });
+        });
 
+    });
+
+    
 </script>
 <script type="text/html" id="operations">
     <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
