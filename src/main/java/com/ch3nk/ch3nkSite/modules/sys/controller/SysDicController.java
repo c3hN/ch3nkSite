@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("dic")
 public class SysDicController {
+    private Map<String,Object> jsonResult;
 
     @Qualifier("sysDicServiceImpl")
     @Autowired

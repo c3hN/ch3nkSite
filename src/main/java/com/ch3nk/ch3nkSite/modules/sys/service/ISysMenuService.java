@@ -25,10 +25,9 @@ public interface ISysMenuService {
     List<SysMenu> findBy(SysMenu sysMenu);
 
     /**
-     * 查询所有
      * @return
      */
-    List<SysMenu> findAll();
+    List<SysMenu> findAllParents();
 
     /**
      * 批量逻辑删除

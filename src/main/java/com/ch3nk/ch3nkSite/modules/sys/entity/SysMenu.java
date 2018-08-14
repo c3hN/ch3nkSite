@@ -64,6 +64,7 @@ public class SysMenu implements Serializable {
      */
     private String permission;
 
+    private String hasBranch;
 
     public String getMenuId() {
         return menuId;
@@ -177,5 +178,11 @@ public class SysMenu implements Serializable {
         this.permission = permission;
     }
 
+    public String getHasBranch() {
+        return hasBranch;
+    }
 
+    public void setHasBranch(String hasBranch) {
+        this.hasBranch = hasBranch;
+    }
 }

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <head>
     <title>用户列表</title>
@@ -27,30 +28,46 @@
             background-color: #fff;
             border-radius: 2px;
         }
+        .position{
+            width: 100%;
+            height: 50px;
+            background-color: #FFFFFF;
+            margin-bottom: 40px;
+            line-height: 50px;
+            padding: 0 0 0 20px;
+        }
     </style>
 </head>
 <body>
+<div class="position">
+    <div class="postion-content"><i class="fa fa-user"></i>&nbsp;用户列表</div>
+</div>
 <div class="container">
-    <div class="position" style="width: 100%; height: 50px; background-color: #dbdbdb; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
-        <div class="postion-content"><i class="fa fa-user"></i> 用户管理</div>
-    </div>
     <div class="contents" style="margin: 30px 0 0 15px;">
         <div class="table-operations">
             <div class="layui-btn-group">
-                <button class="layui-btn layui-btn-sm" id="addUserBtn">新增</button>
-                <button class="layui-btn layui-btn-sm" id="userImportBtn">导入</button>
-                <button class="layui-btn layui-btn-sm" id="userExprotBtn">统计报表</button>
+                <shiro:hasPermission name="sysUser:add">
+                    <button class="layui-btn layui-btn-sm" id="addUserBtn">新增</button>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="sysUser:import">
+                    <button class="layui-btn layui-btn-sm" id="userImportBtn">导入</button>
+                </shiro:hasPermission>
+                <%--<shiro:hasPermission name="sysUser:reportForm">
+                    <button class="layui-btn layui-btn-sm" id="userExprotBtn"><a href="${basePath}/user/toEdit.do">统计报表</a> </button>
+                </shiro:hasPermission>--%>
             </div>
             <div class="table-search">
-                <div class="inputs">
-                    <input type="text" name="likeAccount" placeholder="账号" class="table-search-input">
-                    <input type="text" name="likeNickName" placeholder="昵称" class="table-search-input">
-                    <input type="text" name="likeCreateTime" placeholder="创建时间" id="createTime" class="table-search-input">
-                </div>
-                <div class="layui-btn-group">
-                    <button class="layui-btn layui-btn-sm" id="searchBtn">搜索</button>
-                    <button class="layui-btn layui-btn-sm" id="recoverBtn" onclick="window.location.reload(true)">重置</button>
-                </div>
+                <shiro:hasPermission name="sysUser:tableSearch">
+                    <div class="inputs">
+                        <input type="text" name="likeAccount" placeholder="账号" class="table-search-input">
+                        <input type="text" name="likeNickName" placeholder="昵称" class="table-search-input">
+                        <input type="text" name="likeCreateTime" placeholder="创建时间" id="createTime" class="table-search-input">
+                    </div>
+                    <div class="layui-btn-group">
+                        <button class="layui-btn layui-btn-sm" id="searchBtn">搜索</button>
+                        <button class="layui-btn layui-btn-sm" id="recoverBtn" onclick="window.location.reload(true)">重置</button>
+                    </div>
+                </shiro:hasPermission>
             </div>
         </div>
         <div class="user-list">
@@ -88,7 +105,6 @@
             }
         })
     });
-
     /**数据表格渲染*/
     layui.use(['layer','table','layer','laytpl','form'],function () {
         var userTable = layui.table;
@@ -104,7 +120,7 @@
             ,limit:10   //每页默认显示10条
             ,limits:[10,20,30]      //分页选项
             ,text: {
-                none: '暂无相关数据' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
+                none: '暂无相关数据'
             }
             ,cols: [[ //表头
                 {type:'numbers',title:'序号'}
@@ -124,12 +140,12 @@
                         yes:function (index,layero) {      //按钮1回调
                             $.ajax({
                                 type:'get',
-                                url:'${basePath}/user/delete.do?userId='+obj.data.userId,
+                                url:'${basePath}/user/logicalDel.do?userId='+obj.data.userId,
                                 error:function () {
                                     layer.alert('请求失败，请重试！');
                                 },
                                 success:function (data) {
-                                    if (data == 'success') {
+                                    if (data.msg == 'success') {
                                         obj.del(index);      //删除DOM
                                         layer.close(index);
                                         layer.msg("删除成功");
@@ -145,43 +161,9 @@
                     }
                 )
             }else if (obj.event == 'edit') {
-                layer.open({
-                    id:'userEdit',  //指定id
-                    type:2,     //iframe
-                    title:'用户信息编辑',
-                    closeBtn:1, //右上角关闭按钮显示
-                    area:['700px','600px'],
-                    resize :false,
-                    move:false,
-                    offset:['100px'],
-                    content:'${basePath}/user/toAddOrEdit.do?userId='+obj.data.userId,
-                    btn:['保存','取消'],
-                    yes:function (index,layero) {       //保存按钮回调
-                        layer.close(index);
-                    },
-                    btn2:function (index,layero) {      //取消按钮回调
-                        layer.close(index);
-                    }
-                });
+                $(location).attr('href', '${basePath}/user/toAddOrEdit.do?'+obj.data.userId);
             }else if (obj.event == 'detail') {
-                layer.open({
-                    id:'userEdit',  //指定id
-                    type:2,     //iframe
-                    title:'查看用户信息',
-                    closeBtn:1, //右上角关闭按钮显示
-                    area:['700px','600px'],
-                    resize :false,
-                    move:false,
-                    offset:['100px'],
-                    content:'${basePath}/user/toDetail.do?userId='+obj.data.userId,
-                    btn:['保存','取消'],
-                    yes:function (index,layero) {       //保存按钮回调
-                        layer.close(index);
-                    },
-                    btn2:function (index,layero) {      //取消按钮回调
-                        layer.close(index);
-                    }
-                });
+                $(location).attr('href', '${basePath}/user/toDetail.do?userId='+obj.data.userId);
             }
         });
         //监听表格开关
@@ -209,30 +191,7 @@
         var layer = layui.layer;
         var table = layui.table;
         $("#addUserBtn").click(function () {
-            layer.open({
-                id:'userAdd',  //指定id
-                type:2,     //iframe
-                title:'新增用户',
-                closeBtn:1, //右上角关闭按钮显示
-                move:false,
-                area:['600px','500px'],
-                resize :false,
-                offset:['100px'],
-                content:['${basePath}/user/toAddOrEdit.do','no'],
-                btn:['立即提交','取消'],
-                yes:function (index,layero) {       //提交按钮回调
-                    var result = $(layero).find("iframe")[0].contentWindow.subForm();
-                    layer.close(index);
-                    table.reload('users',{
-                        url: '${basePath}/user/list.do',
-                        page: true, //开启分页
-                        limit:10   //每页默认显示10条
-                    });
-                },
-                btn2:function (index,layero) {      //取消按钮回调
-                    layer.close(index);
-                }
-            });
+            $(location).attr('href', '${basePath}/user/toAddOrEdit.do');
         });
     });
     //表格搜索
@@ -262,9 +221,15 @@
     
 </script>
 <script type="text/html" id="operations">
-    <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <shiro:hasPermission name="sysUser:detail">
+        <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="sysUser:edit">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="sysUser:logicalDel">
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </shiro:hasPermission>
 </script>
 <script type="text/html" id="loginFlagTpl">
     <input type="checkbox" name="loginFlag" value="{{d.userId}}" lay-skin="switch" lay-text="允许|拒绝" lay-filter="loginFlagFilter" {{ d.loginFlag == '1' ? 'checked' : '' }}>

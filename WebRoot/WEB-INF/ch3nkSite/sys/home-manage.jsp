@@ -50,10 +50,10 @@
                     <a class="" href="javascript:;"><i class="layui-icon layui-icon-set"></i>
                         设置</a>
                     <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" url="${basePath}/menu/show.do">位置管理</a></dd>
                         <dd><a href="javascript:;" url="${basePath}/menu/tolist.do">菜单管理</a></dd>
                         <dd><a href="javascript:;" url="${basePath}/user/tolist.do">用户管理</a></dd>
                         <dd><a href="javascript:;">角色管理</a></dd>
-                        <dd><a href="javascript:;" url="${basePath}/depart/tolist.do">机构管理</a></dd>
                         <dd><a href="javascript:;">资源分配</a></dd>
                         <dd><a href="javascript:;"url="${basePath}/dic">数据字典</a></dd>
                         <dd><a href="javascript:;">系统参数</a></dd>
@@ -67,14 +67,13 @@
         <!-- 内容主体区域 -->
     </div>
 
+
 </div>
 <script src="${basePath}/static/plugins/layui/layui.js"></script>
 <script src="${basePath}/static/js/jquery-3.2.1.js"></script>
 <script>
-    //JavaScript代码区域
     layui.use('element', function(){
         var element = layui.element;
-
     });
 
     $(".layui-nav-item a").click(function () {

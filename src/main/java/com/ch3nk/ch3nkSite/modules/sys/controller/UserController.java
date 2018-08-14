@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -48,11 +47,16 @@ public class UserController  {
         return "sys/user_list";
     }
 
+    @RequestMapping(value = "/save")
+    public String saveOne(SysUser sysUser) {
+        sysUserService.saveUser(sysUser);
+        return "forward:/user/tolist";
+    }
 
 
     @RequestMapping(value = "toAddOrEdit")
     public String toAdd(@RequestParam(required = false)String userId,Model model) {
-        if (StringUtils.isNotBlank(userId)) {
+        if (StringUtils.isNotEmpty(userId)) {
             SysUser userById = sysUserService.findUserById(userId);
             model.addAttribute("sysUser",userById);
             return "sys/user_addOrEdit";
@@ -74,23 +78,22 @@ public class UserController  {
         return "sys/user_addOrEdit";
     }
 
-//    @RequestMapping(value = "/delete")
-//    @ResponseBody
-//    public String delete(String userId) {
-//        if (StringUtils.isNotBlank(userId)) {
-//            int res = sysUserService.tombstone(userId);
-//            if (res != 0) {
-//                return "success";
-//            }
-//        }
-//        return "error";
-//    }
-
-
-    @RequestMapping(value = "/saveUser")
+    @RequestMapping(value = "/logicalDel")
     @ResponseBody
-    public String saveOne(SysUser sysUser) {
-        return "success";
+    public Map<String, Object> delete(String userId) {
+        jsonResult = new HashMap<String, Object>();
+        if (StringUtils.isNotEmpty(userId)) {
+            SysUser user = new SysUser();
+            user.setUserId(userId);
+            user.setDeleteFlag("0");
+            int i = sysUserService.updateUser(user);
+            if (i != 0) {
+                jsonResult.put("msg","success");
+                return jsonResult;
+            }
+        }
+        jsonResult.put("msg","error");
+        return jsonResult;
     }
 
 

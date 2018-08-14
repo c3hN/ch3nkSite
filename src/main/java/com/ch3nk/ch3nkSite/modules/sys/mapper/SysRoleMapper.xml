@@ -3,7 +3,7 @@
 <mapper namespace="com.ch3nk.ch3nkSite.modules.sys.mapper.SysRoleMapper">
     <resultMap id="BaseResultMap" type="sysRole">
         <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
-        <result column="OFFICE_ID" jdbcType="VARCHAR" property="officerId" />
+        <result column="DEPT_ID" jdbcType="VARCHAR" property="deptId" />
         <result column="ZH_NAME" jdbcType="VARCHAR" property="name" />
         <result column="EN_NAME" jdbcType="VARCHAR" property="eName" />
         <result column="USEABLE_FLAG" jdbcType="INTEGER" property="useAbleFlag" />
@@ -16,7 +16,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         ROLE_ID,
-        OFFICE_ID,
+        DEPT_ID,
         ZH_NAME,
         EN_NAME,
         USEABLE_FLAG,
@@ -38,11 +38,11 @@
         where ROLE_ID = #{roleId,jdbcType=VARCHAR}
     </delete>
     <insert id="insert" parameterType="sysRole">
-        insert into sys_role (ROLE_ID, OFFICE_ID, ZH_NAME,
+        insert into sys_role (ROLE_ID, DEPT_ID, ZH_NAME,
         EN_NAME, USEABLE_FLAG, CREATE_BY,
         CREATE_DATE, UPDATE_BY, UPDATE_DATE,
         REMARK, DELETE_FLAG)
-        values (#{roleId,jdbcType=VARCHAR}, #{officerId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+        values (#{roleId,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
         #{eName,jdbcType=VARCHAR}, #{useAbleFlag,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR},
         #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP},
         #{remark,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=INTEGER})
@@ -54,7 +54,7 @@
                 ROLE_ID,
             </if>
             <if test="officerId != null">
-                OFFICE_ID,
+                DEPT_ID,
             </if>
             <if test="name != null">
                 ZH_NAME,
@@ -89,7 +89,7 @@
                 #{roleId,jdbcType=VARCHAR},
             </if>
             <if test="officerId != null">
-                #{officerId,jdbcType=VARCHAR},
+                #{deptId,jdbcType=VARCHAR},
             </if>
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
@@ -124,7 +124,7 @@
         update sys_role
         <set>
             <if test="officerId != null">
-                OFFICE_ID = #{officerId,jdbcType=VARCHAR},
+                DEPT_ID = #{deptId,jdbcType=VARCHAR},
             </if>
             <if test="name != null">
                 ZH_NAME = #{name,jdbcType=VARCHAR},
@@ -158,7 +158,7 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="sysRole">
         update sys_role
-        set OFFICE_ID = #{officerId,jdbcType=VARCHAR},
+        set DEPT_ID = #{deptId,jdbcType=VARCHAR},
         ZH_NAME = #{name,jdbcType=VARCHAR},
         EN_NAME = #{eName,jdbcType=VARCHAR},
         USEABLE_FLAG = #{useAbleFlag,jdbcType=INTEGER},

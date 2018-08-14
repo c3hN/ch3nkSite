@@ -1,53 +1,66 @@
 <%--
   Created by IntelliJ IDEA.
-  User: chenkai
-  Date: 2018/7/18
-  Time: 20:58
+  User: Administrator
+  Date: 2018/7/19
+  Time: 13:45
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>用户详情</title>
     <link rel="stylesheet" href="${basePath}/static/plugins/layui/css/layui.css">
 </head>
 <body>
-<div class="content" style="width: 450px;height: 200px; margin: 50px 100px 150px 50px;">
-    <form action="${basePath}/user/register.do" method="post" class="layui-form layui-form-pane" id="userForm" lay-filter="userForm">
-        <div class="layui-form-item">
-            <lable class="layui-form-label">账号</lable>
-            <div class="layui-input-block">
-                <input type="text" name="account" value="${sysUser.account}" class="layui-input" disabled>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <lable class="layui-form-label">用户名</lable>
-            <div class="layui-input-block">
-                <input type="text" name="account" value="${sysUser.nickName}" class="layui-input" disabled>
-            </div>
-        </div>
-    </form>
-</div>
-<script src="${basePath}/static/plugins/layui/layui.js"></script>
+<button class="layui-btn" onclick="javascript:history.back(-1);">返回</button>
+    <div class="detail-content" style="margin: 5px;">
+        <table class="layui-table">
+            <colgroup>
+                <col width="150">
+                <col>
+            </colgroup>
+            <tbody>
+            <tr>
+                <td>账号</td>
+                <td>${sysUser.account}</td>
+            </tr>
+            <tr>
+                <td>昵称</td>
+                <td>${sysUser.nickName}</td>
+            </tr>
+            <tr>
+                <td>创建时间</td>
+                <td>${sysUser.createTime}</td>
+            </tr>
+            <tr>
+                <td>更新时间</td>
+                <td>${sysUser.updateTime}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 <script src="${basePath}/static/js/jquery-3.2.1.js"></script>
+<script src="${basePath}/static/plugins/layui/layui.js"></script>
 <script>
-    layui.use(['form'],function () {
+    layui.use(['element','form','table'], function(){
+        var element = layui.element;
         var form = layui.form;
+        var table = layui.table;
     });
-
-    $(function () {
-        var inputs = $("#userForm input");
-        console.log(inputs);
-        console.log("===========");
-        jquery.each(inputs)
-
-    })
-
-
-    function subForm() {
-        $("form").submit();
-        // alert ("done");
+    
+    function formatDate(date) {
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var d = date.getDate();
+        if (month < 10) {
+            month = "0"+month;
+        }
+        if (d < 10) {
+            d = "0" + d;
+        }
+        return year +"-"+month+"-"+d;
     }
+    
 </script>
 </body>
 </html>

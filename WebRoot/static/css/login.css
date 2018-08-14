@@ -14,7 +14,6 @@ body,html{
     background-color: #5C3838;
 }
 .content{
-    background-image: url("${basePath}/static/img/wallhaven-93402.jpg");
     width: 100%;
     height: calc(100% - 100px);
 }

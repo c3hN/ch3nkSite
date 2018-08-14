@@ -40,6 +40,18 @@ public class SystemRealm extends AuthorizingRealm {
 //        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
 //        simpleAuthorizationInfo.addRoles(roleName);
 //        return simpleAuthorizationInfo;
+        String nickName = ((SysUser) principalCollection.getPrimaryPrincipal()).getNickName();
+        if (StringUtils.equals(nickName,"超级管理员")) {
+            SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+            simpleAuthorizationInfo.addStringPermission("sysUser:add");
+            simpleAuthorizationInfo.addStringPermission("sysUser:import");
+            simpleAuthorizationInfo.addStringPermission("sysUser:reportForm");
+            simpleAuthorizationInfo.addStringPermission("sysUser:tableSearch");
+            simpleAuthorizationInfo.addStringPermission("sysUser:detail");
+            simpleAuthorizationInfo.addStringPermission("sysUser:edit");
+            simpleAuthorizationInfo.addStringPermission("sysUser:logicalDel");
+            return simpleAuthorizationInfo;
+        }
         return null;
     }
     //认证

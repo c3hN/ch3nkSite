@@ -3,7 +3,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>菜单列表</title>
+    <title>部门列表</title>
     <link rel="stylesheet" href="${basePath}/static/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="${basePath}/static/plugins/jquery-treetable/css/jquery.treetable.theme.default.css">
     <link rel="stylesheet" href="${basePath}/static/plugins/jquery-treetable/css/jquery.treetable.css">
@@ -58,7 +58,7 @@
 </head>
 <body>
 <div class="position" style="width: 100%; height: 50px; background-color: #FFFFFF; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
-    <div class="postion-content"><i class="fa fa-bars"></i>&nbsp;菜单列表</div>
+    <div class="postion-content"><i class="fa fa-square-o"></i>&nbsp;部门列表</div>
 </div>
 <div class="content">
     <div class="operations">
@@ -67,34 +67,29 @@
             <button class="btn btn-default" onclick="window.location.reload(true)">刷新</button>
         </div>
     </div>
-    <div class="menu-list">
-        <table id="menus">
+    <div class="depts-list">
+        <table id="depts">
             <thead>
                 <tr>
-                    <th style="width: 95px;">菜单名称</th><th>类别</th><th>资源路径</th><th>权限标识</th><th>创建时间</th><th>状态</th><th>备注</th><th>操作</th>
+                    <th>部门名称</th><th>部门编号</th><th>部门简称</th><th>创建时间</th><th>状态</th><th>操作</th>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${list}" var="menu">
-                    <tr data-tt-id="${menu.menuId}" data-tt-parent-id="${menu.parentId}" data-tt-branch="${menu.hasBranch}">
-                        <td>${menu.name}</td>
-                        <td hidden="hidden">${menu.menuId}</td>
-                        <td>
-                            <c:if test="${menu.category == '0'}">菜单</c:if>
-                            <c:if test="${menu.category == '1'}">操作</c:if>
+                <c:forEach items="${list}" var="dept">
+                    <tr data-tt-id="${dept.deptId}" data-tt-parent-id="${dept.parentId}" data-tt-branch="${dept.hasBranch}">
+                        <td>${dept.deptName}</td>
+                        <td hidden="hidden">${dept.deptId}</td>
+                        <td style="text-align: center">${dept.deptNum}</td>
+                        <td style="text-align: center">${dept.deptAbbr}</td>
+                        <td style="text-align: center"><fmt:formatDate value="${dept.createDate}" pattern="yyyy-MM-dd"/> </td>
+                        <td style="text-align: center">
+                            <c:if test="${dept.state == '1'}">启用</c:if>
+                            <c:if test="${dept.state == '0'}">禁用</c:if>
                         </td>
-                        <td>${menu.href}</td>
-                        <td>${menu.permission}</td>
-                        <td><fmt:formatDate value="${menu.createDate}" pattern="yyyy-MM-dd"/> </td>
-                        <td>
-                            <c:if test="${menu.deleteFlag == '1'}">启用</c:if>
-                            <c:if test="${menu.deleteFlag == '0'}">禁用</c:if>
-                        </td>
-                        <td>${menu.remark}</td>
                         <td style="text-align: center">
                             <div class="btn-group">
-                                <button class="btn btn-default" onclick="editMenu(this)">编辑</button>
-                                <button class="btn btn-default" onclick="deleteMenu(this)">删除</button>
+                                <button class="btn btn-default" onclick="editDept(this)">编辑</button>
+                                <button class="btn btn-default" onclick="deleteDept(this)">删除</button>
                             </div>
                         </td>
                     </tr>
@@ -106,7 +101,7 @@
 <script src="${basePath}/static/js/jquery-3.2.1.js"></script>
 <script src="${basePath}/static/plugins/jquery-treetable/jquery.treetable.js"></script>
 <script>
-$("#menus").treetable({
+$("#depts").treetable({
     expandable: true,
     clickableNodeNames:true,
     stringCollapse: '收起',
@@ -116,27 +111,27 @@ $("#menus").treetable({
         var node = this;        //判断当前节点是否已经拥有子节点
         var childSize = $("#treetable").find("[data-tt-parent-id='" + node.id + "']").length;
         $.post(
-            '${basePath}/menu/loadTreeBranch.do',
-            {'menuId':node.id},
+            '${basePath}/dept/loadTreeBranch.do',
+            {'deptId':node.id},
             function(data,status,xhr){
                 $.each(data.data,function (index,obj) {
-                    $("#menus").treetable("loadBranch", node, obj);// 插入子节点
+                    $("#depts").treetable("loadBranch", node, obj);// 插入子节点
                 });
             }
         );
     },
     onNodeCollapse: function() {
         var node = this;
-        $("#menus").treetable("unloadBranch", node);
+        $("#depts").treetable("unloadBranch", node);
     }
 });
-   function editMenu(obj) {
-       var menuId = $(obj).parent().parent().find("td").eq(1).text();
-       $(location).attr('href', '${basePath}/menu/toAddOrEdit.do?menuId='+menuId);
+   function editDept(obj) {
+       var deptId = $(obj).parent().parent().find("td").eq(1).text();
+       $(location).attr('href', '${basePath}/dept/toAddOrEdit.do?deptId='+deptId);
    };
-    function disableMenu(obj) {
-        var menuId = $(obj).parent().parent().find("td").eq(1).text();
-        $(location).attr('href', '${basePath}/menu/disableMenu.do?menuId='+menuId);
+    function deleteDept(obj) {
+        var deptId = $(obj).parent().parent().find("td").eq(1).text();
+        $(location).attr('href', '${basePath}/dept/deleteDept.do?deptId='+deptId);
     };
 </script>
 </body>

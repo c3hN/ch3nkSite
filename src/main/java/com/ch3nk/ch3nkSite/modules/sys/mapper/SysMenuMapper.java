@@ -28,11 +28,10 @@ public interface SysMenuMapper {
     List<SysMenu> selectBy(SysMenu record);
 
     /**
-     * 查询所有
+     * 查询根节点
      * @return
      */
-    List<SysMenu> selectAll();
-
+    List<SysMenu> selectRoots();
 
     /**
      * 选择查询条数

@@ -15,7 +15,7 @@
 <div class="container">
     <div class="logo"><a href="./index.html">ch3nksite</a></div>
     <div class="left_open">
-        <i title="展开左侧栏" class="fa fa-bars fa-2x fa-inverse"></i>
+        <i title="展开左侧栏" class="fa fa-bars fa-2x"></i>
     </div>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
@@ -48,6 +48,16 @@
                             <cite>菜单管理</cite>
                         </a>
                     </li >
+                    <li>
+                        <a _href="${basePath}/dept/tolist.do"><i class="fa fa-square-o"></i>
+                            <cite>部门管理</cite>
+                        </a>
+                    </li >
+                    <li>
+                        <a _href="${basePath}/user/tolist.do"><i class="fa fa-id-card-o"></i>
+                            <cite>角色管理</cite>
+                        </a>
+                    </li >
                 </ul>
             </li>
         </ul>
@@ -62,7 +72,7 @@
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <iframe src='${basePath}/user/tolist.do' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                <iframe src='' frameborder="0" scrolling="yes" class="x-iframe" style="overflow-y: hidden"></iframe>
             </div>
         </div>
     </div>
@@ -138,12 +148,14 @@
             $('.left-nav').animate({left: '-221px'}, 100);
             $('.page-content').animate({left: '0px'}, 100);
             $('.page-content-bg').hide();
+            $(".left_open i").addClass("fa-rotate-90");
         }else{
             $('.left-nav').animate({left: '0px'}, 100);
             $('.page-content').animate({left: '221px'}, 100);
             if($(window).width()<768){
                 $('.page-content-bg').show();
             }
+            $(".left_open i").removeClass("fa-rotate-90");
         }
     });
 </script>

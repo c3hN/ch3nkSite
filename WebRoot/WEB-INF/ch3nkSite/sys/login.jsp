@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>c3blog 登录</title>
+    <title>后台管理系统</title>
     <link rel="stylesheet" href="${basePath}/static/plugins/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="${basePath}/static/css/login.css">
     <script src="${basePath}/static/js/jquery-3.2.1.js"></script>
@@ -39,17 +39,6 @@
 <script>
     $(function () {
         $("form input:eq(0)").focus();
-
-        $("button").click(function () {
-            var reg = "/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$/";
-            var input = $("form input:eq(0)").val();
-            if (!input.test(reg)) {
-                alert("请输入正确的手机号");
-            }
-        })
-
-
-
 
     })
 </script>
