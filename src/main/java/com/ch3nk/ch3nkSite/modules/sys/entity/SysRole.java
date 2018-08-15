@@ -12,7 +12,7 @@ public class SysRole implements Serializable{
     /**
      * 归属机构
      */
-    private String officerId;
+    private String department;
 
     /**
      * 角色名称
@@ -70,11 +70,11 @@ public class SysRole implements Serializable{
     }
 
     public String getOfficerId() {
-        return officerId;
+        return department;
     }
 
     public void setOfficerId(String officerId) {
-        this.officerId = officerId;
+        this.department = officerId;
     }
 
     public String getName() {

@@ -54,10 +54,17 @@
            height: 50px;
            margin: 0 20px;
        }
+        .position{
+            height: 50px;
+            background-color: #FFFFFF;
+            margin-bottom: 40px;
+            line-height: 50px;
+            padding: 0 0 0 20px;
+        }
     </style>
 </head>
 <body>
-<div class="position" style="width: 100%; height: 50px; background-color: #FFFFFF; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
+<div class="position">
     <div class="postion-content"><i class="fa fa-square-o"></i>&nbsp;部门列表</div>
 </div>
 <div class="content">
@@ -126,11 +133,11 @@ $("#depts").treetable({
     }
 });
    function editDept(obj) {
-       var deptId = $(obj).parent().parent().find("td").eq(1).text();
+       var deptId = $(obj).parent().parent().parent().find("td").eq(1).text();
        $(location).attr('href', '${basePath}/dept/toAddOrEdit.do?deptId='+deptId);
    };
     function deleteDept(obj) {
-        var deptId = $(obj).parent().parent().find("td").eq(1).text();
+        var deptId = $(obj).parent().parent().parent().find("td").eq(1).text();
         $(location).attr('href', '${basePath}/dept/deleteDept.do?deptId='+deptId);
     };
 </script>

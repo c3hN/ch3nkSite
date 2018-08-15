@@ -110,6 +110,7 @@
         var userTable = layui.table;
         var layer = layui.layer;
         var laytpl = layui.laytpl;
+        var table = layui.table;
         form = layui.form;
         userTable.render({
             elem:'#users'    //html容器ID
@@ -146,8 +147,13 @@
                                 },
                                 success:function (data) {
                                     if (data.msg == 'success') {
-                                        obj.del(index);      //删除DOM
-                                        layer.close(index);
+                                        // obj.del(index);      //删除DOM
+                                        // layer.close(index);
+                                        table.reload('users',{
+                                            url: '${basePath}/user/list.do',
+                                            page: true, //开启分页
+                                            limit:10   //每页默认显示10条
+                                        });
                                         layer.msg("删除成功");
                                     }else {
                                         layer.msg('删除失败，请重试')

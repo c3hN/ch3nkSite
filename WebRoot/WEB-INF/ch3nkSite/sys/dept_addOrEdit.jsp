@@ -41,7 +41,7 @@
 </head>
 <body>
 <div class="position" style="width: 100%; height: 50px; background-color: #FFFFFF; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
-    <div class="postion-content"><i class="fa fa-user"></i>&nbsp;菜单管理</div>
+    <div class="postion-content"><i class="fa fa-square-o"></i>&nbsp;部门列表</div>
     <div class="operations">
         <button class="btn btn-default" id="goBackBtn" onclick="javascript:history.back(-1);"><i class="fa fa-reply" aria-hidden="true"></i></button>
         <button class="btn btn-default"id="refreshBtn" onclick="window.location.reload(true)"><i id="refreshIcon" class="fa fa-refresh"></i> </button>

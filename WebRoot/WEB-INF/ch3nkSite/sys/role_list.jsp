@@ -1,8 +1,45 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <head>
-    <title>用户列表</title>
-    <%--<link rel="stylesheet" href="${basePath}/static/plugins/layui/css/layui.css">--%>
+    <title>角色列表</title>
+    <link rel="stylesheet" href="${basePath}/static/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${basePath}/static/plugins/bootstrap-table/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="${basePath}/static/plugins/ztree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="${basePath}/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+    <style>
+        body,html{
+            margin: 0;
+            padding: 0;
+        }
+        .position{
+            height: 50px;
+            background-color: #FFFFFF;
+            margin-bottom: 40px;
+            line-height: 50px;
+            padding: 0 0 0 20px;
+        }
+        .left-list,.right-table{
+            display: inline-block;
+        }
+
+        .left-list{
+            width: 30%;
+            height: 400px;
+            overflow: auto;
+        }
+        .right-table{
+            width: 65%;
+            height: 400px;
+        }
+        .right-table:after{
+            content: '';
+            clear: both;
+        }
+        .bootstrap-table-set{
+            min-width: 300px;
+        }
+    </style>
 </head>
 <body>
 

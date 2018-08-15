@@ -42,9 +42,9 @@ public class DeptController {
             sysDepartment.setDeptId(deptId);
             List<SysDepartment> list = sysDeptService.findBy(sysDepartment);
             model.addAttribute("list",list);
-            return "sys/dept_AddOrEdit";
+            return "sys/dept_addOrEdit";
         }
-        return "sys/dept_AddOrEdit";
+        return "sys/dept_addOrEdit";
     }
 
     @RequestMapping(value = "/loadTreeBranch")
@@ -64,7 +64,11 @@ public class DeptController {
             }
             String tr = "<tr data-tt-id=\""+sysDepartment.getDeptId()+"\" data-tt-parent-id=\""+sysDepartment.getParentId()+"\" data-tt-branch=\""+sysDepartment.getHasBranch()+"\">" +
                     "<td>"+sysDepartment.getDeptName()+"</td><td hidden=\"hidden\">"+sysDepartment.getDeptId()+"</td><td style=\"text-align:center;\">"+sysDepartment.getDeptNum()+"</td><td style=\"text-align:center;\">"+sysDepartment.getDeptAbbr()+"</td>" +
-                    "<td style=\"text-align:center;\">"+createDate+"</td><td style=\"text-align:center;\">"+state+"</td><td style=\"text-align:center;\"><button class=\"btn btn-default\" onclick=\"editDept(this)\">编辑</button><button class=\"btn btn-default\" onclick=\"deleteDept(this)\">删除</button></td></tr>";
+                    "<td style=\"text-align:center;\">"+createDate+"</td><td style=\"text-align:center;\">"+state+"</td>" +
+                    "<td style=\"text-align:center;\">" +
+                    "<div class=\"btn-group\">"+
+                    "<button class=\"btn btn-default\" onclick=\"editDept(this)\">编辑</button>" +
+                    "<button class=\"btn btn-default\" onclick=\"deleteDept(this)\">删除</button></div></td></tr>";
             list.add(tr);
         }
         jsonResult.put("data",list);

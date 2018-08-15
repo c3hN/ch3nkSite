@@ -54,7 +54,7 @@
                         </a>
                     </li >
                     <li>
-                        <a _href="${basePath}/user/tolist.do"><i class="fa fa-id-card-o"></i>
+                        <a _href="${basePath}/role/tolist.do"><i class="fa fa-id-card-o"></i>
                             <cite>角色管理</cite>
                         </a>
                     </li >
