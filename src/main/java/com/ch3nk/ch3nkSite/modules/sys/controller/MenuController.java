@@ -68,8 +68,10 @@ public class  MenuController {
                     "<td>"+createDate+"</td>" +
                     "<td>"+deleteFlag+"</td>"+
                     "<td>"+menu.getRemark()+"</td>" +
-                    "<td style=\"text-align: center\"><div class=\"btn-group\"><button class=\"btn btn-default\" onclick=\"editMenu(this)\">编辑</button>" +
-                    "<button class=\"btn btn-default\" onclick=\"deleteMenu(this)\">删除</button></div></td></tr>";
+                    "<td style=\"text-align: center\">" +
+                    "<div class=\"btn-group\"><button class=\"btn btn-default\" onclick=\"editMenu(this)\">编辑</button>" +
+                    "<button class=\"btn btn-default\" onclick=\"deleteMenu(this)\">删除</button>" +
+                    "</div></td></tr>";
             list1.add(tr);
         }
         jsonResult.put("data",list1);
