@@ -70,8 +70,8 @@
 <div class="content">
     <div class="operations">
         <div class="btn-group">
-            <button class="btn btn-default" onclick="window.location.reload(true)">新增</button>
-            <button class="btn btn-default" onclick="window.location.reload(true)">刷新</button>
+            <button class="btn btn-default btn-sm" onclick="window.location.reload(true)">新增</button>
+            <button class="btn btn-default btn-sm" onclick="window.location.reload(true)">刷新</button>
         </div>
     </div>
     <div class="depts-list">
@@ -94,10 +94,9 @@
                             <c:if test="${dept.state == '0'}">禁用</c:if>
                         </td>
                         <td style="text-align: center">
-                            <div class="btn-group">
-                                <button class="btn btn-default" onclick="editDept(this)">编辑</button>
-                                <button class="btn btn-default" onclick="deleteDept(this)">删除</button>
-                            </div>
+                            <button class="btn btn-default btn-xs" onclick="detailDept(this)">查看</button>
+                            <button class="btn btn-default btn-xs" onclick="editDept(this)">编辑</button>
+                            <button class="btn btn-default btn-xs btn-danger" onclick="deleteDept(this)">删除</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -108,7 +107,7 @@
 <script src="${basePath}/static/js/jquery-3.2.1.js"></script>
 <script src="${basePath}/static/plugins/jquery-treetable/jquery.treetable.js"></script>
 <script>
-$("#depts").treetable({
+var treetable=$("#depts").treetable({
     expandable: true,
     clickableNodeNames:true,
     stringCollapse: '收起',

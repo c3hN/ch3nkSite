@@ -69,9 +69,10 @@ public class  MenuController {
                     "<td>"+deleteFlag+"</td>"+
                     "<td>"+menu.getRemark()+"</td>" +
                     "<td style=\"text-align: center\">" +
-                    "<div class=\"btn-group\"><button class=\"btn btn-default\" onclick=\"editMenu(this)\">编辑</button>" +
-                    "<button class=\"btn btn-default\" onclick=\"deleteMenu(this)\">删除</button>" +
-                    "</div></td></tr>";
+                    "<button class=\"btn btn-default btn-xs\" onclick=\"detailMenu(this)\">查看</button> \r"+
+                    "<button class=\"btn btn-default btn-xs\" onclick=\"editMenu(this)\">编辑</button> \r" +
+                    "<button class=\"btn btn-default btn-xs btn-danger\" onclick=\"deleteMenu(this)\">删除</button>" +
+                    "</td></tr>";
             list1.add(tr);
         }
         jsonResult.put("data",list1);

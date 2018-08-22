@@ -63,8 +63,8 @@
 <div class="content">
     <div class="operations">
         <div class="btn-group">
-            <button class="btn btn-default" onclick="window.location.reload(true)">新增</button>
-            <button class="btn btn-default" onclick="window.location.reload(true)">刷新</button>
+            <button class="btn btn-default btn-sm" onclick="window.location.reload(true)">新增</button>
+            <button class="btn btn-default btn-sm" onclick="window.location.reload(true)">刷新</button>
         </div>
     </div>
     <div class="menu-list">
@@ -92,10 +92,9 @@
                         </td>
                         <td>${menu.remark}</td>
                         <td style="text-align: center">
-                            <div class="btn-group">
-                                <button class="btn btn-default" onclick="editMenu(this)">编辑</button>
-                                <button class="btn btn-default" onclick="deleteMenu(this)">删除</button>
-                            </div>
+                            <button class="btn btn-default btn-xs" onclick="detailMenu(this)">查看</button>
+                            <button class="btn btn-default btn-xs" onclick="editMenu(this)">编辑</button>
+                            <button class="btn btn-default btn-xs btn-danger" onclick="deleteMenu(this)">删除</button>
                         </td>
                     </tr>
                 </c:forEach>

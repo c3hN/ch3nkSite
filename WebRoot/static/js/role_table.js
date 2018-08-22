@@ -1,0 +1,19 @@
+$("#roles").bootstrapTable({
+    height:20,
+    align:'center',
+    hideColumn:'name',
+    url:'${basePath}/role/list.do',
+    undefinedText:'暂无',
+    pagination:true,    //分页
+    pageNumber:1,
+    pageSize:10,
+    search:true,
+    columns:[
+        {field:'name',title:'名称'},
+        {field:'roleId',title:'roleId'},
+        {field:'eName',title:'编号'},
+        {field:'useAbleFlag',title:'状态'},
+        {field:'createDate',title:'创建时间'},
+        {field:'remark',title:'备注'}
+    ]
+})

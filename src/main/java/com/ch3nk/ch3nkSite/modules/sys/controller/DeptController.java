@@ -66,9 +66,9 @@ public class DeptController {
                     "<td>"+sysDepartment.getDeptName()+"</td><td hidden=\"hidden\">"+sysDepartment.getDeptId()+"</td><td style=\"text-align:center;\">"+sysDepartment.getDeptNum()+"</td><td style=\"text-align:center;\">"+sysDepartment.getDeptAbbr()+"</td>" +
                     "<td style=\"text-align:center;\">"+createDate+"</td><td style=\"text-align:center;\">"+state+"</td>" +
                     "<td style=\"text-align:center;\">" +
-                    "<div class=\"btn-group\">"+
-                    "<button class=\"btn btn-default\" onclick=\"editDept(this)\">编辑</button>" +
-                    "<button class=\"btn btn-default\" onclick=\"deleteDept(this)\">删除</button></div></td></tr>";
+                    "<button class=\"btn btn-default btn-xs\" onclick=\"detailDept(this)\">查看</button> \r" +
+                    "<button class=\"btn btn-default btn-xs\" onclick=\"editDept(this)\">编辑</button> \r" +
+                    "<button class=\"btn btn-default btn-xs btn-danger\" onclick=\"deleteDept(this)\">删除</button></td></tr>";
             list.add(tr);
         }
         jsonResult.put("data",list);

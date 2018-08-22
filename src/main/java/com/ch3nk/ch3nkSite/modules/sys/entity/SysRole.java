@@ -1,19 +1,19 @@
 package com.ch3nk.ch3nkSite.modules.sys.entity;
 
+import com.ch3nk.ch3nkSite.common.processor.JsonDate2StringProcessor;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class SysRole implements Serializable{
+    private static final long serialVersionUID = 1L;
     /**
      * 主键id
      */
     private String roleId;
 
-    /**
-     * 归属机构
-     */
-    private String department;
-
+    private SysDepartment department;
     /**
      * 角色名称
      */
@@ -27,7 +27,7 @@ public class SysRole implements Serializable{
     /**
      * 是否可用 0：fales 1:true
      */
-    private Integer useAbleFlag;
+    private String useFlag;
 
     /**
      * 创建者
@@ -42,7 +42,7 @@ public class SysRole implements Serializable{
     /**
      * 更新者
      */
-    private Date updateBy;
+    private String updateBy;
 
     /**
      * 更新者
@@ -57,9 +57,8 @@ public class SysRole implements Serializable{
     /**
      * 删除标记 0：deleted
      */
-    private Integer deleteFlag;
+    private String deleteFlag;
 
-    private static final long serialVersionUID = 1L;
 
     public String getRoleId() {
         return roleId;
@@ -69,12 +68,12 @@ public class SysRole implements Serializable{
         this.roleId = roleId;
     }
 
-    public String getOfficerId() {
+    public SysDepartment getDepartment() {
         return department;
     }
 
-    public void setOfficerId(String officerId) {
-        this.department = officerId;
+    public void setDepartment(SysDepartment department) {
+        this.department = department;
     }
 
     public String getName() {
@@ -93,12 +92,12 @@ public class SysRole implements Serializable{
         this.eName = eName;
     }
 
-    public Integer getUseAbleFlag() {
-        return useAbleFlag;
+    public String getUseFlag() {
+        return useFlag;
     }
 
-    public void setUseAbleFlag(Integer useAbleFlag) {
-        this.useAbleFlag = useAbleFlag;
+    public void setUseFlag(String useFlag) {
+        this.useFlag = useFlag;
     }
 
     public String getCreateBy() {
@@ -108,7 +107,7 @@ public class SysRole implements Serializable{
     public void setCreateBy(String createBy) {
         this.createBy = createBy;
     }
-
+    @JsonSerialize(using = JsonDate2StringProcessor.class)
     public Date getCreateDate() {
         return createDate;
     }
@@ -117,14 +116,14 @@ public class SysRole implements Serializable{
         this.createDate = createDate;
     }
 
-    public Date getUpdateBy() {
+    public String getUpdateBy() {
         return updateBy;
     }
 
-    public void setUpdateBy(Date updateBy) {
+    public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
     }
-
+    @JsonSerialize(using = JsonDate2StringProcessor.class)
     public Date getUpdateDate() {
         return updateDate;
     }
@@ -141,12 +140,11 @@ public class SysRole implements Serializable{
         this.remark = remark;
     }
 
-    public Integer getDeleteFlag() {
+    public String getDeleteFlag() {
         return deleteFlag;
     }
 
-    public void setDeleteFlag(Integer deleteFlag) {
+    public void setDeleteFlag(String deleteFlag) {
         this.deleteFlag = deleteFlag;
     }
-
 }
