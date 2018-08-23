@@ -46,7 +46,7 @@
             </div>
             <div class="col-md-10">
                 <div id="table_operations">
-                    <button class="btn btn-default btn-sm">新增</button>
+                    <button class="btn btn-default btn-sm" id="roleAddBtn">新增</button>
                 </div>
                 <div class="table-content">
                     <table id="roles"></table>
@@ -85,12 +85,28 @@
     });
     //表格操作
     function operateFormatter(value, row, index) {
-        var url = "${basePath}/role/toDetail?roleId="+row.roleId;
         return [
             '<button class="btn btn-default btn-xs" id="detailRole">查看</button> ',
             '<button class="btn btn-default btn-xs" id="editRole">编辑</button> ',
-            '<button class="btn btn-default btn-xs btn-danger" id="deleteRole">删除</button> '
+            '<button class="btn btn-default btn-xs btn-danger" id="logiDeleteRole">删除</button> '
         ].join('');
+    }
+    window.roleOperateEvents = {
+        "click #detailRole":function (e,value, row, index) {
+            $(location).prop('href', '${basePath}/role/toDetail.do?roleId='+row.roleId);
+        },
+        "click #editRole":function (e,value, row, index) {
+            $(location).prop('href', '${basePath}/role/toAddOrEdit.do?roleId='+row.roleId);
+        },
+        "click #logiDeleteRole":function (e,value, row, index) {
+            $.post("${basePath}/role/logicalDelete.do",{"roleId":row.roleId},function (data) {
+                if (data.data == "success") {
+                    alert("删除成功")
+                }else if (data.data == "error"){
+                    alert("失败")
+                }
+            });
+        }
     }
     //表格状态字段格式化
     function stateFormatter(value, row, index) {
@@ -98,24 +114,6 @@
             return '启用';
         }else if (value == '0') {
             return '未启用';
-        }
-    }
-    window.roleOperateEvents = {
-        "click #detailRole":function (e,value, row, index) {
-            console.log(index);
-            $(location).attr('href', '${basePath}/role/toDetail.do?roleId='+row.roleId);
-        },
-        "click #editRole":function (e,value, row, index) {
-            $(location).attr('href', '${basePath}/role/toAddOrEdit.do?roleId='+row.roleId);
-        },
-        "click #deleteRole":function (e,value, row, index) {
-            $.post("${basePath}/role/logicalDelete.do",{"roleId":row.roleId},function (data) {
-                if (data.data == "success") {
-                    alert("删除成功")
-                }else{
-                    alert("失败")
-                }
-            });
         }
     }
 
@@ -140,6 +138,14 @@
     };
     var deptTree = $.fn.zTree.init($("#dept_tree"), setting,  ${nodes});
     deptTree.expandNode(deptTree.getNodes()[0]);    //展开第一层
+    $("#roleAddBtn").click(function () {
+        var nodes = deptTree.getSelectedNodes();
+        if (nodes.length > 0) {
+            $(location).prop("href","${basePath}/role/toAddOrEdit.do?deptId="+nodes[0].deptId);
+        }else{
+            $(location).prop("href","${basePath}/role/toAddOrEdit.do");
+        }
+    });
 
 </script>
 </body>

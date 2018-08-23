@@ -76,12 +76,24 @@ public class RoleController {
     }
 
     @RequestMapping(value = "/toAddOrEdit")
-    public String toAddOrEdit(String roleId,Model model) {
+    public String toAddOrEdit(@RequestParam(required = false) String deptId,
+                              @RequestParam(required = false) String roleId,Model model) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        SysDepartment sysDepartment1 = new SysDepartment();
+        List<SysDepartment> departmentList = sysDeptService.findBy(sysDepartment1);
+        String value = mapper.writeValueAsString(departmentList);
+        model.addAttribute("nodes",value);
         if (StringUtils.isNotEmpty(roleId)) {
             SysRole sysRole = new SysRole();
             sysRole.setRoleId(roleId);
             SysRole role = sysRoleService.findBy(sysRole).get(0);
             model.addAttribute("sysRole",role);
+            return "sys/role_addOrEdit";
+        }else if(StringUtils.isNotEmpty(deptId)) {
+            SysDepartment department = new SysDepartment();
+            department.setDeptId(deptId);
+            SysDepartment sysDepartment = sysDeptService.findBy(department).get(0);
+            model.addAttribute("sysDept",sysDepartment);
             return "sys/role_addOrEdit";
         }
         return "sys/role_addOrEdit";
@@ -103,6 +115,11 @@ public class RoleController {
         }
         jsonResult.put("data","error");
         return jsonResult;
+    }
+	
+	 @RequestMapping(value = "/save")
+    public String save(SysRole sysRole) {
+        return "forward:/role/tolist.do";
     }
 
 }
