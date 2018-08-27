@@ -56,7 +56,7 @@
     select
     <include refid="Base_Column_List"/>
     from sys_department
-    where PARENT_ID is null
+    where PARENT_ID is null or PARENT_ID = ''
     order by CREATE_DATE desc
   </select>
 

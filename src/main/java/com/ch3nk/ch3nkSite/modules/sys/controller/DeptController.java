@@ -1,8 +1,9 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysDepartment;
-import com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysDeptService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,15 +37,21 @@ public class DeptController {
     }
 
     @RequestMapping(value = "/toAddOrEdit")
-    public String toAddOrEdit(@RequestParam(required = false)String deptId,Model model){
+    public String toAddOrEdit(@RequestParam(required = false)String deptId,Model model)
+            throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        SysDepartment sysDepartment1 = new SysDepartment();
+        List<SysDepartment> departmentList = sysDeptService.findBy(sysDepartment1);
+        String value = mapper.writeValueAsString(departmentList);
+        model.addAttribute("nodes",value);
         if (StringUtils.isNotEmpty(deptId)) {
             SysDepartment sysDepartment = new SysDepartment();
             sysDepartment.setDeptId(deptId);
-            List<SysDepartment> list = sysDeptService.findBy(sysDepartment);
-            model.addAttribute("list",list);
-            return "sys/dept_addOrEdit";
+            SysDepartment department = sysDeptService.findBy(sysDepartment).get(0);
+            model.addAttribute("sysDept",department);
+            return "sys/dept_edit";
         }
-        return "sys/dept_addOrEdit";
+        return "sys/dept_add";
     }
 
     @RequestMapping(value = "/loadTreeBranch")
@@ -72,6 +79,25 @@ public class DeptController {
             list.add(tr);
         }
         jsonResult.put("data",list);
+        return jsonResult;
+    }
+
+    @RequestMapping(value = "/saveOrUpdate")
+    public String saveOrUpdate(SysDepartment sysDepartment){
+        return null;
+    }
+
+    @RequestMapping(value = "/formCheck")
+    @ResponseBody
+    public Map<String,Object> formCheck(SysDepartment sysDepartment){
+        jsonResult = new HashMap<String, Object>();
+        List<SysDepartment> list = sysDeptService.findBy(sysDepartment);
+        if (list.size() > 0) {
+            jsonResult.put("error","该名称已被使用");
+        }else{
+            jsonResult.put("ok","该名称可用");
+        }
+
         return jsonResult;
     }
 

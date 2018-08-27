@@ -27,12 +27,6 @@ public class  MenuController {
     @Autowired
     private ISysMenuService sysMenuService;
 
-    @RequestMapping(value = "/show")
-    public String index() {
-        return "sys/BMap";
-    }
-
-
     @RequestMapping(value = "/tolist")
     public String toList(Model model) {
         List<SysMenu> list = sysMenuService.findAllParents();
@@ -86,11 +80,11 @@ public class  MenuController {
         if (StringUtils.isNotEmpty(menuId)) {
             SysMenu sysMenu = new SysMenu();
             sysMenu.setMenuId(menuId);
-            List<SysMenu> list = sysMenuService.findBy(sysMenu);
-            model.addAttribute("sysMenu",list);
-            return "sys/menu_addOrEdit";
+            SysMenu menu = sysMenuService.findBy(sysMenu).get(0);
+            model.addAttribute("sysMenu",menu);
+            return "sys/menu_edit";
         }
-        return "sys/menu_addOrEdit";
+        return "sys/menu_add";
     }
 
 

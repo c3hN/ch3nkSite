@@ -72,6 +72,11 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Override
     public int updateUser(SysUser sysUser) {
+        sysUser.setUpdateTime(new Date());
+        if (StringUtils.isNotEmpty(sysUser.getUserPwd())) {
+            String hex = new SimpleHash("MD5", sysUser.getUserPwd()).toHex();
+            sysUser.setUserPwd(hex);
+        }
         return sysUserMapper.updateByPKSelective(sysUser);
     }
 

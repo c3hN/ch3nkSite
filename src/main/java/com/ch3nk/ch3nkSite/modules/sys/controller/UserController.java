@@ -1,16 +1,19 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
+import com.ch3nk.ch3nkSite.modules.sys.entity.SysRole;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
+import com.ch3nk.ch3nkSite.modules.sys.service.ISysRoleService;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysUserService;
 import com.ch3nk.ch3nkSite.modules.utils.SQLUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,39 +32,56 @@ public class UserController  {
     @Autowired
     private ISysUserService sysUserService;
 
-    @RequestMapping(value = "/register")
-    public String register(SysUser sysUser,Model model){
-        int result = sysUserService.saveUser(sysUser);
-        if (result == 0) {
-            model.addAttribute("errorMsg","注册失败，请重试");
-            return "sys/register";
-        }else {
-            UsernamePasswordToken token = new UsernamePasswordToken(sysUser.getAccount(), sysUser.getUserPwd());
-            SecurityUtils.getSubject().login(token);
-            return "redirect:sys/home";
-        }
-    }
+    @Qualifier("sysRoleServiceImpl")
+    @Autowired
+    private ISysRoleService sysRoleService;
+
+//    @RequestMapping(value = "/register")
+//    public String register(SysUser sysUser,Model model){
+//        int result = sysUserService.saveUser(sysUser);
+//        if (result == 0) {
+//            model.addAttribute("errorMsg","注册失败，请重试");
+//            return "sys/register";
+//        }else {
+//            UsernamePasswordToken token = new UsernamePasswordToken(sysUser.getAccount(), sysUser.getUserPwd());
+//            SecurityUtils.getSubject().login(token);
+//            return "redirect:sys/home";
+//        }
+//    }
 
     @RequestMapping(value = "/tolist")
     public String tolist(){
         return "sys/user_list";
     }
 
-    @RequestMapping(value = "/save")
+    @RequestMapping(value = "/saveOrUpdate",method = RequestMethod.POST)
     public String saveOne(SysUser sysUser) {
-        sysUserService.saveUser(sysUser);
+        if (StringUtils.isNotEmpty(sysUser.getUserId())) {
+
+            sysUserService.updateUser(sysUser);
+        }else{
+            sysUserService.saveUser(sysUser);
+        }
         return "forward:/user/tolist";
     }
 
 
     @RequestMapping(value = "toAddOrEdit")
-    public String toAdd(@RequestParam(required = false)String userId,Model model) {
+    public String toAdd(@RequestParam(required = false)String userId,Model model)
+            throws JsonProcessingException {
+        SysRole role = new SysRole();
+        role.setUseFlag("1");
+        role.setDeleteFlag("1");
+        List<SysRole> list = sysRoleService.findBy(role);
+        ObjectMapper mapper = new ObjectMapper();
+        String value = mapper.writeValueAsString(list);
+        model.addAttribute("nodes",value);
         if (StringUtils.isNotEmpty(userId)) {
             SysUser userById = sysUserService.findUserById(userId);
             model.addAttribute("sysUser",userById);
-            return "sys/user_addOrEdit";
+            return "sys/user_edit";
         }
-        return "sys/user_addOrEdit";
+        return "sys/user_add";
     }
 
     @RequestMapping(value = "/toDetail")
@@ -71,12 +91,6 @@ public class UserController  {
         return "sys/user_detail";
     }
 
-    @RequestMapping(value = "/toEdit")
-    public String edit(String userId,Model model) {
-        SysUser userById = sysUserService.findUserById(userId);
-        model.addAttribute("sysUser",userById);
-        return "sys/user_addOrEdit";
-    }
 
     @RequestMapping(value = "/logicalDel")
     @ResponseBody
@@ -143,6 +157,24 @@ public class UserController  {
         int i = sysUserService.updateUser(sysUser);
         jsonResult.put("count",i);
         jsonResult.put("msg","success");
+        return jsonResult;
+    }
+
+
+    @RequestMapping(value = "/formCheck")
+    @ResponseBody
+    public Map<String,Object> formCheck(SysUser sysUser) {
+        jsonResult = new HashMap<String, Object>();
+        if (StringUtils.isNotEmpty(sysUser.getAccount())) {
+            SysUser byAccount = sysUserService.findByAccount(sysUser.getAccount());
+            if (byAccount == null) {
+                jsonResult.put("ok","可以使用");
+            }else if (StringUtils.equals(byAccount.getUserId(),sysUser.getUserId())) {
+                jsonResult.put("ok","可以使用");
+            }else{
+                jsonResult.put("error","账号已存在");
+            }
+        }
         return jsonResult;
     }
 }

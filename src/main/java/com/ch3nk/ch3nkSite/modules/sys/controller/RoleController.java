@@ -7,7 +7,6 @@ import com.ch3nk.ch3nkSite.modules.sys.service.ISysRoleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,15 +86,15 @@ public class RoleController {
             sysRole.setRoleId(roleId);
             SysRole role = sysRoleService.findBy(sysRole).get(0);
             model.addAttribute("sysRole",role);
-            return "sys/role_addOrEdit";
+            return "sys/role_edit";
         }else if(StringUtils.isNotEmpty(deptId)) {
             SysDepartment department = new SysDepartment();
             department.setDeptId(deptId);
             SysDepartment sysDepartment = sysDeptService.findBy(department).get(0);
             model.addAttribute("sysDept",sysDepartment);
-            return "sys/role_addOrEdit";
+            return "sys/role_add";
         }
-        return "sys/role_addOrEdit";
+        return "sys/role_add";
     }
 
     @RequestMapping(value = "/logicalDelete")
@@ -120,6 +118,26 @@ public class RoleController {
 	 @RequestMapping(value = "/save")
     public String save(SysRole sysRole) {
         return "forward:/role/tolist.do";
+    }
+
+
+    @RequestMapping(value = "/formCheck")
+    @ResponseBody
+    public Map<String,Object> formCheck(SysRole sysRole) {
+        jsonResult = new HashMap<String, Object>();
+        String result = "";
+        if (StringUtils.isNotEmpty(sysRole.getName())) {
+            result = "名称";
+        }else if (StringUtils.isNotEmpty(sysRole.geteName())) {
+            result = "编号";
+        }
+        List<SysRole> list = sysRoleService.findBy(sysRole);
+        if (list.size() > 0) {
+            jsonResult.put("error","该角色"+result+"已被使用");
+        }else{
+            jsonResult.put("ok","该角色"+result+"可用");
+        }
+        return jsonResult;
     }
 
 }

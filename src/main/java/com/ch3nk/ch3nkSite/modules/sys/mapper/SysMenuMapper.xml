@@ -77,7 +77,7 @@
         select
         <include refid="Base_Column_List"/>
         from sys_menu
-        where PARENT_ID IS NULL
+        where PARENT_ID IS NULL OR PARENT_ID = ''
         ORDER BY CREATE_DATE DESC
     </select>
     

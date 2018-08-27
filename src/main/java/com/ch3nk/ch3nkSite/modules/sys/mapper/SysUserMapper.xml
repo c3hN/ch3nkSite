@@ -114,13 +114,13 @@
     <update id="updateByPKSelective" parameterType="sysUser">
         update sys_user
         <set>
-            <if test="account != null">ACCOUNT = #{account,jdbcType=VARCHAR}</if>
-            <if test="nickName != null">NICKNAME = #{nickName,jdbcType=VARCHAR}</if>
-            <if test="userPwd != null">USERPWD = #{userPwd,jdbcType=VARCHAR}</if>
-            <if test="userPhoto != null">USERPHOTO = #{userPhoto,jdbcType=VARCHAR}</if>
-            <if test="createTime != null">CREATETIME = #{createTime,jdbcType=TIMESTAMP}</if>
-            <if test="updateTime != null">UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
-            <if test="loginFlag != null">LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
+            <if test="account != null">ACCOUNT = #{account,jdbcType=VARCHAR},</if>
+            <if test="nickName != null">NICKNAME = #{nickName,jdbcType=VARCHAR},</if>
+            <if test="userPwd != null and userPwd != ''">USERPWD = #{userPwd,jdbcType=VARCHAR},</if>
+            <if test="userPhoto != null">USERPHOTO = #{userPhoto,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">CREATETIME = #{createTime,jdbcType=TIMESTAMP},</if>
+            <if test="updateTime != null">UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},</if>
+            <if test="loginFlag != null">LOGINFLAG = #{loginFlag,jdbcType=VARCHAR},</if>
             <if test="deleteFlag != null">DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
         </set>
         where USER_ID = #{userId,jdbcType=VARCHAR}

@@ -63,7 +63,7 @@
 <div class="content">
     <div class="operations">
         <div class="btn-group">
-            <button class="btn btn-default btn-sm" onclick="window.location.reload(true)">新增</button>
+            <button class="btn btn-default btn-sm" id="addMenuBtn">新增</button>
             <button class="btn btn-default btn-sm" onclick="window.location.reload(true)">刷新</button>
         </div>
     </div>
@@ -129,6 +129,9 @@ $("#menus").treetable({
         $("#menus").treetable("unloadBranch", node);
     }
 });
+    $("#addMenuBtn").click(function () {
+        $(location).prop("href","${basePath}/menu/toAddOrEdit.do");
+    });
    function editMenu(obj) {
        var menuId = $(obj).parent().parent().parent().find("td").eq(1).text();
        $(location).attr('href', '${basePath}/menu/toAddOrEdit.do?menuId='+menuId);

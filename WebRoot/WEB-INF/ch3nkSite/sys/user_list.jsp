@@ -167,7 +167,7 @@
                     }
                 )
             }else if (obj.event == 'edit') {
-                $(location).attr('href', '${basePath}/user/toAddOrEdit.do?'+obj.data.userId);
+                $(location).attr('href', '${basePath}/user/toAddOrEdit.do?userId='+obj.data.userId);
             }else if (obj.event == 'detail') {
                 $(location).attr('href', '${basePath}/user/toDetail.do?userId='+obj.data.userId);
             }
@@ -192,13 +192,8 @@
             });
         });
     });
-    //新增弹层
-    layui.use(['layer','table'],function () {
-        var layer = layui.layer;
-        var table = layui.table;
-        $("#addUserBtn").click(function () {
-            $(location).attr('href', '${basePath}/user/toAddOrEdit.do');
-        });
+    $("#addUserBtn").click(function () {
+        $(location).attr('href', '${basePath}/user/toAddOrEdit.do');
     });
     //表格搜索
     layui.use(['laydate','table'],function () {

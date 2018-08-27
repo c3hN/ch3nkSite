@@ -70,7 +70,7 @@
 <div class="content">
     <div class="operations">
         <div class="btn-group">
-            <button class="btn btn-default btn-sm" onclick="window.location.reload(true)">新增</button>
+            <button class="btn btn-default btn-sm" id="addDeptBtn">新增</button>
             <button class="btn btn-default btn-sm" onclick="window.location.reload(true)">刷新</button>
         </div>
     </div>
@@ -131,6 +131,9 @@ var treetable=$("#depts").treetable({
         $("#depts").treetable("unloadBranch", node);
     }
 });
+    $("#addDeptBtn").click(function () {
+       $(location).prop('href','${basePath}/dept/toAddOrEdit.do');
+    });
    function editDept(obj) {
        var deptId = $(obj).parent().parent().parent().find("td").eq(1).text();
        $(location).attr('href', '${basePath}/dept/toAddOrEdit.do?deptId='+deptId);

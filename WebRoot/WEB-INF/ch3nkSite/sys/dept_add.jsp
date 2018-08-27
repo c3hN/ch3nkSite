@@ -11,6 +11,7 @@
 <head>
     <title>新增编辑页面</title>
     <link rel="stylesheet" href="${basePath}/static/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${basePath}/static/plugins/nice-validator/jquery.validator.css">
     <link rel="stylesheet" href="${basePath}/static/plugins/ztree/css/metroStyle/metroStyle.css">
     <link rel="stylesheet" href="${basePath}/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
     <style>
@@ -22,9 +23,8 @@
             height: 34px;
             position: absolute;
             top: 0px;
-            left: 201px;
+            left: 251px;
             padding: 0;
-
         }
         .title{
             border-bottom: 1px solid #dbdbdb;
@@ -34,12 +34,7 @@
             margin: 10px 20px 30px 20px;
             padding-left: 10px;
         }
-        .deptName{
-            width: 220px;
-            height: 34px;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-            line-height: 34px;
+        #deptName{
             padding: 0 46px 0 12px;
         }
         .modal-dialog-custom{
@@ -52,9 +47,9 @@
 </head>
 <body>
 <div class="position" style="width: 100%; height: 50px; background-color: #FFFFFF; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
-    <div class="postion-content"><i class="fa fa-user"></i>&nbsp;用户管理</div>
+    <div class="postion-content"><i class="fa fa-square-o"></i>&nbsp;部门管理</div>
     <div class="operations" style="display: inline-block">
-        <button class="btn btn-default" id="goBackBtn" onclick="javascript:history.back(-1);"><i class="fa fa-reply" aria-hidden="true"></i></button>
+        <button class="btn btn-default" id="goBackBtn" onclick="javascript:history.back(0);"><i class="fa fa-reply" aria-hidden="true"></i></button>
         <button class="btn btn-default"id="refreshBtn" onclick="window.location.reload(true)"><i id="refreshIcon" class="fa fa-refresh"></i> </button>
     </div>
 </div>
@@ -65,48 +60,59 @@
     <div class="form-content">
         <div class="container">
             <div class="row">
-                <form action="" class="form-horizontal">
-                    <input type="text" name="roleId" hidden="hidden" value="${sysRole.roleId}">
+                <form action="${basePath}/dept/saveOrUpdate.do" class="form-horizontal" id="deptForm">
+                    <input type="text" name="parentId" value="" style="display: none">
                     <div class="form-group">
-                        <label  class="col-sm-2 control-label">所属部门</label>
+                        <label  class="col-sm-2 control-label">
+                            <span>上级菜单</span>
+                        </label>
                         <div class="col-sm-3">
-                            <input type="text" name="department.deptId" id="deptId" hidden="hidden" value="${sysDept.deptId}">
-                            <div class="deptName">${sysDept.deptName}</div>
+                            <input type="text" class="form-control" id="parentName">
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></button>
                         </div>
-                        <label for="name" class="col-sm-2 control-label">角色名称</label>
+                        <label for="deptName" class="col-sm-2 control-label">
+                            <span>部门名称</span>
+                            <span style="color: red;">*</span>
+                        </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" name="name" id="name">
+                            <input type="text" class="form-control" name="deptName" id="deptName">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="eName" class="col-sm-2 control-label">角色编号</label>
+                        <label for="deptAbbr" class="col-sm-2 control-label">
+                            <span>部门简称</span>
+                        </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="eName" name="eName">
+                            <input type="text" class="form-control" id="deptAbbr" name="deptAbbr">
                         </div>
-                        <label class="col-sm-2 control-label">状态</label>
+                        <label for="deptNum" class="col-sm-2 control-label">
+                            <span>部门编号</span>
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="deptNum" name="deptNum">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            <span>状态</span>
+                        </label>
                         <div class="col-sm-5">
                             <label class="radio-inline">
-                                <input type="radio" name="useFlag" value="1" checked>启用
+                                <input type="radio" name="state" value="1" checked>启用
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="useFlag" value="0">未启用
+                                <input type="radio" name="state" value="0">未启用
                             </label>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="remark" class="col-sm-2 control-label">备注</label>
-                        <div class="col-sm-8">
-                            <textarea name="remark" id="remark" cols="30" rows="3" class="form-control"></textarea>
-                        </div>
+                    <div class="col-sm-1 col-sm-offset-5">
+                        <button type="submit" class="btn btn-primary btn-block btn-content" id="saveOrEdit">保存</button>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-primary btn-block btn-content" onclick="javascript:history.back(-1);">取消</button>
                     </div>
                 </form>
-                <div class="col-sm-1 col-sm-offset-5">
-                    <button type="button" class="btn btn-primary btn-block btn-content">保存</button>
-                </div>
-                <div class="col-sm-1">
-                    <button type="button" class="btn btn-primary btn-block btn-content">取消</button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -119,7 +125,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                    部门
+                部门
             </div>
             <div class="modal-body">
                 <ul id="depts" class="ztree"></ul>
@@ -132,6 +138,8 @@
 </div>
 <script src="${basePath}/static/js/jquery-3.2.1.js"></script>
 <script src="${basePath}/static/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="${basePath}/static/plugins/nice-validator/jquery.validator.min.js"></script>
+<script src="${basePath}/static/plugins/nice-validator/local/zh-CN.js"></script>
 <script src="${basePath}/static/plugins/ztree/js/jquery.ztree.core.min.js"></script>
 <script>
     <%--模态框树--%>
@@ -154,12 +162,19 @@
     };
     var detps = $.fn.zTree.init($("#depts"), setting,  ${nodes});
     detps.expandNode(detps.getNodes()[0]);    //展开第一层
-    
+
     function clickNode(event, treeId, treeNode) {
-        $("input[id='deptId']").attr("value",treeNode.deptId);
-        $(".deptName").html(treeNode.deptName);
+        $("input[name='parentId']").attr('value',treeNode.deptId);
+        $("input[id='parentName']").attr('value',treeNode.deptName);
         $("#myModal").modal('hide');
-    }
+    };
+
+    //    初始化表单验证
+    $("#deptForm").validator({
+        fields: {
+            'deptName':'required;remote(formCheck.do)',
+        }
+    });
 
 </script>
 </body>

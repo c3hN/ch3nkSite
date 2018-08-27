@@ -46,10 +46,10 @@
         <include refid="left_join_dept"/>
         <where>
             <if test="name != null">
-                r.ZH_NAME = #{name,jdbcType=VARCHAR},
+                and r.ZH_NAME = #{name,jdbcType=VARCHAR}
             </if>
             <if test="eName != null">
-                and r.EN_NAME = #{eName,jdbcType=VARCHAR},
+                and r.EN_NAME = #{eName,jdbcType=VARCHAR}
             </if>
             <if test="department!= null and department.deptId != null">
                 and r.DEPT_ID = #{department.deptId,jdbcType=VARCHAR}
@@ -83,10 +83,10 @@
         select count(1) from sys_role r
         <where>
             <if test="name != null">
-                r.ZH_NAME = #{name,jdbcType=VARCHAR},
+                r.ZH_NAME = #{name,jdbcType=VARCHAR}
             </if>
             <if test="eName != null">
-                and r.EN_NAME = #{eName,jdbcType=VARCHAR},
+                and r.EN_NAME = #{eName,jdbcType=VARCHAR}
             </if>
             <if test="department!= null and department.deptId != null">
                 and r.DEPT_ID = #{department.deptId,jdbcType=VARCHAR}
@@ -177,7 +177,7 @@
                 #{eName,jdbcType=VARCHAR},
             </if>
             <if test="department!= null and department.deptId != null">
-                #{department.deptId,jdbcType=VARCHAR}
+                #{department.deptId,jdbcType=VARCHAR},
             </if>
             <if test="useFlag != null">
                 #{useFlag,jdbcType=VARCHAR},
