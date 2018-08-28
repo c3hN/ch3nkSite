@@ -50,6 +50,13 @@ public interface ISysMenuService {
      */
     int saveSysMenu(SysMenu sysMenu);
 
+    /**
+     * 更新
+     * @param sysMenu
+     * @return
+     */
+    int updateMenu(SysMenu sysMenu);
+
 
 
 }

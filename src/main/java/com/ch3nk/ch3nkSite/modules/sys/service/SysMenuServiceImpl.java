@@ -64,4 +64,12 @@ public class SysMenuServiceImpl implements ISysMenuService {
         return sysMenuMapper.insertSelective(sysMenu);
     }
 
+    @Override
+    public int updateMenu(SysMenu sysMenu) {
+        SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        sysMenu.setUpdateBy(sysUser.getUserId());
+        sysMenu.setUpdateDate(new Date());
+        return sysMenuMapper.updateByPrimaryKeySelective(sysMenu);
+    }
+
 }

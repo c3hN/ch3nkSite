@@ -84,7 +84,11 @@ public class RoleController {
         if (StringUtils.isNotEmpty(roleId)) {
             SysRole sysRole = new SysRole();
             sysRole.setRoleId(roleId);
-            SysRole role = sysRoleService.findBy(sysRole).get(0);
+            SysRole role = sysRoleService.findBy(sysRole).get(0);   //待编辑对象
+            SysDepartment department = new SysDepartment();
+            department.setDeptId(role.getDepartment().getDeptId());
+            SysDepartment sysDepartment = sysDeptService.findBy(department).get(0);
+            model.addAttribute("sysDept",sysDepartment);
             model.addAttribute("sysRole",role);
             return "sys/role_edit";
         }else if(StringUtils.isNotEmpty(deptId)) {
@@ -115,8 +119,13 @@ public class RoleController {
         return jsonResult;
     }
 	
-	 @RequestMapping(value = "/save")
+	 @RequestMapping(value = "/saveOrUpdate")
     public String save(SysRole sysRole) {
+        if (StringUtils.isNotEmpty(sysRole.getRoleId())) {  //编辑
+            sysRoleService.updateRole(sysRole);
+        }else{
+            sysRoleService.saveRole(sysRole);
+        }
         return "forward:/role/tolist.do";
     }
 
@@ -125,17 +134,29 @@ public class RoleController {
     @ResponseBody
     public Map<String,Object> formCheck(SysRole sysRole) {
         jsonResult = new HashMap<String, Object>();
-        String result = "";
-        if (StringUtils.isNotEmpty(sysRole.getName())) {
-            result = "名称";
-        }else if (StringUtils.isNotEmpty(sysRole.geteName())) {
-            result = "编号";
-        }
-        List<SysRole> list = sysRoleService.findBy(sysRole);
-        if (list.size() > 0) {
-            jsonResult.put("error","该角色"+result+"已被使用");
-        }else{
-            jsonResult.put("ok","该角色"+result+"可用");
+        boolean flag = false;
+        if (StringUtils.isEmpty(sysRole.getRoleId())) { //新增输入校验
+            int i = sysRoleService.findBy(sysRole).size();
+            if (i == 0) {
+                flag = true;
+            }
+        }else{ //编辑输入校验
+            SysRole role = new SysRole();
+            if (StringUtils.isNotEmpty(sysRole.getName())) {
+                role.setName(sysRole.getName());
+            }
+            if (StringUtils.isNotEmpty(sysRole.geteName())) {
+                role.seteName(sysRole.geteName());
+            }
+            List<SysRole> list = sysRoleService.findBy(role);
+            if (list.size() == 0 || StringUtils.equals(sysRole.getRoleId(),list.get(0).getRoleId())) {
+                flag = true;
+            }
+         }
+        if (flag) {
+            jsonResult.put("ok","可以使用");
+        }else {
+            jsonResult.put("error","已经被使用");
         }
         return jsonResult;
     }

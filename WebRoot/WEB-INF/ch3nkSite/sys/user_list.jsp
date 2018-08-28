@@ -29,7 +29,6 @@
             border-radius: 2px;
         }
         .position{
-            width: 100%;
             height: 50px;
             background-color: #FFFFFF;
             margin-bottom: 40px;
@@ -52,9 +51,9 @@
                 <shiro:hasPermission name="sysUser:import">
                     <button class="layui-btn layui-btn-sm" id="userImportBtn">导入</button>
                 </shiro:hasPermission>
-                <%--<shiro:hasPermission name="sysUser:reportForm">
-                    <button class="layui-btn layui-btn-sm" id="userExprotBtn"><a href="${basePath}/user/toEdit.do">统计报表</a> </button>
-                </shiro:hasPermission>--%>
+                <shiro:hasPermission name="sysUser:reportForm">
+                    <button class="layui-btn layui-btn-sm" id="userExprotBtn">统计报表</button>
+                </shiro:hasPermission>
             </div>
             <div class="table-search">
                 <shiro:hasPermission name="sysUser:tableSearch">

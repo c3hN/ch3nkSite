@@ -60,15 +60,16 @@
     <div class="form-content">
         <div class="container">
             <div class="row">
-                <form action="${basePath}/menu/saveOrUpdate.do" class="form-horizontal" id="menuForm">
-                    <input type="text" name="roleId" style="display: none" value="${sysMenu.menuId}">
+                <form action="${basePath}/menu/saveOrUpdate.do" method="post" class="form-horizontal" id="menuForm">
+                    <input type="text" name="menuId" style="display: none" value="${sysMenu.menuId}">
+                    <input type="text" name="parentId" style="display: none">
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">
                             <span>上级菜单</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" name="department.deptName" id="deptName" value="${sysDept.deptName}" >
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></button>
+                            <input type="text" class="form-control" name="parentName" id="deptName" >
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#parents_tree"><i class="fa fa-search"></i></button>
                         </div>
                         <label  class="col-sm-2 control-label">
                             <span>类别</span>
@@ -76,43 +77,56 @@
                         </label>
                         <div class="col-sm-5">
                             <label class="radio-inline">
-                                <input type="radio" name="category" value="1" <c:if test="${sysMenu.category == '0'}">checked</c:if>>菜单
+                                <input type="radio" name="category" value="1" <c:if test="${sysMenu == '1'}">checked</c:if>>菜单
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="category" value="0" <c:if test="${sysMenu.category == '1'}">checked</c:if>>操作
+                                <input type="radio" name="category" value="0" <c:if test="${sysMenu == '0'}">checked</c:if>>操作
                             </label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="eName" class="col-sm-2 control-label">
+                        <label for="name" class="col-sm-2 control-label">
                             <span>菜单名称</span>
                             <span style="color: red;">*</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="eName" name="eName">
+                            <input type="text" class="form-control" id="name" name="name" value="${sysMenu.name}">
                         </div>
-                        <label for="eName" class="col-sm-2 control-label">
-                            <span>资源路径</span>
+                        <label  class="col-sm-2 control-label">
+                            <span>是否启用</span>
                             <span style="color: red;">*</span>
                         </label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="eName" name="eName">
+                        <div class="col-sm-5">
+                            <label class="radio-inline">
+                                <input type="radio" name="deleteFlag" value="1" <c:if test="${sysMenu == '1'}">checked</c:if> >启用
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="deleteFlag" value="0" <c:if test="${sysMenu == '0'}">checked</c:if>>禁用
+                            </label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="eName" class="col-sm-2 control-label">
+                        <label for="permission" class="col-sm-2 control-label">
                             <span>权限标识</span>
                             <span style="color: red;">*</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="eName" name="eName">
+                            <input type="text" class="form-control" id="permission" name="permission" value="${sysMenu.permission}">
                         </div>
-                        <label for="eName" class="col-sm-2 control-label">
-                            <span>图标</span>
+                        <label for="href" class="col-sm-2 control-label">
+                            <span>资源路径</span>
                             <span style="color: red;">*</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="eName" name="eName">
+                            <input type="text" class="form-control" id="href" name="href" value="${sysMenu.href}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="icon" class="col-sm-2 control-label">
+                            <span>图标</span>
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="icon" name="icon" value="${sysMenu.icon}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -120,7 +134,7 @@
                             <span>备注</span>
                         </label>
                         <div class="col-sm-8">
-                            <textarea name="remark" id="remark" cols="30" rows="3" class="form-control"></textarea>
+                            <textarea name="remark" id="remark" cols="30" rows="3" class="form-control">${sysMenu.remark}</textarea>
                         </div>
                     </div>
                     <div class="col-sm-1 col-sm-offset-5">
@@ -130,13 +144,12 @@
                         <button type="button" class="btn btn-primary btn-block btn-content" onclick="javascript:history.back(-1);">取消</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
 </div>
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="parents_tree" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-custom">
         <div class="modal-content">
             <div class="modal-header">
@@ -184,7 +197,7 @@
     function clickNode(event, treeId, treeNode) {
         $("input[id='deptId']").attr("value",treeNode.deptId);
         $("input[id='deptName']").attr("value",treeNode.deptName);
-        $("#myModal").modal('hide');
+        $("#parents_tree").modal('hide');
     };
 
     //    初始化表单验证

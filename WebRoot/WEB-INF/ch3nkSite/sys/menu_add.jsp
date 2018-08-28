@@ -60,15 +60,15 @@
     <div class="form-content">
         <div class="container">
             <div class="row">
-                <form action="${basePath}/menu/saveOrUpdate.do" class="form-horizontal" id="menuForm">
-                    <input type="text" name="roleId" style="display: none" value="${sysMenu.menuId}">
+                <form action="${basePath}/menu/saveOrUpdate.do" method="post" class="form-horizontal" id="menuForm">
+                    <input type="text" name="parentId" style="display: none">
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">
                             <span>上级菜单</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" name="department.deptName" id="deptName" >
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></button>
+                            <input type="text" class="form-control" name="parentName" id="deptName" >
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#parents_tree"><i class="fa fa-search"></i></button>
                         </div>
                         <label  class="col-sm-2 control-label">
                             <span>类别</span>
@@ -84,35 +84,48 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="eName" class="col-sm-2 control-label">
+                        <label for="name" class="col-sm-2 control-label">
                             <span>菜单名称</span>
                             <span style="color: red;">*</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="eName" name="eName">
+                            <input type="text" class="form-control" id="name" name="name">
                         </div>
-                        <label for="eName" class="col-sm-2 control-label">
-                            <span>资源路径</span>
+                        <label  class="col-sm-2 control-label">
+                            <span>是否启用</span>
                             <span style="color: red;">*</span>
                         </label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="eName" name="eName">
+                        <div class="col-sm-5">
+                            <label class="radio-inline">
+                                <input type="radio" name="deleteFlag" value="1" checked>启用
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="deleteFlag" value="0">禁用
+                            </label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="eName" class="col-sm-2 control-label">
+                        <label for="permission" class="col-sm-2 control-label">
                             <span>权限标识</span>
                             <span style="color: red;">*</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="eName" name="eName">
+                            <input type="text" class="form-control" id="permission" name="permission">
                         </div>
-                        <label for="eName" class="col-sm-2 control-label">
-                            <span>图标</span>
+                        <label for="href" class="col-sm-2 control-label">
+                            <span>资源路径</span>
                             <span style="color: red;">*</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="eName" name="eName">
+                            <input type="text" class="form-control" id="href" name="href">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="icon" class="col-sm-2 control-label">
+                            <span>图标</span>
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="icon" name="icon">
                         </div>
                     </div>
                     <div class="form-group">
@@ -130,13 +143,12 @@
                         <button type="button" class="btn btn-primary btn-block btn-content" onclick="javascript:history.back(-1);">取消</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
 </div>
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="parents_tree" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-custom">
         <div class="modal-content">
             <div class="modal-header">
@@ -146,7 +158,7 @@
                 部门
             </div>
             <div class="modal-body">
-                <ul id="depts" class="ztree"></ul>
+                <ul id="menus" class="ztree"></ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -165,26 +177,28 @@
         data:{
             simpleData:{
                 enable:true,
-                idKey:"deptId",
+                idKey:"menuId",
                 pIdKey:"parentId",
                 rootPid:null
             },
             key:{
-                name:"deptName",
-                title:"deptName"
+                name:"name",
+                title:"name"
             }
         },
         callback:{
             onClick:clickNode
         }
     };
-    var detps = $.fn.zTree.init($("#depts"), setting,  ${nodes});
-    detps.expandNode(detps.getNodes()[0]);    //展开第一层
-
+    var treeObj = $.fn.zTree.init($("#menus"), setting,  ${nodes});
+    var menus = treeObj.getNodes();
+    $.each(menus,function (index,value) {//展开第一层父节点
+        treeObj.expandNode(menus[index]);
+    });
     function clickNode(event, treeId, treeNode) {
         $("input[id='deptId']").attr("value",treeNode.deptId);
         $("input[id='deptName']").attr("value",treeNode.deptName);
-        $("#myModal").modal('hide');
+        $("#parents_tree").modal('hide');
     };
 
     //    初始化表单验证
@@ -195,7 +209,13 @@
             'eName':'required;remote(formCheck.do)'
         }
     });
-
+    $("input[name='category']").eq(0).click(function () {
+        $("input[name='icon']").attr("disabled",false);
+    });
+    $("input[name='category']").eq(1).click(function () {
+        $("input[name='icon']").val("");
+        $("input[name='icon']").attr("disabled","disabled");
+    });
 </script>
 </body>
 </html>

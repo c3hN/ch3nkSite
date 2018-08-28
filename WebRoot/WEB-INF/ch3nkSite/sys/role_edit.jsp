@@ -60,7 +60,7 @@
     <div class="form-content">
         <div class="container">
             <div class="row">
-                <form action="${basePath}/role/saveOrUpdate.do" class="form-horizontal" id="roleForm">
+                <form action="${basePath}/role/saveOrUpdate.do" method="post" class="form-horizontal" id="roleForm">
                     <input type="text" name="roleId" style="display: none" value="${sysRole.roleId}">
                     <input type="text" name="department.deptId" style="display: none" id="deptId" value="${sysDept.deptId}">
                     <div class="form-group">
@@ -77,7 +77,7 @@
                             <span style="color: red;">*</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" name="name" id="name" >
+                            <input type="text" class="form-control" name="name" id="name" value="${sysRole.name}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -86,7 +86,7 @@
                             <span style="color: red;">*</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="eName" name="eName">
+                            <input type="text" class="form-control" id="eName" name="eName" value="${sysRole.eName}">
                         </div>
                         <label class="col-sm-2 control-label">
                             <span>状态</span>
@@ -96,7 +96,7 @@
                                 <input type="radio" name="useFlag" value="1" <c:if test="${sysRole.useFlag == '1'}">checked</c:if>>启用
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="useFlag" value="0" <c:if test="${sysRole.useFlag == '1'}">checked</c:if>>未启用
+                                <input type="radio" name="useFlag" value="0" <c:if test="${sysRole.useFlag == '0'}">checked</c:if>>未启用
                             </label>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                             <span>备注</span>
                         </label>
                         <div class="col-sm-8">
-                            <textarea name="remark" id="remark" cols="30" rows="3" class="form-control"></textarea>
+                            <textarea name="remark" id="remark" cols="30" rows="3" class="form-control">${sysRole.remark}</textarea>
                         </div>
                     </div>
                     <div class="col-sm-1 col-sm-offset-5">
@@ -174,10 +174,31 @@
 
     //    初始化表单验证
     $("#roleForm").validator({
+        rules: {
+            cusRemote:function (element) {
+                url = "${basePath}/role/formCheck.do";
+                var data = new Array();
+                var obj1 = new Object();
+                var obj2 = new Object();
+                obj1.name = element.name;
+                obj1.value = element.value;
+                obj2.name = $("input[name='roleId']").attr("name");
+                obj2.value = $("input[name='roleId']").attr("value");
+                data.push(obj1);
+                data.push(obj2);
+                console.log(data)
+                return $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: data,
+                    dataType: 'json'
+                });
+            }
+        },
         fields: {
             'department.deptName':'required',
-            'name':'required;remote(formCheck.do)',
-            'eName':'required;remote(formCheck.do)'
+            'name':'required;cusRemote',
+            'eName':'required;cusRemote'
         }
     });
 

@@ -109,7 +109,7 @@
             <if test="menuId != null">MENU_ID,</if>
             <if test="name != null">ZH_NAME,</if>
             <if test="menuCode != null">MENU_CODE,</if>
-            <if test="parentId != null">PARENT_ID,</if>
+            <if test="parentId != null and parentId != ''">PARENT_ID,</if>
             <if test="category != null">CATEGORY,</if>
             <if test="href != null">HREF,</if>
             <if test="icon != null">ICON,</if>
@@ -126,7 +126,7 @@
             <if test="menuId != null">#{menuId,jdbcType=VARCHAR},</if>
             <if test="name != null">#{name,jdbcType=VARCHAR},</if>
             <if test="menuCode != null">#{menuCode,jdbcType=VARCHAR},</if>
-            <if test="parentId != null">#{parentId,jdbcType=VARCHAR},</if>
+            <if test="parentId != null and parentId != ''">#{parentId,jdbcType=VARCHAR},</if>
             <if test="category != null">#{category,jdbcType=VARCHAR},</if>
             <if test="href != null">#{href,jdbcType=VARCHAR},</if>
             <if test="icon != null">#{icon,jdbcType=VARCHAR},</if>
@@ -145,7 +145,7 @@
         <set>
             <if test="name != null">ZH_NAME = #{name,jdbcType=VARCHAR},</if>
             <if test="menuCode != null">MENU_CODE = #{menuCode,jdbcType=VARCHAR},</if>
-            <if test="parentId != null">PARENT_ID = #{parentId,jdbcType=VARCHAR},</if>
+            <if test="parentId != null and parentId != ''">PARENT_ID = #{parentId,jdbcType=VARCHAR},</if>
             <if test="category != null">CATEGORY = #{category,jdbcType=VARCHAR},</if>
             <if test="href != null">HREF = #{href,jdbcType=VARCHAR},</if>
             <if test="icon != null">ICON = #{icon,jdbcType=VARCHAR},</if>

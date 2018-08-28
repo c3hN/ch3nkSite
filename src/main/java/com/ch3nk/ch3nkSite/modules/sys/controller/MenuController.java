@@ -2,15 +2,14 @@ package com.ch3nk.ch3nkSite.modules.sys.controller;
 
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysMenuService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,7 +75,15 @@ public class  MenuController {
 
 
     @RequestMapping(value = "toAddOrEdit")
-    public String toEdit(@RequestParam(required = false)String menuId, Model model) {
+    public String toEdit(@RequestParam(required = false)String menuId, Model model)
+            throws JsonProcessingException {
+        SysMenu menu1 = new SysMenu();
+        menu1.setDeleteFlag("1");
+        menu1.setCategory("0");
+        List<SysMenu> list = sysMenuService.findBy(menu1);
+        ObjectMapper mapper = new ObjectMapper();
+        String value = mapper.writeValueAsString(list);
+        model.addAttribute("nodes",value);
         if (StringUtils.isNotEmpty(menuId)) {
             SysMenu sysMenu = new SysMenu();
             sysMenu.setMenuId(menuId);
@@ -100,18 +107,14 @@ public class  MenuController {
     }
 
 
-    @RequestMapping(value = "/saveMenu")
-    @ResponseBody
-    public Map<String,Object> saveMenu(SysMenu sysMenu) {
-        jsonResult = new HashMap<String, Object>();
-        if (sysMenu == null) {
-            jsonResult.put("msg","fail");
-            return jsonResult;
-        }else {
-            int count = sysMenuService.saveSysMenu(sysMenu);
-            String res = count > 0 ? "success" : "fail";
-            jsonResult.put("msg",res);
-            return jsonResult;
+    @RequestMapping(value = "/saveOrUpdate",method = RequestMethod.POST)
+    public String saveOrUpdate(SysMenu sysMenu) {
+        if (StringUtils.isNotEmpty(sysMenu.getMenuId())) {  //编辑
+            sysMenuService.updateMenu(sysMenu);
+        }else{
+            sysMenuService.saveSysMenu(sysMenu);
         }
+        return "forward:/menu/tolist";
     }
+
 }

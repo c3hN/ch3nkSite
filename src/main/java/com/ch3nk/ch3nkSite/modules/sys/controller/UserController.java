@@ -57,7 +57,6 @@ public class UserController  {
     @RequestMapping(value = "/saveOrUpdate",method = RequestMethod.POST)
     public String saveOne(SysUser sysUser) {
         if (StringUtils.isNotEmpty(sysUser.getUserId())) {
-
             sysUserService.updateUser(sysUser);
         }else{
             sysUserService.saveUser(sysUser);

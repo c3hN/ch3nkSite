@@ -60,7 +60,7 @@
     <div class="form-content">
         <div class="container">
             <div class="row">
-                <form action="${basePath}/role/saveOrUpdate.do" class="form-horizontal" id="roleForm">
+                <form action="${basePath}/role/saveOrUpdate.do" method="post" class="form-horizontal" id="roleForm">
                     <input type="text" name="department.deptId" style="display: none" id="deptId" value="${sysDept.deptId}">
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">
@@ -68,7 +68,7 @@
                             <span style="color: red;">*</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" name="department.deptName" id="deptName" >
+                            <input type="text" class="form-control" name="department.deptName" id="deptName" value="${sysDept.deptName}">
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#dept_tree"><i class="fa fa-search"></i></button>
                         </div>
                         <label for="name" class="col-sm-2 control-label">
@@ -168,7 +168,7 @@
     function clickNode(event, treeId, treeNode) {
         $("input[id='deptId']").attr("value",treeNode.deptId);
         $("input[id='deptName']").attr("value",treeNode.deptName);
-        $("#myModal").modal('hide');
+        $("#dept_tree").modal('hide');
     };
 
     //    初始化表单验证
