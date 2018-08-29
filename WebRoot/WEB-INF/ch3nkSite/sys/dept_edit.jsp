@@ -61,13 +61,14 @@
         <div class="container">
             <div class="row">
                 <form action="${basePath}/dept/saveOrUpdate.do" class="form-horizontal" id="deptForm">
-                    <input type="text" name="parentId" value="" style="display: none">
+                    <input type="text" name="parentId" value="${parentDept.deptId}" style="display: none">
+                    <input type="text" name="deptId" value="${sysDept.deptId}" style="display: none">
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">
                             <span>上级菜单</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="parentName" value="${sysDept.deptName}" >
+                            <input type="text" class="form-control" id="parentName" value="${parentDept.deptName}" >
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></button>
                         </div>
                         <label for="deptName" class="col-sm-2 control-label">
@@ -172,7 +173,7 @@
     //    初始化表单验证
     $("#deptForm").validator({
         fields: {
-            'deptName':'required;remote(formCheck.do)',
+            'deptName':'required'
         }
     });
 

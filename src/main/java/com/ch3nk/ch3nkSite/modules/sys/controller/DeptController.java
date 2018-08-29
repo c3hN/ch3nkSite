@@ -5,6 +5,7 @@ import com.ch3nk.ch3nkSite.modules.sys.service.ISysDeptService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -40,15 +41,17 @@ public class DeptController {
     public String toAddOrEdit(@RequestParam(required = false)String deptId,Model model)
             throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        SysDepartment sysDepartment1 = new SysDepartment();
-        List<SysDepartment> departmentList = sysDeptService.findBy(sysDepartment1);
-        String value = mapper.writeValueAsString(departmentList);
-        model.addAttribute("nodes",value);
-        if (StringUtils.isNotEmpty(deptId)) {
-            SysDepartment sysDepartment = new SysDepartment();
-            sysDepartment.setDeptId(deptId);
-            SysDepartment department = sysDeptService.findBy(sysDepartment).get(0);
-            model.addAttribute("sysDept",department);
+        SysDepartment department = new SysDepartment();
+        department.setState("1");
+        List<SysDepartment> list = sysDeptService.findBy(department);
+        String value = mapper.writeValueAsString(list);
+        model.addAttribute("nodes",value);  //过滤自身在页面限制
+        if (StringUtils.isNotEmpty(deptId)) {   //编辑
+            SysDepartment byDeptId = sysDeptService.findByDeptId(deptId);
+            String parentId = sysDeptService.findByDeptId(deptId).getParentId();
+            SysDepartment parent = sysDeptService.findByDeptId(parentId);
+            model.addAttribute("parentDept",parent);
+            model.addAttribute("sysDept",byDeptId);
             return "sys/dept_edit";
         }
         return "sys/dept_add";
@@ -84,9 +87,43 @@ public class DeptController {
 
     @RequestMapping(value = "/saveOrUpdate")
     public String saveOrUpdate(SysDepartment sysDepartment){
-
-
-        return null;
+        String parentId = "";       //现父节点
+        if (StringUtils.isNotEmpty(parentId = sysDepartment.getParentId())) {   //有父节点
+            if (StringUtils.isNotEmpty(sysDepartment.getDeptId())) {    //编辑
+                String oldParentDeptId = sysDeptService.findByDeptId(sysDepartment.getDeptId()).getParentId();
+                sysDeptService.updateSysDept(sysDepartment);    //更新
+                if (!StringUtils.equals(sysDepartment.getParentId(),oldParentDeptId)) {     //修改了父节点
+                    if (sysDeptService.findByParentId(oldParentDeptId).size()==0) {
+                        SysDepartment department = new SysDepartment();
+                        department.setDeptId(oldParentDeptId);
+                        department.setHasBranch("false");
+                        sysDeptService.updateSysDept(department);
+                    }
+                    if (sysDeptService.findByParentId(sysDepartment.getParentId()).size() > 0) {
+                        SysDepartment department = new SysDepartment();
+                        department.setDeptId(parentId);
+                        department.setHasBranch("true");
+                        sysDeptService.updateSysDept(department);
+                    }
+                }else{ //未修改父节点
+                    sysDeptService.updateSysDept(sysDepartment);
+                }
+            }else{  //新增
+                sysDeptService.saveSysDept(sysDepartment);  //保存
+                SysDepartment parentDept = sysDeptService.findByDeptId(parentId);
+                if (StringUtils.equals(parentDept.getHasBranch(),"false")) {
+                    parentDept.setHasBranch("true");
+                    sysDeptService.updateSysDept(parentDept);
+                }
+            }
+        }else{  //没有父节点
+            if (StringUtils.isNotEmpty(sysDepartment.getDeptId())) {
+                sysDeptService.updateSysDept(sysDepartment);
+            }else{
+                sysDeptService.saveSysDept(sysDepartment);
+            }
+        }
+        return "forward:/dept/tolist.do";
     }
 
     @RequestMapping(value = "/formCheck")

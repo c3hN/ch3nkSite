@@ -133,11 +133,11 @@ $("#menus").treetable({
         $(location).prop("href","${basePath}/menu/toAddOrEdit.do");
     });
    function editMenu(obj) {
-       var menuId = $(obj).parent().parent().parent().find("td").eq(1).text();
+       var menuId = $(obj).parent().parent().find("td").eq(1).text();
        $(location).attr('href', '${basePath}/menu/toAddOrEdit.do?menuId='+menuId);
    };
     function disableMenu(obj) {
-        var menuId = $(obj).parent().parent().parent().find("td").eq(1).text();
+        var menuId = $(obj).parent().parent().find("td").eq(1).text();
         $(location).attr('href', '${basePath}/menu/disableMenu.do?menuId='+menuId);
     };
 </script>

@@ -23,6 +23,18 @@ public class SysDeptServiceImpl implements ISysDeptService{
     }
 
     @Override
+    public SysDepartment findByDeptId(String deptId) {
+        return sysDepartmentMapper.selectByPrimaryKey(deptId);
+    }
+
+    @Override
+    public List<SysDepartment> findByParentId(String parentId) {
+        SysDepartment sysDepartment = new SysDepartment();
+        sysDepartment.setParentId(parentId);
+        return sysDepartmentMapper.selectBy(sysDepartment);
+    }
+
+    @Override
     public List<SysDepartment> findBy(SysDepartment sysDepartment) {
         return sysDepartmentMapper.selectBy(sysDepartment);
     }

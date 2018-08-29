@@ -8,6 +8,10 @@ public interface ISysDeptService {
 
     int findCount(SysDepartment sysDepartment);
 
+    SysDepartment findByDeptId(String deptId);
+
+    List<SysDepartment> findByParentId(String parentId);
+
     List<SysDepartment> findBy(SysDepartment sysDepartment);
 
     List<SysDepartment> findAllParents();

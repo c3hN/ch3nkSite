@@ -108,7 +108,7 @@
       <if test="createDate != null">CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},</if>
       <if test="updateDate != null">UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},</if>
       <if test="state != null">`STATE` = #{state,jdbcType=VARCHAR},</if>
-      <if test="hasBranch != null">HAS_BRANCH = #{state,jdbcType=VARCHAR},</if>
+      <if test="hasBranch != null">HAS_BRANCH = #{hasBranch,jdbcType=VARCHAR},</if>
     </set>
     where DEPT_ID = #{deptId,jdbcType=VARCHAR}
   </update>

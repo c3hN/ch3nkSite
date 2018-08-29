@@ -192,7 +192,7 @@
     };
     var treeObj = $.fn.zTree.init($("#menus"), setting,  ${nodes});
     var menus = treeObj.getNodes();
-    $.each(menus,function (index,value) {//展开第一层父节点
+    $.each(menus,function (index,value) {//展开第一层
         treeObj.expandNode(menus[index]);
     });
     function clickNode(event, treeId, treeNode) {

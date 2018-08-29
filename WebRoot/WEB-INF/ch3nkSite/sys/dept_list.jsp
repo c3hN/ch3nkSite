@@ -71,7 +71,7 @@
     <div class="operations">
         <div class="btn-group">
             <button class="btn btn-default btn-sm" id="addDeptBtn">新增</button>
-            <button class="btn btn-default btn-sm" onclick="window.location.reload(true)">刷新</button>
+            <%--<button class="btn btn-default btn-sm" onclick="window.location.reload(true)">刷新</button>--%>
         </div>
     </div>
     <div class="depts-list">
@@ -135,11 +135,11 @@ var treetable=$("#depts").treetable({
        $(location).prop('href','${basePath}/dept/toAddOrEdit.do');
     });
    function editDept(obj) {
-       var deptId = $(obj).parent().parent().parent().find("td").eq(1).text();
+       var deptId = $(obj).parent().parent().find("td").eq(1).text();
        $(location).attr('href', '${basePath}/dept/toAddOrEdit.do?deptId='+deptId);
    };
     function deleteDept(obj) {
-        var deptId = $(obj).parent().parent().parent().find("td").eq(1).text();
+        var deptId = $(obj).parent().parent().find("td").eq(1).text();
         $(location).attr('href', '${basePath}/dept/deleteDept.do?deptId='+deptId);
     };
 </script>
