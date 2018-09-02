@@ -40,8 +40,18 @@ public class SysDeptServiceImpl implements ISysDeptService{
     }
 
     @Override
+    public List<SysDepartment> findAll() {
+        return sysDepartmentMapper.selectBy(new SysDepartment());
+    }
+
+    @Override
     public List<SysDepartment> findAllParents() {
         return sysDepartmentMapper.selectParents();
+    }
+
+    @Override
+    public List<SysDepartment> findAllChildren() {
+        return sysDepartmentMapper.selectChildren();
     }
 
     @Override
@@ -67,9 +77,7 @@ public class SysDeptServiceImpl implements ISysDeptService{
     }
 
     @Override
-    public void deleteSysDept(SysDepartment sysDepartment) {
-        if (StringUtils.isNotEmpty(sysDepartment.getDeptId())) {
-            sysDepartmentMapper.deleteByPrimaryKey(sysDepartment.getDeptId());
-        }
+    public void deleteByDeptId(String deptId) {
+        sysDepartmentMapper.deleteByPrimaryKey(deptId);
     }
 }

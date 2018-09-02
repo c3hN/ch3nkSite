@@ -30,10 +30,19 @@ public class DeptController {
     @Autowired
     private ISysDeptService sysDeptService;
 
+//    @RequestMapping("tolist")
+//    public String toList(Model model) {
+//        // 如果期望jquery treeTable按照正确顺序展示树形表格，例：有三个节点：A，B（节点A的子节点）和C（节点B的子节点）。
+//        // 如果按照以下顺序在A - C - B中为HTML表中的这些节点创建行，则树将无法正确显示。必须确保该行是在为了A - B - C。
+//        List<SysDepartment> all = sysDeptService.findAll();
+//        List<SysDepartment> sysDepartments = buildByRecursive(all);
+//        model.addAttribute("sysDepts",sysDepartments);
+//        return "sys/dept_list_new";
+//    }
     @RequestMapping("tolist")
     public String toList(Model model) {
-        List<SysDepartment> list = sysDeptService.findAllParents();
-        model.addAttribute("list",list);
+        List<SysDepartment> allParents = sysDeptService.findAllParents();
+        model.addAttribute("list",allParents);
         return "sys/dept_list";
     }
 
@@ -126,6 +135,28 @@ public class DeptController {
         return "forward:/dept/tolist.do";
     }
 
+    @RequestMapping(value = "/deleteDept")
+    @ResponseBody
+    public String deleteDept(String deptId) {
+        String result = "";
+        List<SysDepartment> list = sysDeptService.findByParentId(deptId);
+        if (list.size() != 0) {
+            result = "error";
+        }else{
+            String parentId = sysDeptService.findByDeptId(deptId).getParentId();
+            sysDeptService.deleteByDeptId(deptId);
+            if (sysDeptService.findByParentId(parentId).size() == 0) {
+                SysDepartment department = new SysDepartment();
+                department.setDeptId(parentId);
+                department.setHasBranch("false");
+                sysDeptService.updateSysDept(department);
+            }
+           result = "success";
+        }
+        return result;
+    }
+
+
     @RequestMapping(value = "/formCheck")
     @ResponseBody
     public Map<String,Object> formCheck(SysDepartment sysDepartment){
@@ -140,4 +171,41 @@ public class DeptController {
         return jsonResult;
     }
 
+
+
+    /**
+     * 递归查找子节点
+     * @param department
+     * @param list
+     * @return
+     */
+    public SysDepartment findChildren(SysDepartment department,List<SysDepartment> list) {
+        for (SysDepartment it : list) {
+            if(department.getDeptId().equals(it.getParentId())) {
+                if (department.getChildren() == null) {
+                    department.setChildren(new ArrayList<SysDepartment>());
+                }
+                department.getChildren().add(findChildren(it,list));
+            }
+        }
+        return department;
+    }
+
+    /**
+     * 使用递归方法建树
+     * @param list
+     * @return
+     */
+    public List<SysDepartment> buildByRecursive(List<SysDepartment> list) {
+        List<SysDepartment> trees = new ArrayList<SysDepartment>();
+        for (SysDepartment department : list) {
+            if (StringUtils.isEmpty(department.getParentId())) {
+                trees.add(findChildren(department,list));
+            }
+        }
+        return trees;
+    }
+
 }
+
+

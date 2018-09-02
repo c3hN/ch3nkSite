@@ -60,6 +60,7 @@
 <script src="${basePath}/static/plugins/bootstrap-table/bootstrap-table.min.js"></script>
 <script src="${basePath}/static/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
 <script src="${basePath}/static/plugins/ztree/js/jquery.ztree.core.min.js"></script>
+<script src="${basePath}/static/plugins/layer/layer.js"></script>
 <script>
     table = $("#roles").bootstrapTable({
         url:'${basePath}/role/list.do',
@@ -101,9 +102,9 @@
         "click #logiDeleteRole":function (e,value, row, index) {
             $.post("${basePath}/role/logicalDelete.do",{"roleId":row.roleId},function (data) {
                 if (data.data == "success") {
-                    alert("删除成功")
+                    layer.alert("删除成功")
                 }else if (data.data == "error"){
-                    alert("失败")
+                    layer.alert("失败")
                 }
             });
         }

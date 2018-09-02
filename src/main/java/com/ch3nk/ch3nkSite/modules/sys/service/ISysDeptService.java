@@ -14,12 +14,16 @@ public interface ISysDeptService {
 
     List<SysDepartment> findBy(SysDepartment sysDepartment);
 
+    List<SysDepartment> findAll();
+
     List<SysDepartment> findAllParents();
+
+    List<SysDepartment> findAllChildren();
 
     int saveSysDept(SysDepartment sysDepartment);
 
     int updateSysDept(SysDepartment sysDepartment);
 
-    void deleteSysDept(SysDepartment sysDepartment);
+    void deleteByDeptId(String deptId);
 
 }

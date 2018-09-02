@@ -1,6 +1,7 @@
 package com.ch3nk.ch3nkSite.modules.sys.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class SysDepartment {
     private static final long serialVersionUID = 1L;
@@ -23,6 +24,8 @@ public class SysDepartment {
 
     private String state;
     private String hasBranch;
+
+    private List<SysDepartment> children;
 
     public String getHasBranch() {
         return hasBranch;
@@ -94,5 +97,13 @@ public class SysDepartment {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public List<SysDepartment> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SysDepartment> children) {
+        this.children = children;
     }
 }

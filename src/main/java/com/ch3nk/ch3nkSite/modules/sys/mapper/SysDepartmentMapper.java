@@ -20,6 +20,8 @@ public interface SysDepartmentMapper {
 
     List<SysDepartment> selectParents();
 
+    List<SysDepartment> selectChildren();
+
     int updateByPrimaryKeySelective(SysDepartment record);
 
     int updateByPrimaryKey(SysDepartment record);

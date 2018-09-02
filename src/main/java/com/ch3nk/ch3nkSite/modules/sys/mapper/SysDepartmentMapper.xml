@@ -60,6 +60,14 @@
     order by CREATE_DATE desc
   </select>
 
+  <select id="selectChildren" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_department
+    where PARENT_ID is not null or PARENT_ID != ''
+    order by CREATE_DATE desc
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from sys_department
     where DEPT_ID = #{deptId,jdbcType=VARCHAR}

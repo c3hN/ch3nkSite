@@ -71,7 +71,7 @@
     <div class="operations">
         <div class="btn-group">
             <button class="btn btn-default btn-sm" id="addDeptBtn">新增</button>
-            <%--<button class="btn btn-default btn-sm" onclick="window.location.reload(true)">刷新</button>--%>
+            <button class="btn btn-default btn-sm" onclick="window.location.reload(true)">刷新</button>
         </div>
     </div>
     <div class="depts-list">
@@ -82,7 +82,7 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${list}" var="dept">
+                <c:forEach items="${sysDepts}" var="dept">
                     <tr data-tt-id="${dept.deptId}" data-tt-parent-id="${dept.parentId}" data-tt-branch="${dept.hasBranch}">
                         <td>${dept.deptName}</td>
                         <td hidden="hidden">${dept.deptId}</td>
@@ -109,29 +109,28 @@
 <script src="${basePath}/static/plugins/layer/layer.js"></script>
 <script>
 var treetable=$("#depts").treetable({
-    // initialState:'expanded',
     expandable: true,
     clickableNodeNames:true,
     stringCollapse: '收起',
     stringExpand: '展开',
-    indent:19,
-    onNodeExpand: function () {
-        var node = this;        //判断当前节点是否已经拥有子节点
-        var childSize = $("#treetable").find("[data-tt-parent-id='" + node.id + "']").length;
-        $.post(
-            '${basePath}/dept/loadTreeBranch.do',
-            {'deptId':node.id},
-            function(data,status,xhr){
-                $.each(data.data,function (index,obj) {
-                    $("#depts").treetable("loadBranch", node, obj);// 插入子节点
-                });
-            }
-        );
-    },
-    onNodeCollapse: function() {
-        var node = this;
-        $("#depts").treetable("unloadBranch", node);
-    }
+    indent:19
+    <%--onNodeExpand: function () {--%>
+        <%--var node = this;        //判断当前节点是否已经拥有子节点--%>
+        <%--var childSize = $("#treetable").find("[data-tt-parent-id='" + node.id + "']").length;--%>
+        <%--$.post(--%>
+            <%--'${basePath}/dept/loadTreeBranch.do',--%>
+            <%--{'deptId':node.id},--%>
+            <%--function(data,status,xhr){--%>
+                <%--$.each(data.data,function (index,obj) {--%>
+                    <%--$("#depts").treetable("loadBranch", node, obj);// 插入子节点--%>
+                <%--});--%>
+            <%--}--%>
+        <%--);--%>
+    <%--},--%>
+    <%--onNodeCollapse: function() {--%>
+        <%--var node = this;--%>
+        <%--$("#depts").treetable("unloadBranch", node);--%>
+    <%--}--%>
 });
     $("#addDeptBtn").click(function () {
        $(location).prop('href','${basePath}/dept/toAddOrEdit.do');
@@ -148,6 +147,7 @@ var treetable=$("#depts").treetable({
                 $(obj).parent().parent().remove();  //删除该行
                 layer.msg("删除成功");
             }else{
+               // alert();
                layer.alert("该部门下存在子节点，无法删除");
             }
         });
