@@ -67,7 +67,7 @@
                             <span>上级菜单</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" name="parentName" id="deptName" >
+                            <input type="text" class="form-control" name="parentName" id="parentName" >
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#parents_tree"><i class="fa fa-search"></i></button>
                         </div>
                         <label  class="col-sm-2 control-label">
@@ -76,10 +76,10 @@
                         </label>
                         <div class="col-sm-5">
                             <label class="radio-inline">
-                                <input type="radio" name="category" value="1" checked>菜单
+                                <input type="radio" name="category" value="0" checked>菜单
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="category" value="0">操作
+                                <input type="radio" name="category" value="1">操作
                             </label>
                         </div>
                     </div>
@@ -196,8 +196,8 @@
         treeObj.expandNode(menus[index]);
     });
     function clickNode(event, treeId, treeNode) {
-        $("input[id='deptId']").attr("value",treeNode.deptId);
-        $("input[id='deptName']").attr("value",treeNode.deptName);
+        $("input[name='parentId']").attr("value",treeNode.menuId);
+        $("input[id='parentName']").attr("value",treeNode.name);
         $("#parents_tree").modal('hide');
     };
 

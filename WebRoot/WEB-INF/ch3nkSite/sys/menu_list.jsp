@@ -104,6 +104,7 @@
 </div>
 <script src="${basePath}/static/js/jquery-3.2.1.js"></script>
 <script src="${basePath}/static/plugins/jquery-treetable/jquery.treetable.js"></script>
+<script src="${basePath}/static/plugins/layer/layer.js"></script>
 <script>
 $("#menus").treetable({
     expandable: true,
@@ -140,6 +141,24 @@ $("#menus").treetable({
         var menuId = $(obj).parent().parent().find("td").eq(1).text();
         $(location).attr('href', '${basePath}/menu/disableMenu.do?menuId='+menuId);
     };
+    function deleteMenu(obj) {
+        var menuId = $(obj).parent().parent().find("td").eq(1).text();
+        layer.confirm('确定删除该菜单？',{btn:['确定','取消']},
+        function () {
+            $.post("${basePath}/menu/deleteMenu.do",{"menuId":menuId},function (data) {
+                if (data == 'success') {
+                    // $(obj).parent().parent().remove();  //删除该行
+                    $(obj).parent().parent().hide(700);  //隐藏该行
+                    layer.msg("删除成功");
+                }else{
+                    layer.alert("该菜单下存在子节点，删除失败");
+                }
+            });
+        },
+        function (index,layero) {
+            layer.close(index);
+        })
+    }
 </script>
 </body>
 </html>

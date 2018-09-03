@@ -100,12 +100,19 @@
             $(location).prop('href', '${basePath}/role/toAddOrEdit.do?roleId='+row.roleId);
         },
         "click #logiDeleteRole":function (e,value, row, index) {
-            $.post("${basePath}/role/logicalDelete.do",{"roleId":row.roleId},function (data) {
-                if (data.data == "success") {
-                    layer.alert("删除成功")
-                }else if (data.data == "error"){
-                    layer.alert("失败")
-                }
+            layer.confirm('确定删除该角色?',{btn:['确定','取消']},
+            function () {
+                $.post("${basePath}/role/logicalDelete.do",{"roleId":row.roleId},function (data) {
+                    if (data.data == "success") {
+                        layer.msg("删除成功");
+                        table.bootstrapTable('refresh',{silent: true,url:'${basePath}/role/list?deptId='+row.department.deptId});//重载表格
+                    }else if (data.data == "error"){
+                        layer.alert("该角色被使用，删除失败");
+                    }
+                });
+            },
+            function (index,layero) {
+                layer.close(index);
             });
         }
     }

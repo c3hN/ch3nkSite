@@ -97,13 +97,15 @@ public class  MenuController {
 
 
 
-    @RequestMapping(value = "/deleteBatch")
+    @RequestMapping(value = "/deleteMenu")
     @ResponseBody
-    public Map<String,Object> deleteBatch(@RequestBody String[] menuIds) {
-        jsonResult = new HashMap<String, Object>();
-        sysMenuService.tombstoneBatch(menuIds);
-        jsonResult.put("msg","success");
-        return jsonResult;
+    public String deleteMenu(String menuId) {
+        String result = "error";
+        if (StringUtils.isNotEmpty(menuId)) {
+            sysMenuService.deleteByPK(menuId);
+            result = "success";
+        }
+        return result;
     }
 
 

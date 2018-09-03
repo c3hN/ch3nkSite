@@ -29,19 +29,6 @@ public interface ISysMenuService {
      */
     List<SysMenu> findAllParents();
 
-    /**
-     * 批量逻辑删除
-     * @param menuIds
-     * @return
-     */
-    int tombstoneBatch(String [] menuIds);
-
-    /**
-     * 批量逻辑还原
-     * @param menuIds
-     * @return
-     */
-    int recoveByPKBatch(String [] menuIds);
 
     /**
      * 保存
@@ -56,6 +43,9 @@ public interface ISysMenuService {
      * @return
      */
     int updateMenu(SysMenu sysMenu);
+
+
+    void deleteByPK(String menuId);
 
 
 

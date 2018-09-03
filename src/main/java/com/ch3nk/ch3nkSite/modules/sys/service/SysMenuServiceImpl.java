@@ -42,15 +42,6 @@ public class SysMenuServiceImpl implements ISysMenuService {
         return sysMenus;
     }
 
-    @Override
-    public int tombstoneBatch(String[] menuIds) {
-        return  sysMenuMapper.tombstoneByPKBatch(menuIds);
-    }
-
-    @Override
-    public int recoveByPKBatch(String[] menuIds) {
-        return sysMenuMapper.recoveByPKBatch(menuIds);
-    }
 
     @Override
     public int saveSysMenu(SysMenu sysMenu) {
@@ -70,6 +61,11 @@ public class SysMenuServiceImpl implements ISysMenuService {
         sysMenu.setUpdateBy(sysUser.getUserId());
         sysMenu.setUpdateDate(new Date());
         return sysMenuMapper.updateByPrimaryKeySelective(sysMenu);
+    }
+
+    @Override
+    public void deleteByPK(String menuId) {
+        sysMenuMapper.deleteByPrimaryKey(menuId);
     }
 
 }

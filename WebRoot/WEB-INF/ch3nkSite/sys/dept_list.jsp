@@ -143,13 +143,19 @@ var treetable=$("#depts").treetable({
     function deleteDept(obj) {
         //
         var deptId = $(obj).parent().parent().find("td").eq(1).text();
-        $.post("${basePath}/dept/deleteDept.do",{"deptId":deptId},function (data) {
-            if (data == 'success') {
-                $(obj).parent().parent().remove();  //删除该行
-                layer.msg("删除成功");
-            }else{
-               layer.alert("该部门下存在子节点，无法删除");
-            }
+        layer.confirm('确定删除该部门？',{btn:['确定','取消']},
+        function () {
+            $.post("${basePath}/dept/deleteDept.do",{"deptId":deptId},function (data) {
+                if (data == 'success') {
+                    // $(obj).parent().parent().remove();  //删除该行
+                    $(obj).parent().parent().hide(700);  //删除该行
+                    layer.msg("删除成功");
+                }else{
+                    layer.alert("该部门下存在子节点，无法删除");
+                }
+            });
+        },function (index,layero) {
+               layer.close(index);
         });
     };
 </script>
