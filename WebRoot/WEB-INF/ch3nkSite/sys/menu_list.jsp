@@ -143,7 +143,7 @@ $("#menus").treetable({
     };
     function deleteMenu(obj) {
         var menuId = $(obj).parent().parent().find("td").eq(1).text();
-        layer.confirm('确定删除该菜单？',{btn:['确定','取消']},
+        layer.confirm('确定删除该菜单？',{btn:['确定','取消'],icon:3},
         function () {
             $.post("${basePath}/menu/deleteMenu.do",{"menuId":menuId},function (data) {
                 if (data == 'success') {
@@ -151,7 +151,7 @@ $("#menus").treetable({
                     $(obj).parent().parent().hide(700);  //隐藏该行
                     layer.msg("删除成功");
                 }else{
-                    layer.alert("该菜单下存在子节点，删除失败");
+                    layer.alert("该菜单下存在子节点，删除失败",{icon: 2});
                 }
             });
         },

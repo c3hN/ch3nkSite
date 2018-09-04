@@ -134,7 +134,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                部门
+                角色列表
             </div>
             <div class="modal-body">
                 <ul id="roles-tree" class="ztree"></ul>
@@ -151,7 +151,7 @@
 <script src="${basePath}/static/plugins/nice-validator/local/zh-CN.js"></script>
 <script src="${basePath}/static/plugins/ztree/js/jquery.ztree.core.min.js"></script>
 <script>
-    //    初始化表单验证
+    //初始化表单验证
     var val = $("input[name='userId']").val();
     $("#userForm").validator({
         rules: {

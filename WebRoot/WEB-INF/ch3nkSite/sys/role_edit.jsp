@@ -96,7 +96,7 @@
                                 <input type="radio" name="useFlag" value="1" <c:if test="${sysRole.useFlag == '1'}">checked</c:if>>启用
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="useFlag" value="0" <c:if test="${sysRole.useFlag == '0'}">checked</c:if>>未启用
+                                <input type="radio" name="useFlag" value="0" <c:if test="${sysRole.useFlag == '0'}">checked</c:if>>禁用
                             </label>
                         </div>
                     </div>

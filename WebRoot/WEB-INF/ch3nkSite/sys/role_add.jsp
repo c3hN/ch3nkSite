@@ -95,7 +95,7 @@
                                 <input type="radio" name="useFlag" value="1"checked>启用
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="useFlag" value="0">未启用
+                                <input type="radio" name="useFlag" value="0">禁用
                             </label>
                         </div>
                     </div>

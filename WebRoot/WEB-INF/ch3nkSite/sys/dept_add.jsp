@@ -101,7 +101,7 @@
                                 <input type="radio" name="state" value="1" checked>启用
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="state" value="0">未启用
+                                <input type="radio" name="state" value="0">禁用
                             </label>
                         </div>
                     </div>
@@ -160,8 +160,12 @@
             onClick:clickNode
         }
     };
-    var detps = $.fn.zTree.init($("#depts"), setting,  ${nodes});
-    detps.expandNode(detps.getNodes()[0]);    //展开第一层
+    var detpsObj = $.fn.zTree.init($("#depts"), setting,  ${nodes});
+    // detpsObj.expandNode(detpsObj.getNodes()[0]);    //展开第一层
+    var depts = detpsObj.getNodes();
+    $.each(depts,function (index,value) {
+        detpsObj.expandNode(depts[index]);
+    });
 
     function clickNode(event, treeId, treeNode) {
         $("input[name='parentId']").attr('value',treeNode.deptId);

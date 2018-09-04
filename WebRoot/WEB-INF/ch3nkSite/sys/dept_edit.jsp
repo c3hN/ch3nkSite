@@ -102,7 +102,7 @@
                                 <input type="radio" name="state" value="1" <c:if test="${sysDept.state == '1'}">checked</c:if> >启用
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="state" value="0" <c:if test="${sysDept.state == '0'}">checked</c:if>>未启用
+                                <input type="radio" name="state" value="0" <c:if test="${sysDept.state == '0'}">checked</c:if>>禁用
                             </label>
                         </div>
                     </div>
@@ -142,6 +142,7 @@
 <script src="${basePath}/static/plugins/nice-validator/jquery.validator.min.js"></script>
 <script src="${basePath}/static/plugins/nice-validator/local/zh-CN.js"></script>
 <script src="${basePath}/static/plugins/ztree/js/jquery.ztree.core.min.js"></script>
+<script src="${basePath}/static/plugins/layer/layer.js"></script>
 <script>
     <%--模态框树--%>
     var setting = {
@@ -165,9 +166,14 @@
     detps.expandNode(detps.getNodes()[0]);    //展开第一层
 
     function clickNode(event, treeId, treeNode) {
-        $("input[name='parentId']").attr('value',treeNode.deptId);
-        $("input[id='parentName']").attr('value',treeNode.deptName);
-        $("#myModal").modal('hide');
+        var deptId = "${sysDept.deptId}";
+        if (treeNode.deptId == deptId) {
+            layer.alert('不能选择自己作为上级部门',{icon:2});
+        }else{
+            $("input[name='parentId']").attr('value',treeNode.deptId);
+            $("input[id='parentName']").attr('value',treeNode.deptName);
+            $("#myModal").modal('hide');
+        }
     };
 
     //    初始化表单验证

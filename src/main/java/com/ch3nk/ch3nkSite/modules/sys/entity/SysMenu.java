@@ -39,7 +39,7 @@ public class SysMenu implements Serializable {
     /**
      * 图标路径/名称
      */
-    private String icon;
+    private String menuIcon;
 
     private String createBy;
 
@@ -114,12 +114,12 @@ public class SysMenu implements Serializable {
         this.href = href;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getMenuIcon() {
+        return menuIcon;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setMenuIcon(String icon) {
+        this.menuIcon = menuIcon;
     }
 
     public String getCreateBy() {

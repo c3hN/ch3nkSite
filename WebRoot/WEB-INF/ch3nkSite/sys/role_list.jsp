@@ -47,10 +47,25 @@
             <div class="col-md-10">
                 <div id="table_operations">
                     <button class="btn btn-default btn-sm" id="roleAddBtn">新增</button>
+                    <button class="btn btn-success btn-sm" id="recycleRole" data-toggle="modal" data-target="#recycle"><i class="fa fa-recycle"></i>&nbsp;回收站</button>
                 </div>
                 <div class="table-content">
                     <table id="roles"></table>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="recycle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">回收站</h4>
+            </div>
+                <table></table>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
     </div>
@@ -100,14 +115,14 @@
             $(location).prop('href', '${basePath}/role/toAddOrEdit.do?roleId='+row.roleId);
         },
         "click #logiDeleteRole":function (e,value, row, index) {
-            layer.confirm('确定删除该角色?',{btn:['确定','取消']},
+            layer.confirm('确定删除该角色?',{btn:['确定','取消'],icon:3},
             function () {
                 $.post("${basePath}/role/logicalDelete.do",{"roleId":row.roleId},function (data) {
                     if (data.data == "success") {
                         layer.msg("删除成功");
                         table.bootstrapTable('refresh',{silent: true,url:'${basePath}/role/list?deptId='+row.department.deptId});//重载表格
                     }else if (data.data == "error"){
-                        layer.alert("该角色被使用，删除失败");
+                        layer.alert("该角色被使用，删除失败",{icon:2});
                     }
                 });
             },
@@ -121,7 +136,7 @@
         if (value == '1') {
             return '启用';
         }else if (value == '0') {
-            return '未启用';
+            return '禁用';
         }
     }
 
@@ -144,10 +159,15 @@
             }
         }
     };
-    var deptTree = $.fn.zTree.init($("#dept_tree"), setting,  ${nodes});
-    deptTree.expandNode(deptTree.getNodes()[0]);    //展开第一层
+    var deptTreeObj = $.fn.zTree.init($("#dept_tree"), setting,  ${nodes});
+    // deptTree.expandNode(deptTree.getNodes()[0]);    //展开第一层
+    var depts = deptTreeObj.getNodes();
+    $.each(depts,function (index,value) {
+       deptTreeObj.expandNode(depts[index]);
+    });
+
     $("#roleAddBtn").click(function () {
-        var nodes = deptTree.getSelectedNodes();
+        var nodes = deptTreeObj.getSelectedNodes();
         if (nodes.length > 0) {
             $(location).prop("href","${basePath}/role/toAddOrEdit.do?deptId="+nodes[0].deptId);
         }else{

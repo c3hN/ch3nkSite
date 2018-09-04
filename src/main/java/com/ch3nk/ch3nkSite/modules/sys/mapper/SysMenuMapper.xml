@@ -8,7 +8,7 @@
         <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
         <result column="CATEGORY" jdbcType="VARCHAR" property="category" />
         <result column="HREF" jdbcType="VARCHAR" property="href" />
-        <result column="ICON" jdbcType="VARCHAR" property="icon" />
+        <result column="ICON" jdbcType="VARCHAR" property="menuIcon" />
         <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
         <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
         <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
@@ -39,7 +39,7 @@
             <if test="parentId != null and parentId != ''">and PARENT_ID = #{parentId}</if>
             <if test="category != null and category != ''">and CATEGORY = #{category}</if>
             <if test="href != null and href != ''">and HREF = #{href}</if>
-            <if test="icon != null and icon != ''">and ICON = #{icon}</if>
+            <if test="menuIcon != null and menuIcon != ''">and ICON = #{menuIcon}</if>
             <if test="createBy != null and createBy != ''">and CREATE_BY = #{createBy}</if>
             <if test="createDate != null and createDate != ''">and CREATE_DATE = #{createDate}</if>
             <if test="updateBy != null and updateBy != ''">and UPDATE_BY = #{updateBy}</if>
@@ -62,7 +62,7 @@
             <if test="parentId != null and parentId != ''">and PARENT_ID = #{parentId}</if>
             <if test="category != null and category != ''">and CATEGORY = #{category}</if>
             <if test="href != null and href != ''">and HREF = #{href}</if>
-            <if test="icon != null and icon != ''">and ICON = #{icon}</if>
+            <if test="menuIcon != null and menuIcon != ''">and ICON = #{menuIcon}</if>
             <if test="createBy != null and createBy != ''">and CREATE_BY = #{createBy}</if>
             <if test="createDate != null and createDate != ''">and CREATE_DATE = #{createDate}</if>
             <if test="updateBy != null and updateBy != ''">and UPDATE_BY = #{updateBy}</if>
@@ -99,7 +99,7 @@
         REMARK, PERMISSION)
         values (#{menuId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{menuCode,jdbcType=VARCHAR},
         #{parentId,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{href,jdbcType=VARCHAR},
-        #{icon,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+        #{menuIcon,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
         #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{deleteFlag,jdbcType=VARCHAR},
         #{remark,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR})
     </insert>
@@ -112,7 +112,7 @@
             <if test="parentId != null and parentId != ''">PARENT_ID,</if>
             <if test="category != null">CATEGORY,</if>
             <if test="href != null">HREF,</if>
-            <if test="icon != null">ICON,</if>
+            <if test="menuIcon != null">ICON,</if>
             <if test="createBy != null">CREATE_BY,</if>
             <if test="createDate != null">CREATE_DATE,</if>
             <if test="updateBy != null">UPDATE_BY,</if>
@@ -129,7 +129,7 @@
             <if test="parentId != null and parentId != ''">#{parentId,jdbcType=VARCHAR},</if>
             <if test="category != null">#{category,jdbcType=VARCHAR},</if>
             <if test="href != null">#{href,jdbcType=VARCHAR},</if>
-            <if test="icon != null">#{icon,jdbcType=VARCHAR},</if>
+            <if test="menuIcon != null">#{menuIcon,jdbcType=VARCHAR},</if>
             <if test="createBy != null">#{createBy,jdbcType=VARCHAR},</if>
             <if test="createDate != null">#{createDate,jdbcType=TIMESTAMP},</if>
             <if test="updateBy != null">#{updateBy,jdbcType=VARCHAR},</if>
@@ -148,7 +148,7 @@
             <if test="parentId != null and parentId != ''">PARENT_ID = #{parentId,jdbcType=VARCHAR},</if>
             <if test="category != null">CATEGORY = #{category,jdbcType=VARCHAR},</if>
             <if test="href != null">HREF = #{href,jdbcType=VARCHAR},</if>
-            <if test="icon != null">ICON = #{icon,jdbcType=VARCHAR},</if>
+            <if test="menuIcon != null">ICON = #{menuIcon,jdbcType=VARCHAR},</if>
             <if test="createBy != null">CREATE_BY = #{createBy,jdbcType=VARCHAR},</if>
             <if test="createDate != null">CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},</if>
             <if test="updateBy != null">UPDATE_BY = #{updateBy,jdbcType=VARCHAR},</if>
@@ -156,6 +156,7 @@
             <if test="deleteFlag != null">DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR},</if>
             <if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR},</if>
             <if test="permission != null">PERMISSION = #{permission,jdbcType=VARCHAR},</if>
+            <if test="hasBranch != null">HASBRANCH = #{hasBranch,jdbcType=VARCHAR}</if>
         </set>
         where MENU_ID = #{menuId,jdbcType=VARCHAR}
     </update>
@@ -166,7 +167,7 @@
         PARENT_ID = #{parentId,jdbcType=VARCHAR},
         CATEGORY = #{category,jdbcType=VARCHAR},
         HREF = #{href,jdbcType=VARCHAR},
-        ICON = #{icon,jdbcType=VARCHAR},
+        ICON = #{menuIcon,jdbcType=VARCHAR},
         CREATE_BY = #{createBy,jdbcType=VARCHAR},
         CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
         UPDATE_BY = #{updateBy,jdbcType=VARCHAR},
@@ -174,7 +175,7 @@
         DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR},
         REMARK = #{remark,jdbcType=VARCHAR},
         PERMISSION = #{permission,jdbcType=VARCHAR}
-        VARCHAR = #{hasBranch,jdbcType=VARCHAR}
+        HASBRANCH = #{hasBranch,jdbcType=VARCHAR}
         where MENU_ID = #{menuId,jdbcType=VARCHAR}
     </update>
 
@@ -187,7 +188,7 @@
                 <if test="menu.parentId != null">PARENT_ID = #{menu.parentId,jdbcType=VARCHAR}</if>
                 <if test="menu.category != null">CATEGORY = #{menu.category,jdbcType=VARCHAR}</if>
                 <if test="menu.href != null">HREF = #{menu.href,jdbcType=VARCHAR}</if>
-                <if test="menu.icon != null">ICON = #{menu.icon,jdbcType=VARCHAR}</if>
+                <if test="menu.menuIcon != null">ICON = #{menu.menuIcon,jdbcType=VARCHAR}</if>
                 <if test="menu.createBy != null">CREATE_BY = #{menu.createBy,jdbcType=VARCHAR}</if>
                 <if test="menu.createDate != null">CREATE_DATE = #{menu.createDate,jdbcType=TIMESTAMP}</if>
                 <if test="menu.updateBy != null">UPDATE_BY = #{menu.updateBy,jdbcType=VARCHAR}</if>
@@ -202,29 +203,6 @@
             MENU_ID in
             <foreach collection="list" item="menu" open="(" close=")" separator=",">
                 #{menu.menuId}
-            </foreach>
-        </where>
-    </update>
-
-
-
-    <update id="tombstoneByPKBatch" parameterType="java.util.Arrays">
-        update sys_menu
-        set DELETE_FLAG = '0'
-        <where>
-            MENU_ID in
-            <foreach collection="menuIds" item="menuId" open="(" close=")" separator=",">
-                #{menuId}
-            </foreach>
-        </where>
-    </update>
-    <update id="recoveByPKBatch" parameterType="java.util.Arrays">
-        update sys_menu
-        set DELETE_FLAG = '1'
-        <where>
-            MENU_ID in
-            <foreach collection="menuIds" item="menuId" open="(" close=")" separator=",">
-                #{menuId}
             </foreach>
         </where>
     </update>

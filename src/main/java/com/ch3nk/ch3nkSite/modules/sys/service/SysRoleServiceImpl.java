@@ -1,5 +1,6 @@
 package com.ch3nk.ch3nkSite.modules.sys.service;
 
+import com.ch3nk.ch3nkSite.modules.sys.entity.SysDepartment;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysRole;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
 import com.ch3nk.ch3nkSite.modules.sys.mapper.SysRoleMapper;
@@ -49,6 +50,18 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     @Override
     public List<SysRole> findBy(SysRole sysRole) {
+        return sysRoleMapper.selectBy(sysRole);
+    }
+
+    @Override
+    public List<SysRole> findByDeptId(String deptId) {
+        if (StringUtils.isEmpty(deptId)) {
+            return null;
+        }
+        SysDepartment department = new SysDepartment();
+        department.setDeptId(deptId);
+        SysRole sysRole = new SysRole();
+        sysRole.setDepartment(department);
         return sysRoleMapper.selectBy(sysRole);
     }
 

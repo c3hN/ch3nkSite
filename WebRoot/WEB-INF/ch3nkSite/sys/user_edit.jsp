@@ -145,7 +145,7 @@
 </div>
 <script src="${basePath}/static/js/jquery-3.2.1.js"></script>
 <script src="${basePath}/static/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="${basePath}/static/plugins/nice-validator/jquery.validator.js"></script>
+<script src="${basePath}/static/plugins/nice-validator/jquery.validator.min.js"></script>
 <script src="${basePath}/static/plugins/nice-validator/local/zh-CN.js"></script>
 <script src="${basePath}/static/plugins/ztree/js/jquery.ztree.core.min.js"></script>
 <script>

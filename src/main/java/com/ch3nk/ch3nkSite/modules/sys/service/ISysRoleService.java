@@ -13,6 +13,8 @@ public interface ISysRoleService {
 
     List<SysRole> findBy(SysRole sysRole);
 
+    List<SysRole> findByDeptId(String deptId);
+
     int findCountBy(SysRole sysRole);
 
 }

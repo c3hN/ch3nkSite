@@ -24,6 +24,8 @@ public interface ISysDeptService {
 
     int updateSysDept(SysDepartment sysDepartment);
 
+    int updateHasBranch(String deptId,String hasBranch);
+
     void deleteByDeptId(String deptId);
 
 }

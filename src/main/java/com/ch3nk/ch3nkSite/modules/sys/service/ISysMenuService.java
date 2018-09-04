@@ -24,6 +24,10 @@ public interface ISysMenuService {
      */
     List<SysMenu> findBy(SysMenu sysMenu);
 
+    List<SysMenu> findByParent(String parentId);
+
+    SysMenu findByMenuId(String menuId);
+
     /**
      * @return
      */
@@ -44,9 +48,9 @@ public interface ISysMenuService {
      */
     int updateMenu(SysMenu sysMenu);
 
+    int updateHasBranch(String menuId,String hasBranch);
+
 
     void deleteByPK(String menuId);
-
-
 
 }

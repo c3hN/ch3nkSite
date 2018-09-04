@@ -13,8 +13,8 @@
             border: 1px solid #dbdbdb;
         }
         table.treetable{
-            width: 100%;
-            margin: 0 10px 0 10px;
+            width: 1090px;
+            /*margin: 0 auto 0 auto;*/
         }
         table.treetable thead tr{
             height: 38px;
@@ -141,9 +141,8 @@ var treetable=$("#depts").treetable({
        $(location).attr('href', '${basePath}/dept/toAddOrEdit.do?deptId='+deptId);
    };
     function deleteDept(obj) {
-        //
         var deptId = $(obj).parent().parent().find("td").eq(1).text();
-        layer.confirm('确定删除该部门？',{btn:['确定','取消']},
+        layer.confirm('确定删除该部门？',{btn:['确定','取消'],icon:3},
         function () {
             $.post("${basePath}/dept/deleteDept.do",{"deptId":deptId},function (data) {
                 if (data == 'success') {
@@ -151,7 +150,7 @@ var treetable=$("#depts").treetable({
                     $(obj).parent().parent().hide(700);  //删除该行
                     layer.msg("删除成功");
                 }else{
-                    layer.alert("该部门下存在子节点，无法删除");
+                    layer.alert("该部门下存在子子部门或角色，无法删除",{icon: 2});
                 }
             });
         },function (index,layero) {

@@ -4,6 +4,7 @@ import com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysMenuService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,9 +38,7 @@ public class  MenuController {
     @ResponseBody
     public Map<String, Object> loadTreeBranch(String menuId) {
         jsonResult = new HashMap<String, Object>();
-        SysMenu sysMenu = new SysMenu();
-        sysMenu.setParentId(menuId);
-        List<SysMenu> list = sysMenuService.findBy(sysMenu);
+        List<SysMenu> list = sysMenuService.findByParent(menuId);
         List<String> list1 = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String category = "菜单";
@@ -50,7 +49,7 @@ public class  MenuController {
                 category = "操作";
             }
             if (StringUtils.equals("0",menu.getDeleteFlag())) {
-                category = "禁用";
+                deleteFlag = "禁用";
             }
             String tr = "<tr data-tt-id=\""+menu.getMenuId()+"\"data-tt-parent-id=\""+menu.getParentId()+"\" data-tt-branch=\""+menu.getHasBranch()+"\">" +
                     "<td>"+menu.getName()+"</td>" +
@@ -77,18 +76,20 @@ public class  MenuController {
     @RequestMapping(value = "toAddOrEdit")
     public String toEdit(@RequestParam(required = false)String menuId, Model model)
             throws JsonProcessingException {
+        String parentId = "";
+        ObjectMapper mapper = new ObjectMapper();
         SysMenu menu1 = new SysMenu();
-        menu1.setDeleteFlag("1");
         menu1.setCategory("0");
         List<SysMenu> list = sysMenuService.findBy(menu1);
-        ObjectMapper mapper = new ObjectMapper();
         String value = mapper.writeValueAsString(list);
         model.addAttribute("nodes",value);
         if (StringUtils.isNotEmpty(menuId)) {
-            SysMenu sysMenu = new SysMenu();
-            sysMenu.setMenuId(menuId);
-            SysMenu menu = sysMenuService.findBy(sysMenu).get(0);
-            model.addAttribute("sysMenu",menu);
+            SysMenu byMenuId = sysMenuService.findByMenuId(menuId);
+            model.addAttribute("sysMenu",byMenuId);
+            if (StringUtils.isNotEmpty(parentId = byMenuId.getParentId())) {
+                SysMenu parent = sysMenuService.findByMenuId(parentId);
+                model.addAttribute("parentMenu",parent);
+            }
             return "sys/menu_edit";
         }
         return "sys/menu_add";
@@ -101,22 +102,43 @@ public class  MenuController {
     @ResponseBody
     public String deleteMenu(String menuId) {
         String result = "error";
-        if (StringUtils.isNotEmpty(menuId)) {
+        String parentId = sysMenuService.findByMenuId(menuId).getParentId();
+        List<SysMenu> children = sysMenuService.findByParent(menuId);
+        if (children.size() == 0) {
             sysMenuService.deleteByPK(menuId);
             result = "success";
+            if (sysMenuService.findByParent(parentId).size() == 0) {
+                sysMenuService.updateHasBranch(parentId,"false");
+            }
         }
         return result;
     }
 
 
-    @RequestMapping(value = "/saveOrUpdate",method = RequestMethod.POST)
-    public String saveOrUpdate(SysMenu sysMenu) {
-        if (StringUtils.isNotEmpty(sysMenu.getMenuId())) {  //编辑
-            sysMenuService.updateMenu(sysMenu);
-        }else{
-            sysMenuService.saveSysMenu(sysMenu);
+    @RequestMapping(value = "/save",method = RequestMethod.POST)
+    public String save(SysMenu sysMenu) {
+        if (StringUtils.isNotEmpty(sysMenu.getParentId())) {
+            SysMenu parent = sysMenuService.findByMenuId(sysMenu.getParentId());
+            if (!"true".equals(sysMenuService.findByMenuId(parent.getHasBranch()))) {
+                sysMenuService.updateHasBranch(parent.getMenuId(),"true");
+            }
         }
+        sysMenuService.saveSysMenu(sysMenu);
         return "forward:/menu/tolist";
     }
 
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    public String update(SysMenu sysMenu) {
+        SysMenu byMenuId = sysMenuService.findByMenuId(sysMenu.getMenuId());
+        sysMenuService.updateMenu(sysMenu);
+        if (!byMenuId.getParentId().equals(sysMenu.getParentId())) {
+            if (sysMenuService.findByParent(byMenuId.getParentId()).size() == 0) {
+                sysMenuService.updateHasBranch(byMenuId.getParentId(),"false");
+            }
+            if (!("true").equals(sysMenuService.findByMenuId(sysMenu.getParentId()).getHasBranch())) {
+                sysMenuService.updateHasBranch(sysMenu.getParentId(),"true");
+            }
+        }
+        return "forward:/menu/tolist";
+    }
 }

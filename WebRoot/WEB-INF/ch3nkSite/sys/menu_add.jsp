@@ -60,7 +60,7 @@
     <div class="form-content">
         <div class="container">
             <div class="row">
-                <form action="${basePath}/menu/saveOrUpdate.do" method="post" class="form-horizontal" id="menuForm">
+                <form action="${basePath}/menu/save.do" method="post" class="form-horizontal" id="menuForm">
                     <input type="text" name="parentId" style="display: none">
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">
@@ -121,11 +121,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="icon" class="col-sm-2 control-label">
+                        <label for="menuIcon" class="col-sm-2 control-label">
                             <span>图标</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="icon" name="icon">
+                            <input type="text" class="form-control" id="menuIcon" name="menuIcon">
                         </div>
                     </div>
                     <div class="form-group">
@@ -210,11 +210,11 @@
         }
     });
     $("input[name='category']").eq(0).click(function () {
-        $("input[name='icon']").attr("disabled",false);
+        $("input[name='menuIcon']").attr("disabled",false);
     });
     $("input[name='category']").eq(1).click(function () {
-        $("input[name='icon']").val("");
-        $("input[name='icon']").attr("disabled","disabled");
+        $("input[name='menuIcon']").val("");
+        $("input[name='menuIcon']").attr("disabled","disabled");
     });
 </script>
 </body>

@@ -77,6 +77,17 @@ public class SysDeptServiceImpl implements ISysDeptService{
     }
 
     @Override
+    public int updateHasBranch(String deptId, String hasBranch) {
+        if (StringUtils.isAnyEmpty(deptId,hasBranch)) {
+            return 0;
+        }
+        SysDepartment department = new SysDepartment();
+        department.setDeptId(deptId);
+        department.setHasBranch(hasBranch);
+        return sysDepartmentMapper.updateByPrimaryKeySelective(department);
+    }
+
+    @Override
     public void deleteByDeptId(String deptId) {
         sysDepartmentMapper.deleteByPrimaryKey(deptId);
     }

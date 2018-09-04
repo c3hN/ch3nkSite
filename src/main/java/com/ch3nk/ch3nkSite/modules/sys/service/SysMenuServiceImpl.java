@@ -32,6 +32,18 @@ public class SysMenuServiceImpl implements ISysMenuService {
     }
 
     @Override
+    public List<SysMenu> findByParent(String parentId){
+        SysMenu menu = new SysMenu();
+        menu.setParentId(parentId);
+        return sysMenuMapper.selectBy(menu);
+    }
+
+    @Override
+    public SysMenu findByMenuId(String menuId) {
+        return sysMenuMapper.selectByPrimaryKey(menuId);
+    }
+
+    @Override
     public List<SysMenu> findByPage(SysMenu sysMenu,int pageNum,int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return sysMenuMapper.selectBy(sysMenu);
@@ -61,6 +73,17 @@ public class SysMenuServiceImpl implements ISysMenuService {
         sysMenu.setUpdateBy(sysUser.getUserId());
         sysMenu.setUpdateDate(new Date());
         return sysMenuMapper.updateByPrimaryKeySelective(sysMenu);
+    }
+
+    @Override
+    public int updateHasBranch(String menuId, String hasBranch) {
+        if (StringUtils.isAnyEmpty(menuId,hasBranch)) {
+            return 0;
+        }
+        SysMenu menu = new SysMenu();
+        menu.setMenuId(menuId);
+        menu.setHasBranch(hasBranch);
+        return sysMenuMapper.updateByPrimaryKeySelective(menu);
     }
 
     @Override

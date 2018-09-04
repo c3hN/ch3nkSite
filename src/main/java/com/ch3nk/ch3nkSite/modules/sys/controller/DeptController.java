@@ -1,7 +1,9 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysDepartment;
+import com.ch3nk.ch3nkSite.modules.sys.entity.SysRole;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysDeptService;
+import com.ch3nk.ch3nkSite.modules.sys.service.ISysRoleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -30,19 +32,29 @@ public class DeptController {
     @Autowired
     private ISysDeptService sysDeptService;
 
+    @Qualifier("sysRoleServiceImpl")
+    @Autowired
+    private ISysRoleService sysRoleService;
+
 //    @RequestMapping("tolist")
 //    public String toList(Model model) {
 //        // 如果期望jquery treeTable按照正确顺序展示树形表格，例：有三个节点：A，B（节点A的子节点）和C（节点B的子节点）。
 //        // 如果按照以下顺序在A - C - B中为HTML表中的这些节点创建行，则树将无法正确显示。必须确保该行是在为了A - B - C。
+//        List<SysDepartment> list = new ArrayList<>();
 //        List<SysDepartment> all = sysDeptService.findAll();
-//        List<SysDepartment> sysDepartments = buildByRecursive(all);
-//        model.addAttribute("sysDepts",sysDepartments);
+//        for (SysDepartment d : all) {
+//            if (StringUtils.isEmpty(d.getParentId())) {
+//                list.add(d);
+//            }
+//
+//        }
+//        model.addAttribute("sysDepts",list);
 //        return "sys/dept_list_new";
 //    }
     @RequestMapping("tolist")
     public String toList(Model model) {
-        List<SysDepartment> allParents = sysDeptService.findAllParents();
-        model.addAttribute("list",allParents);
+        List<SysDepartment> list = sysDeptService.findAllParents();
+        model.addAttribute("list",list);
         return "sys/dept_list";
     }
 
@@ -139,19 +151,15 @@ public class DeptController {
     @ResponseBody
     public String deleteDept(String deptId) {
         String result = "";
-        List<SysDepartment> list = sysDeptService.findByParentId(deptId);
-        if (list.size() != 0) {
-            result = "error";
-        }else{
-            String parentId = sysDeptService.findByDeptId(deptId).getParentId();
+        SysDepartment department = sysDeptService.findByDeptId(deptId);
+        List<SysDepartment> byParentId = sysDeptService.findByParentId(deptId);
+        List<SysRole> byDeptId = sysRoleService.findByDeptId(deptId);
+        if (byParentId.size() == 0 && byDeptId.size() == 0) {
             sysDeptService.deleteByDeptId(deptId);
-            if (sysDeptService.findByParentId(parentId).size() == 0) {
-                SysDepartment department = new SysDepartment();
-                department.setDeptId(parentId);
-                department.setHasBranch("false");
-                sysDeptService.updateSysDept(department);
-            }
-           result = "success";
+            result = "success";
+        }
+        if (sysDeptService.findByParentId(department.getParentId()).size() == 0) {
+            sysDeptService.updateHasBranch(department.getParentId(),"flase");
         }
         return result;
     }
@@ -172,40 +180,4 @@ public class DeptController {
     }
 
 
-
-    /**
-     * 递归查找子节点
-     * @param department
-     * @param list
-     * @return
-     */
-    public SysDepartment findChildren(SysDepartment department,List<SysDepartment> list) {
-        for (SysDepartment it : list) {
-            if(department.getDeptId().equals(it.getParentId())) {
-                if (department.getChildren() == null) {
-                    department.setChildren(new ArrayList<SysDepartment>());
-                }
-                department.getChildren().add(findChildren(it,list));
-            }
-        }
-        return department;
-    }
-
-    /**
-     * 使用递归方法建树
-     * @param list
-     * @return
-     */
-    public List<SysDepartment> buildByRecursive(List<SysDepartment> list) {
-        List<SysDepartment> trees = new ArrayList<SysDepartment>();
-        for (SysDepartment department : list) {
-            if (StringUtils.isEmpty(department.getParentId())) {
-                trees.add(findChildren(department,list));
-            }
-        }
-        return trees;
-    }
-
 }
-
-
