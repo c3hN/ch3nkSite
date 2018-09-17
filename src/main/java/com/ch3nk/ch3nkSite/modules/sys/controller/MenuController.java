@@ -52,7 +52,7 @@ public class  MenuController {
                 deleteFlag = "禁用";
             }
             String tr = "<tr data-tt-id=\""+menu.getMenuId()+"\"data-tt-parent-id=\""+menu.getParentId()+"\" data-tt-branch=\""+menu.getHasBranch()+"\">" +
-                    "<td>"+menu.getName()+"</td>" +
+                    "<td style=\"text-align: left;\">"+menu.getName()+"</td>" +
                     "<td  hidden=\"hidden\">"+menu.getMenuId()+"</td>" +
                     "<td>"+category+"</td>"+
                     "<td>"+menu.getHref()+"</td>" +
@@ -77,13 +77,21 @@ public class  MenuController {
     public String toEdit(@RequestParam(required = false)String menuId, Model model)
             throws JsonProcessingException {
         String parentId = "";
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();       //jackson
         SysMenu menu1 = new SysMenu();
         menu1.setCategory("0");
         List<SysMenu> list = sysMenuService.findBy(menu1);
-        String value = mapper.writeValueAsString(list);
-        model.addAttribute("nodes",value);
-        if (StringUtils.isNotEmpty(menuId)) {
+        if (StringUtils.isNotEmpty(menuId)) {   //编辑
+            List<SysMenu> byParent = sysMenuService.findByParent(menuId);
+            for (int i=0;i<list.size();i++) {           //编辑时不能把上级节点选择当前节点的子节点
+                for (int j=0;j<byParent.size();j++) {
+                    if (list.get(i).getMenuId().equals(byParent.get(j).getMenuId())) {
+                        list.remove(i);
+                    }
+                }
+            }
+            String value = mapper.writeValueAsString(list);
+            model.addAttribute("nodes",value);
             SysMenu byMenuId = sysMenuService.findByMenuId(menuId);
             model.addAttribute("sysMenu",byMenuId);
             if (StringUtils.isNotEmpty(parentId = byMenuId.getParentId())) {
@@ -91,8 +99,11 @@ public class  MenuController {
                 model.addAttribute("parentMenu",parent);
             }
             return "sys/menu_edit";
+        }else{      //新增
+            String value = mapper.writeValueAsString(list);
+            model.addAttribute("nodes",value);
+            return "sys/menu_add";
         }
-        return "sys/menu_add";
     }
 
 
@@ -129,16 +140,20 @@ public class  MenuController {
 
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public String update(SysMenu sysMenu) {
+        String parentId = "";
         SysMenu byMenuId = sysMenuService.findByMenuId(sysMenu.getMenuId());
         sysMenuService.updateMenu(sysMenu);
-        if (!byMenuId.getParentId().equals(sysMenu.getParentId())) {
-            if (sysMenuService.findByParent(byMenuId.getParentId()).size() == 0) {
-                sysMenuService.updateHasBranch(byMenuId.getParentId(),"false");
-            }
-            if (!("true").equals(sysMenuService.findByMenuId(sysMenu.getParentId()).getHasBranch())) {
+        if (StringUtils.isNotEmpty(parentId = byMenuId.getParentId())) {
+            if (!parentId.equals(sysMenu.getParentId())){
+                if (sysMenuService.findByParent(parentId).size()==0){
+                    sysMenuService.updateHasBranch(parentId,"false");
+                }
                 sysMenuService.updateHasBranch(sysMenu.getParentId(),"true");
             }
+        }else{
+            sysMenuService.updateHasBranch(sysMenu.getParentId(),"true");
         }
+
         return "forward:/menu/tolist";
     }
 }

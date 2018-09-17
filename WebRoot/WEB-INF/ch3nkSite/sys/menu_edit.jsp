@@ -61,14 +61,14 @@
         <div class="container">
             <div class="row">
                 <form action="${basePath}/menu/update.do" method="post" class="form-horizontal" id="menuForm">
-                    <input type="text" name="menuId" style="display: none" value="${parentMenu.menuId}">
-                    <input type="text" name="parentId" style="display: none">
+                    <input type="text" name="menuId" style="display: none" value="${sysMenu.menuId}">
+                    <input type="text" name="parentId" style="display: none" value="${parentMenu.menuId}">
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">
                             <span>上级菜单</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" name="parentName" id="parentName" value="${parentMenu.name}">
+                            <input type="text" class="form-control" id="parentName" value="${parentMenu.name}" onfocus="this.blur()">
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#parents_tree"><i class="fa fa-search"></i></button>
                         </div>
                         <label  class="col-sm-2 control-label">
@@ -77,10 +77,10 @@
                         </label>
                         <div class="col-sm-5">
                             <label class="radio-inline">
-                                <input type="radio" name="category" value="1" <c:if test="${sysMenu.category == '0'}">checked</c:if>>菜单
+                                <input type="radio" name="category" value="0" <c:if test="${sysMenu.category == '0'}">checked</c:if>>菜单
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="category" value="0" <c:if test="${sysMenu.category == '1'}">checked</c:if>>操作
+                                <input type="radio" name="category" value="1" <c:if test="${sysMenu.category == '1'}">checked</c:if>>操作
                             </label>
                         </div>
                     </div>
@@ -162,6 +162,7 @@
                 <ul id="menus" class="ztree"></ul>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="cleanParent">清空</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -203,23 +204,19 @@
     function clickNode(event, treeId, treeNode) {
         var menuId = "${sysMenu.menuId}";
         if (treeNode.menuId == menuId) {
-            layer.alert('不能选择自己作为上级菜单',{icon:2});
+            layer.alert('不能选择自己作为上级菜单', {icon: 2});
         }else{
             $("input[name='parentId']").attr("value",treeNode.menuId);
-            $("input[name='parentName']").attr("value",treeNode.name);
+            $("input[id='parentName']").attr("value",treeNode.name);
             $("#parents_tree").modal('hide');
         }
-
+        console.log(menusObj.transformToArray(treeNode));
     };
-
-    // //    初始化表单验证
-    // $("#roleForm").validator({
-    //     fields: {
-    //         'department.deptName':'required',
-    //         'name':'required;remote(formCheck.do)',
-    //         'eName':'required;remote(formCheck.do)'
-    //     }
-    // });
+    $("#cleanParent").click(function () {
+        $("input[name='parentId']").attr("value","");
+        $("input[id='parentName']").attr("value","")
+        $("#parents_tree").modal('hide');
+    });
 
     $("input[name='category']").eq(0).click(function () {
         $("input[name='menuIcon']").attr("disabled",false);

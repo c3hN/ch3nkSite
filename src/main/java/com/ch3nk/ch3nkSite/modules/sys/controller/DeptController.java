@@ -65,17 +65,28 @@ public class DeptController {
         SysDepartment department = new SysDepartment();
         department.setState("1");
         List<SysDepartment> list = sysDeptService.findBy(department);
-        String value = mapper.writeValueAsString(list);
-        model.addAttribute("nodes",value);  //过滤自身在页面限制
-        if (StringUtils.isNotEmpty(deptId)) {   //编辑
+        if (StringUtils.isNotEmpty(deptId)) {       //编辑
+            List<SysDepartment> byParentId = sysDeptService.findByParentId(deptId);
+            for (int i=0;i<list.size();i++) {
+                for (int j=0;j<byParentId.size();j++) {
+                    if (list.get(i).getDeptId().equals(byParentId.get(j).getDeptId())) {
+                        list.remove(i);
+                    }
+                }
+            }
+            String value = mapper.writeValueAsString(list);
+            model.addAttribute("nodes",value);
             SysDepartment byDeptId = sysDeptService.findByDeptId(deptId);
             String parentId = sysDeptService.findByDeptId(deptId).getParentId();
             SysDepartment parent = sysDeptService.findByDeptId(parentId);
             model.addAttribute("parentDept",parent);
             model.addAttribute("sysDept",byDeptId);
             return "sys/dept_edit";
+        }else{      //新增
+            String value = mapper.writeValueAsString(list);
+            model.addAttribute("nodes",value);
+            return "sys/dept_add";
         }
-        return "sys/dept_add";
     }
 
     @RequestMapping(value = "/loadTreeBranch")

@@ -13,8 +13,7 @@
             border: 1px solid #dbdbdb;
         }
         table.treetable{
-            width: 1090px;
-            /*margin: 0 auto 0 auto;*/
+            /*width: 960px;*/
         }
         table.treetable thead tr{
             height: 38px;
@@ -47,13 +46,10 @@
             font-size: 14px;
             line-height: 38px;
         }
-        .menu-list{
-            margin: 0 25px 0 10px;
-        }
-       .operations{
+        .operations{
            height: 50px;
-           margin: 0 20px;
-       }
+            padding-top: 10px;
+        }
         .position{
             height: 50px;
             background-color: #FFFFFF;
@@ -68,48 +64,54 @@
     <div class="postion-content"><i class="fa fa-square-o"></i>&nbsp;部门列表</div>
 </div>
 <div class="content">
-    <div class="operations">
-        <div class="btn-group">
-            <button class="btn btn-default btn-sm" id="addDeptBtn">新增</button>
-            <%--<button class="btn btn-default btn-sm" onclick="window.location.reload(true)">刷新</button>--%>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="operations">
+                    <div class="btn-group">
+                        <button class="btn btn-default btn-sm" id="addDeptBtn">新增</button>
+                        <%--<button class="btn btn-default btn-sm" onclick="window.location.reload(true)">刷新</button>--%>
+                    </div>
+                </div>
+                <div class="depts-list">
+                    <table id="depts">
+                        <thead>
+                        <tr>
+                            <th>部门名称</th><th>部门编号</th><th>部门简称</th><th>创建时间</th><th>状态</th><th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${list}" var="dept">
+                            <tr data-tt-id="${dept.deptId}" data-tt-parent-id="${dept.parentId}" data-tt-branch="${dept.hasBranch}">
+                                <td>${dept.deptName}</td>
+                                <td hidden="hidden">${dept.deptId}</td>
+                                <td style="text-align: center">${dept.deptNum}</td>
+                                <td style="text-align: center">${dept.deptAbbr}</td>
+                                <td style="text-align: center"><fmt:formatDate value="${dept.createDate}" pattern="yyyy-MM-dd"/> </td>
+                                <td style="text-align: center">
+                                    <c:if test="${dept.state == '1'}">启用</c:if>
+                                    <c:if test="${dept.state == '0'}">禁用</c:if>
+                                </td>
+                                <td style="text-align: center">
+                                    <button class="btn btn-default btn-xs" onclick="detailDept(this)">查看</button>
+                                    <button class="btn btn-default btn-xs" onclick="editDept(this)">编辑</button>
+                                    <button class="btn btn-default btn-xs btn-danger" onclick="deleteDept(this)">删除</button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="depts-list">
-        <table id="depts">
-            <thead>
-                <tr>
-                    <th>部门名称</th><th>部门编号</th><th>部门简称</th><th>创建时间</th><th>状态</th><th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach items="${list}" var="dept">
-                    <tr data-tt-id="${dept.deptId}" data-tt-parent-id="${dept.parentId}" data-tt-branch="${dept.hasBranch}">
-                        <td>${dept.deptName}</td>
-                        <td hidden="hidden">${dept.deptId}</td>
-                        <td style="text-align: center">${dept.deptNum}</td>
-                        <td style="text-align: center">${dept.deptAbbr}</td>
-                        <td style="text-align: center"><fmt:formatDate value="${dept.createDate}" pattern="yyyy-MM-dd"/> </td>
-                        <td style="text-align: center">
-                            <c:if test="${dept.state == '1'}">启用</c:if>
-                            <c:if test="${dept.state == '0'}">禁用</c:if>
-                        </td>
-                        <td style="text-align: center">
-                            <button class="btn btn-default btn-xs" onclick="detailDept(this)">查看</button>
-                            <button class="btn btn-default btn-xs" onclick="editDept(this)">编辑</button>
-                            <button class="btn btn-default btn-xs btn-danger" onclick="deleteDept(this)">删除</button>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
     </div>
 </div>
 <script src="${basePath}/static/js/jquery-3.2.1.js"></script>
+<script src="${basePath}/static/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="${basePath}/static/plugins/jquery-treetable/jquery.treetable.js"></script>
 <script src="${basePath}/static/plugins/layer/layer.js"></script>
 <script>
 var treetable=$("#depts").treetable({
-    // initialState:'expanded',
     expandable: true,
     clickableNodeNames:true,
     stringCollapse: '收起',

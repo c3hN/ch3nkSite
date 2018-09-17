@@ -72,6 +72,9 @@
         <div class="user-list">
             <table id="users" lay-filter="usersTableFilter"></table>
         </div>
+        <div>
+            <button class="layui-btn">回收站</button>
+        </div>
     </div>
     <div style="display: none;">
         <form action="${basePath}/user/editUser.do" method="post" id="loginFlagEditForm">

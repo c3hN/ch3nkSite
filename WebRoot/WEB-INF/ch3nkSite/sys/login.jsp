@@ -17,7 +17,7 @@
         <p>${errorMsg}</p>
         <form action="${basePath}/login" method="post">
             <div class="formIn">
-                <input class="form-control" type="tel" name="userCount" placeholder="手机号" />
+                <input class="form-control" type="tel" name="account" placeholder="手机号" />
             </div>
             <div class="formIn">
                 <input class="form-control" type="password" name="userPwd" placeholder="密码" />

@@ -9,12 +9,14 @@
     <link rel="stylesheet" href="${basePath}/static/plugins/jquery-treetable/css/jquery.treetable.css">
     <link rel="stylesheet" href="${basePath}/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
     <style>
+        .content{
+            padding: 0 20px 0 20px;
+        }
         table,th,td{
             border: 1px solid #dbdbdb;
         }
         table.treetable{
-            width: 100%;
-            margin: 0 10px 0 10px;
+            /*width: 920px;*/
         }
         table.treetable thead tr{
             height: 38px;
@@ -40,19 +42,16 @@
             font-size: 14px;
             font-weight: 400;
             color: #666666;
-            text-align: left;
+            text-align: center;
         }
         table.treetable tbody tr th{
             background-color: #ffffff;
             font-size: 14px;
             line-height: 38px;
         }
-        .menu-list{
-            margin: 0 25px 0 10px;
-        }
        .operations{
            height: 50px;
-           margin: 0 20px;
+           padding-top: 10px;;
        }
     </style>
 </head>
@@ -71,13 +70,13 @@
         <table id="menus">
             <thead>
                 <tr>
-                    <th style="width: 95px;">菜单名称</th><th>类别</th><th>资源路径</th><th>权限标识</th><th>创建时间</th><th>状态</th><th>备注</th><th>操作</th>
+                    <th width="200">菜单名称</th><th width="40">类别</th><th width="180">资源路径</th><th width="180">权限标识</th><th width="100">创建时间</th><th width="40">状态</th><th width="100">备注</th><th width="160">操作</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items="${list}" var="menu">
                     <tr data-tt-id="${menu.menuId}" data-tt-parent-id="${menu.parentId}" data-tt-branch="${menu.hasBranch}">
-                        <td>${menu.name}</td>
+                        <td style="text-align: left;">${menu.name}</td>
                         <td hidden="hidden">${menu.menuId}</td>
                         <td>
                             <c:if test="${menu.category == '0'}">菜单</c:if>

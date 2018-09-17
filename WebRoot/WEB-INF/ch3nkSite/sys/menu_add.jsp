@@ -67,7 +67,7 @@
                             <span>上级菜单</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" name="parentName" id="parentName" >
+                            <input type="text" class="form-control" id="parentName" onfocus="this.blur()">
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#parents_tree"><i class="fa fa-search"></i></button>
                         </div>
                         <label  class="col-sm-2 control-label">
@@ -161,6 +161,7 @@
                 <ul id="menus" class="ztree"></ul>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="cleanParent">清空</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -197,9 +198,15 @@
     });
     function clickNode(event, treeId, treeNode) {
         $("input[name='parentId']").attr("value",treeNode.menuId);
-        $("input[id='parentName']").attr("value",treeNode.name);
+        $("input[id='parentName']").val(treeNode.name);
         $("#parents_tree").modal('hide');
     };
+
+    $("#cleanParent").click(function () {
+        $("input[name='parentId']").attr("value","");
+        $("input[id='parentName']").val("");
+        $("#parents_tree").modal('hide');
+    });
 
     //    初始化表单验证
     $("#roleForm").validator({

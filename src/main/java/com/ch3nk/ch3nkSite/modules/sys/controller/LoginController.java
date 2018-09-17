@@ -15,6 +15,11 @@ import java.io.IOException;
 @Controller
 public class LoginController {
 
+    @RequestMapping("/main")
+    public String main(){
+        return "sys/index";
+    }
+
     @RequestMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response,  Model model) throws ServletException, IOException {
         String exceptionClassName = (String) request.getAttribute("shiroLoginFailure");
@@ -31,7 +36,7 @@ public class LoginController {
             }
         }
         //此方法不处理登陆成功（认证成功），shiro认证成功会自动跳转到上一个请求路径
-        return "sys/login";
+        return "sys/login_new";
     }
 
 

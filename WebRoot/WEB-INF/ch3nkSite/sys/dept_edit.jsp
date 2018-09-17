@@ -68,7 +68,7 @@
                             <span>上级菜单</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="parentName" value="${parentDept.deptName}" >
+                            <input type="text" class="form-control" id="parentName" value="${parentDept.deptName}" onfocus="this.blur()">
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></button>
                         </div>
                         <label for="deptName" class="col-sm-2 control-label">
@@ -132,6 +132,7 @@
                 <ul id="depts" class="ztree"></ul>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="cleanParent" title="删除上级部门">清空</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -162,8 +163,11 @@
             onClick:clickNode
         }
     };
-    var detps = $.fn.zTree.init($("#depts"), setting,  ${nodes});
-    detps.expandNode(detps.getNodes()[0]);    //展开第一层
+    var detpsObj = $.fn.zTree.init($("#depts"), setting,  ${nodes});
+    var nodes = detpsObj.getNodes();
+    $.each(nodes,function (index,value) {
+        detpsObj.expandNode(nodes[index]);
+    });
 
     function clickNode(event, treeId, treeNode) {
         var deptId = "${sysDept.deptId}";
@@ -171,10 +175,16 @@
             layer.alert('不能选择自己作为上级部门',{icon:2});
         }else{
             $("input[name='parentId']").attr('value',treeNode.deptId);
-            $("input[id='parentName']").attr('value',treeNode.deptName);
+            $("input[id='parentName']").attr("value",treeNode.deptName);
             $("#myModal").modal('hide');
         }
     };
+
+    $("#cleanParent").click(function () {
+        $("input[name='parentId']").attr("value","");
+        $("input[id='parentName']").attr("value","");
+        $("#myModal").modal('hide');
+    });
 
     //    初始化表单验证
     $("#deptForm").validator({

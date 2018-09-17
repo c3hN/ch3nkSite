@@ -12,6 +12,15 @@
         <property name="hashIterations" value="1"/>
     </bean>
 
+    <!-- 缓存管理器开始 -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManager" ref="ehCacheManager"/>
+    </bean>
+    <bean id="ehCacheManager" class ="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:ch3nkSiteCfgs/spring/shiro-ehcatch.xml" />
+        <property name="shared" value="true"></property>
+    </bean>
+
     <!--配置自定义realm-->
     <bean id="systemRealm" class="com.ch3nk.ch3nkSite.common.shiro.realm.SystemRealm">
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
@@ -20,23 +29,26 @@
     <!--配置安全管理器SecurityManager-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="systemRealm"/>
+        <!--给shiro添加缓存机制-->
+        <property name="cacheManager" ref="cacheManager"></property>
     </bean>
 
     <!--配置认证过滤器-->
     <bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
-        <property name="usernameParam" value="userCount"/>
+        <property name="usernameParam" value="account"/>
         <property name="passwordParam" value="userPwd"/>
     </bean>
+
     <!--配置登出过滤器-->
     <bean id="logout" class="org.apache.shiro.web.filter.authc.LogoutFilter">
-        <property name="redirectUrl" value="/"/>
+        <property name="redirectUrl" value="/main"/>
     </bean>
 
     <!--配置shiro过滤器-->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/login"/>   <!--默认是/login.jsp-->
-        <property name="successUrl" value="/tohome"/>
+        <property name="successUrl" value="/main"/>
         <property name="unauthorizedUrl" value="/nopermission.jsp"/>
         <property name="filters">   <!--配置过滤器map-->
             <map>
@@ -55,7 +67,15 @@
         </property>
     </bean>
 
-
+    <bean id="sessionManage" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!-- 会话超时时间，单位：毫秒  20m=1200000ms, 30m=1800000ms, 60m=3600000ms-->
+        <property name="globalSessionTimeout" value="1800000"/>
+        <property name="sessionValidationInterval" value="1200000"/>
+        <!-- 去掉 JSESSIONID -->
+        <property name="sessionIdUrlRewritingEnabled" value="false" />
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <property name="sessionIdCookieEnabled" value="true"/>
+    </bean>
 
     <!-- 定义需要特殊处理的异常，用类名或完全路径名作为key，异常页名作为值 -->
     <!--shiro权限异常处理-->
@@ -66,5 +86,8 @@
             </props>
         </property>
     </bean>
+
+
+
 </beans>
 

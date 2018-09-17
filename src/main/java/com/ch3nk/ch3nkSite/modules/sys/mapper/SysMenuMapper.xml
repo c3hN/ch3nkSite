@@ -145,7 +145,7 @@
         <set>
             <if test="name != null">ZH_NAME = #{name,jdbcType=VARCHAR},</if>
             <if test="menuCode != null">MENU_CODE = #{menuCode,jdbcType=VARCHAR},</if>
-            <if test="parentId != null and parentId != ''">PARENT_ID = #{parentId,jdbcType=VARCHAR},</if>
+            <if test="parentId != null ">PARENT_ID = #{parentId,jdbcType=VARCHAR},</if>
             <if test="category != null">CATEGORY = #{category,jdbcType=VARCHAR},</if>
             <if test="href != null">HREF = #{href,jdbcType=VARCHAR},</if>
             <if test="menuIcon != null">ICON = #{menuIcon,jdbcType=VARCHAR},</if>

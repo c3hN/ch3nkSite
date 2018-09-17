@@ -21,7 +21,6 @@
         }
         .content{
             width: 100%;
-            height: 100%;
         }
         .costom-container{
             width: 100%;
@@ -49,8 +48,10 @@
                     <button class="btn btn-default btn-sm" id="roleAddBtn">新增</button>
                     <button class="btn btn-success btn-sm" id="recycleRole" data-toggle="modal" data-target="#recycle"><i class="fa fa-recycle"></i>&nbsp;回收站</button>
                 </div>
-                <div class="table-content">
-                    <table id="roles"></table>
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <table id="roles"></table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,13 +91,12 @@
         toolbar:'#table_operations',
         columns:[
             {field:'name',title:'名称',align:'center',width:'100'},
-            // {field:'roleId',title:'roleId',align:'center',width:'170'},
             {field:'eName',title:'编号',align:'center',width:'100'},
             {field:'department.deptName',title:'部门名称',align:'center',width:'100'},
             {field:'useFlag',title:'状态',align:'center',width:'100',formatter:'stateFormatter'},
             {field:'createDate',title:'创建时间',align:'center',width:'100'},
             {field:'remark',title:'备注',align:'center',width:'200'},
-            {title:'操作',events:'roleOperateEvents',formatter:'operateFormatter',align:'center',width:'150'}
+            {title:'操作',events:'roleOperateEvents',formatter:'operateFormatter',align:'center',width:'100'}
         ]
     });
     //表格操作

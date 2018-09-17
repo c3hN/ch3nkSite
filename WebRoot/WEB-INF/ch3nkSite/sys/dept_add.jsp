@@ -67,7 +67,7 @@
                             <span>上级菜单</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="parentName">
+                            <input type="text" class="form-control" id="parentName" onfocus="this.blur()">
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></button>
                         </div>
                         <label for="deptName" class="col-sm-2 control-label">
@@ -131,6 +131,7 @@
                 <ul id="depts" class="ztree"></ul>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="cleanParent">清空</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -169,9 +170,16 @@
 
     function clickNode(event, treeId, treeNode) {
         $("input[name='parentId']").attr('value',treeNode.deptId);
-        $("input[id='parentName']").attr('value',treeNode.deptName);
+        // $("input[id='parentName']").attr('value',treeNode.deptName);
+        $("input[id='parentName']").val(treeNode.deptName);
         $("#myModal").modal('hide');
     };
+
+    $("#cleanParent").click(function () {
+        $("input[name='parentId']").attr("value","");
+        $("input[id='parentName']").val("");
+        $("#myModal").modal('hide');
+    });
 
     //    初始化表单验证
     $("#deptForm").validator({
