@@ -69,7 +69,7 @@
                             <span style="color: red;">*</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" name="department.deptName" id="deptName" value="${sysDept.deptName}" >
+                            <input type="text" class="form-control"  id="deptName" value="${sysDept.deptName}" >
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></button>
                         </div>
                         <label for="name" class="col-sm-2 control-label">

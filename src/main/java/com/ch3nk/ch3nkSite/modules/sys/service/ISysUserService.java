@@ -59,6 +59,8 @@ public interface  ISysUserService {
      */
     int updateUser(SysUser sysUser);
 
+    void deleteUser(String userId);
+
 
     /**
      * 用户导入

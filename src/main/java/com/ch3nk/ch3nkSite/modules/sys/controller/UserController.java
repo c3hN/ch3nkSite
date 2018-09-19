@@ -90,14 +90,30 @@ public class UserController  {
         return "sys/user_detail";
     }
 
+    @RequestMapping(value = "/toRecove")
+    public String toRecove() {
+        return "sys/user_recove";
+    }
+
+    @RequestMapping(value = "/listUsersDeleted")
+    @ResponseBody
+    public Map<String,Object> listUsersDeleted() {
+        jsonResult = new HashMap<String, Object>();
+        SysUser user = new SysUser();
+        user.setDeleteFlag("0");
+        List<SysUser> allBy = sysUserService.findAllBy(user);
+        jsonResult.put("data",allBy);
+        return jsonResult;
+    }
 
     @RequestMapping(value = "/logicalDel")
     @ResponseBody
-    public Map<String, Object> delete(String userId) {
+    public Map<String, Object> logicalDel(String userId) {
         jsonResult = new HashMap<String, Object>();
         if (StringUtils.isNotEmpty(userId)) {
             SysUser user = new SysUser();
             user.setUserId(userId);
+            user.setLoginFlag("0");
             user.setDeleteFlag("0");
             int i = sysUserService.updateUser(user);
             if (i != 0) {
@@ -173,6 +189,32 @@ public class UserController  {
             }else{
                 jsonResult.put("error","账号已存在");
             }
+        }
+        return jsonResult;
+    }
+
+    @RequestMapping(value ="/recoveUser")
+    @ResponseBody
+    public Map<String,Object> recoveUser(String userId) {
+        jsonResult = new HashMap<String, Object>();
+        if (StringUtils.isNotEmpty(userId)) {
+            SysUser user = new SysUser();
+            user.setUserId(userId);
+            user.setLoginFlag("1");
+            user.setDeleteFlag("1");
+            sysUserService.updateUser(user);
+            jsonResult.put("msg","success");
+        }
+        return jsonResult;
+    }
+
+    @RequestMapping(value = "/delete")
+    @ResponseBody
+    public Map<String,Object> delete(String userId) {
+        jsonResult = new HashMap<String, Object>();
+        if (StringUtils.isNotEmpty(userId)) {
+            sysUserService.deleteUser(userId);
+            jsonResult.put("msg","success");
         }
         return jsonResult;
     }

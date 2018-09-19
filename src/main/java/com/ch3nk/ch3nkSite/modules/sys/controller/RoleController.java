@@ -119,7 +119,7 @@ public class RoleController {
         return jsonResult;
     }
 	
-	 @RequestMapping(value = "/saveOrUpdate")
+    @RequestMapping(value = "/saveOrUpdate")
     public String save(SysRole sysRole) {
         if (StringUtils.isNotEmpty(sysRole.getRoleId())) {  //编辑
             sysRoleService.updateRole(sysRole);
@@ -128,6 +128,48 @@ public class RoleController {
         }
         return "forward:/role/tolist.do";
     }
+
+    @RequestMapping(value = "/toRecove")
+    public String toRecove() {
+        return "sys/role_recove";
+    }
+
+    @RequestMapping(value = "/listRolesDeleted")
+    @ResponseBody
+    public Map<String,Object> listRolesDeleted(@RequestParam(required = false) String order) {
+        jsonResult = new HashMap<String, Object>();
+        SysRole sysRole = new SysRole();
+        sysRole.setDeleteFlag("0");
+        List<SysRole> by = sysRoleService.findBy(sysRole);
+        jsonResult.put("data",by);
+        return jsonResult;
+    }
+
+    @RequestMapping(value = "/delete")
+    @ResponseBody
+    public Map<String,Object> delete(String roleId) {
+        jsonResult = new HashMap<String, Object>();
+        if (StringUtils.isNotEmpty(roleId)) {
+            sysRoleService.deleteRole(roleId);
+            jsonResult.put("msg","success");
+        }
+        return jsonResult;
+    }
+
+    @RequestMapping(value = "/recoveRole")
+    @ResponseBody
+    public Map<String,Object> recoveRole(String roleId) {
+        jsonResult = new HashMap<String,Object>();
+        if (StringUtils.isNotEmpty(roleId)) {
+            SysRole sysRole = new SysRole();
+            sysRole.setRoleId(roleId);
+            sysRole.setDeleteFlag("1");
+            sysRoleService.updateRole(sysRole);
+            jsonResult.put("msg","success");
+        }
+        return jsonResult;
+    }
+
 
 
     @RequestMapping(value = "/formCheck")

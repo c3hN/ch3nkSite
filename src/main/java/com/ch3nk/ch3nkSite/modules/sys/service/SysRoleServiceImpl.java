@@ -5,6 +5,7 @@ import com.ch3nk.ch3nkSite.modules.sys.entity.SysRole;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
 import com.ch3nk.ch3nkSite.modules.sys.mapper.SysRoleMapper;
 import com.ch3nk.ch3nkSite.modules.utils.UUIDutil;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     @Override
     public void deleteRole(String roleId) {
-
+        sysRoleMapper.deleteByPrimaryKey(roleId);
     }
 
     @Override
@@ -51,6 +52,13 @@ public class SysRoleServiceImpl implements ISysRoleService {
     @Override
     public List<SysRole> findBy(SysRole sysRole) {
         return sysRoleMapper.selectBy(sysRole);
+    }
+
+    @Override
+    public List<SysRole> findByPage(SysRole sysRole, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<SysRole> sysRoles = sysRoleMapper.selectBy(sysRole);
+        return sysRoles;
     }
 
     @Override

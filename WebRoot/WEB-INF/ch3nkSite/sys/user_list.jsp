@@ -54,6 +54,9 @@
                 <shiro:hasPermission name="sysUser:reportForm">
                     <button class="layui-btn layui-btn-sm" id="userExprotBtn">统计报表</button>
                 </shiro:hasPermission>
+                <shiro:hasPermission name="sysUser:reportForm">
+                    <button class="layui-btn layui-btn-warm layui-btn-sm" id="userRecove">回收站</button>
+                </shiro:hasPermission>
             </div>
             <div class="table-search">
                 <shiro:hasPermission name="sysUser:tableSearch">
@@ -71,9 +74,6 @@
         </div>
         <div class="user-list">
             <table id="users" lay-filter="usersTableFilter"></table>
-        </div>
-        <div>
-            <button class="layui-btn">回收站</button>
         </div>
     </div>
     <div style="display: none;">
@@ -218,7 +218,9 @@
                 }
             });
         });
-
+    });
+    $("#userRecove").click(function () {
+       $(location).prop("href","${basePath}/user/toRecove.do");
     });
 
     

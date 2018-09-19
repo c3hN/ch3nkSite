@@ -80,6 +80,11 @@ public class SysUserServiceImpl implements ISysUserService {
         return sysUserMapper.updateByPKSelective(sysUser);
     }
 
+    @Override
+    public void deleteUser(String userId) {
+        sysUserMapper.deleteByPK(userId);
+    }
+
     /**
      * 用户导入
      * 模板：

@@ -116,7 +116,7 @@
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete from sys_role r
+        delete from sys_role
         where ROLE_ID = #{roleId,jdbcType=VARCHAR}
     </delete>
     <insert id="insert" parameterType="sysRole">

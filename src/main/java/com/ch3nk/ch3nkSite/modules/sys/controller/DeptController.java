@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -117,46 +118,36 @@ public class DeptController {
         return jsonResult;
     }
 
-    @RequestMapping(value = "/saveOrUpdate")
-    public String saveOrUpdate(SysDepartment sysDepartment){
-        String parentId = "";       //现父节点
-        if (StringUtils.isNotEmpty(parentId = sysDepartment.getParentId())) {   //有父节点
-            if (StringUtils.isNotEmpty(sysDepartment.getDeptId())) {    //编辑
-                String oldParentDeptId = sysDeptService.findByDeptId(sysDepartment.getDeptId()).getParentId();
-                sysDeptService.updateSysDept(sysDepartment);    //更新
-                if (!StringUtils.equals(sysDepartment.getParentId(),oldParentDeptId)) {     //修改了父节点
-                    if (sysDeptService.findByParentId(oldParentDeptId).size()==0) {
-                        SysDepartment department = new SysDepartment();
-                        department.setDeptId(oldParentDeptId);
-                        department.setHasBranch("false");
-                        sysDeptService.updateSysDept(department);
-                    }
-                    if (sysDeptService.findByParentId(sysDepartment.getParentId()).size() > 0) {
-                        SysDepartment department = new SysDepartment();
-                        department.setDeptId(parentId);
-                        department.setHasBranch("true");
-                        sysDeptService.updateSysDept(department);
-                    }
-                }else{ //未修改父节点
-                    sysDeptService.updateSysDept(sysDepartment);
-                }
-            }else{  //新增
-                sysDeptService.saveSysDept(sysDepartment);  //保存
-                SysDepartment parentDept = sysDeptService.findByDeptId(parentId);
-                if (StringUtils.equals(parentDept.getHasBranch(),"false")) {
-                    parentDept.setHasBranch("true");
-                    sysDeptService.updateSysDept(parentDept);
-                }
-            }
-        }else{  //没有父节点
-            if (StringUtils.isNotEmpty(sysDepartment.getDeptId())) {
-                sysDeptService.updateSysDept(sysDepartment);
-            }else{
-                sysDeptService.saveSysDept(sysDepartment);
-            }
+    @RequestMapping(value = "/save",method = RequestMethod.POST)
+    public String save(SysDepartment sysDepartment) {
+        String parentId = sysDepartment.getParentId();
+        sysDeptService.saveSysDept(sysDepartment);
+        if (StringUtils.isNotEmpty(parentId)) {
+            sysDeptService.updateHasBranch(parentId,"true");
         }
         return "forward:/dept/tolist.do";
     }
+
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    public String update(SysDepartment sysDepartment) {
+        String deptId = sysDepartment.getDeptId();
+        String currParentId = sysDepartment.getParentId();
+        String oldParentId = sysDeptService.findByDeptId(deptId).getParentId();
+        sysDeptService.updateSysDept(sysDepartment);
+        if (StringUtils.isNotEmpty(oldParentId)) {
+            if (!oldParentId.equals(currParentId)) {
+                if (sysDeptService.findByParentId(oldParentId).size() == 0) {
+                    sysDeptService.updateHasBranch(oldParentId,"false");
+                }
+                sysDeptService.updateHasBranch(currParentId,"true");
+            }
+        }else{
+            sysDeptService.updateHasBranch(currParentId,"true");
+
+        }
+        return "forward:/dept/tolist.do";
+    }
+
 
     @RequestMapping(value = "/deleteDept")
     @ResponseBody

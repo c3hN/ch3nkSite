@@ -5,7 +5,6 @@
     <title>角色列表</title>
     <link rel="stylesheet" href="${basePath}/static/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="${basePath}/static/plugins/bootstrap-table/bootstrap-table.min.css">
-    <link rel="stylesheet" href="${basePath}/static/plugins/ztree/css/metroStyle/metroStyle.css">
     <link rel="stylesheet" href="${basePath}/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
     <style>
         body,html{
@@ -34,38 +33,21 @@
 <body>
 <div class="position">
     <div class="postion-content"><i class="fa fa-id-card-o"></i>&nbsp;角色列表</div>
+    <div class="operations">
+        <button class="btn btn-default" onclick="javascript:history.back(-1);"><i class="fa fa-reply"></i></button>
+    </div>
 </div>
 <div class="content">
-    <div class="container costom-container">
-        <div class="row">
-            <div class="col-md-2">
-                <div class="treeContent">
-                    <ul id="dept_tree" class="ztree"></ul>
-                </div>
-            </div>
-            <div class="col-md-10">
-                <div id="table_operations">
-                    <div class="btn-group">
-                        <button class="btn btn-default btn-sm" id="roleAddBtn">新增</button>
-                        <button class="btn btn-warning btn-sm" id="toRecoveBtn">回收站</button>
-                    </div>
-                </div>
-                <div class="table-content">
-                    <table id="roles"></table>
-                </div>
-            </div>
-        </div>
-    </div>
+    <table id="roles"></table>
 </div>
 <script src="${basePath}/static/js/jquery-3.2.1.js"></script>
 <script src="${basePath}/static/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="${basePath}/static/plugins/bootstrap-table/bootstrap-table.min.js"></script>
 <script src="${basePath}/static/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
-<script src="${basePath}/static/plugins/ztree/js/jquery.ztree.core.min.js"></script>
 <script src="${basePath}/static/plugins/layer/layer.js"></script>
 <script>
     table = $("#roles").bootstrapTable({
-        url:'${basePath}/role/list.do',
+        url:'${basePath}/role/listRolesDeleted.do',
         height:549,
         undefinedText:'暂无',
         pagination:true,    //分页
@@ -81,33 +63,43 @@
             {field:'department.deptName',title:'所属部门',align:'center',width:'100'},
             {field:'useFlag',title:'状态',align:'center',width:'100',formatter:'stateFormatter'},
             {field:'createDate',title:'创建时间',align:'center',width:'100'},
-            {field:'remark',title:'备注',align:'center',width:'100'},
-            {title:'操作',events:'roleOperateEvents',formatter:'operateFormatter',align:'center',width:'150'}
+            {field:'remark',title:'备注',align:'center',width:'200'},
+            {title:'操作',events:'roleOperateEvents',formatter:'operateFormatter',align:'center',width:'100'}
         ]
     });
     //表格操作
     function operateFormatter(value, row, index) {
         return [
-            '<button class="btn btn-default btn-xs" id="detailRole">查看</button> ',
-            '<button class="btn btn-default btn-xs" id="editRole">编辑</button> ',
-            '<button class="btn btn-default btn-xs btn-danger" id="logiDeleteRole">删除</button> '
+            '<button class="btn btn-default btn-xs" id="recoveRole">还原</button> ',
+            '<button class="btn btn-default btn-xs btn-danger" id="deleteRole">删除</button> '
         ].join('');
     }
     window.roleOperateEvents = {
-        "click #detailRole":function (e,value, row, index) {
-            $(location).prop('href', '${basePath}/role/toDetail.do?roleId='+row.roleId);
-        },
-        "click #editRole":function (e,value, row, index) {
-            $(location).prop('href', '${basePath}/role/toAddOrEdit.do?roleId='+row.roleId);
-        },
-        "click #logiDeleteRole":function (e,value, row, index) {
-            layer.confirm('确定删除该角色?',{btn:['确定','取消'],icon:3},
+        "click #recoveRole":function (e,value, row, index) {
+            console.log(row)
+            layer.confirm("确认还原该角色？",{btn:['确定','取消'],icon:3},
             function (index,layero) {
-                $.post("${basePath}/role/logicalDelete.do",{"roleId":row.roleId},function (data) {
-                    if (data.data == "success") {
-                        layer.msg("角色已被移入回收站，可在回收站中还原");
-                        table.bootstrapTable('refresh',{silent: true,url:'${basePath}/role/list?deptId='+row.department.deptId});//重载表格
-
+                $.post("${basePath}/role/recoveRole.do",{"roleId":row.roleId},function (data) {
+                    if (data.msg=="success"){
+                       layer.alert("该角色已被还原至部门 "+row.department.deptName+" 下");
+                        table.bootstrapTable('refresh',{silent: true,url:'${basePath}/role/listRolesDeleted.do'});//重载表格
+                    }else{
+                        layer.alert("还原失败，请重试");
+                    }
+                });
+                layer.close(index);
+            },
+            function (index,layero) {
+                layer.close(index);
+            })
+        },
+        "click #deleteRole":function (e,value, row, index) {
+            layer.confirm('删除后无法还原，确定删除该角色?',{btn:['确定','取消'],icon:3},
+            function (index,layero) {
+                $.post("${basePath}/role/delete.do",{"roleId":row.roleId},function (data) {
+                    if (data.msg == "success") {
+                        layer.alert("角色已被彻底删除");
+                        table.bootstrapTable('refresh',{silent: true,url:'${basePath}/role/listRolesDeleted.do'});//重载表格
                     }else if (data.data == "error"){
                         layer.alert("该角色被使用，删除失败",{icon:2});
                     }
@@ -161,9 +153,6 @@
         }else{
             $(location).prop("href","${basePath}/role/toAddOrEdit.do");
         }
-    });
-    $("#toRecoveBtn").click(function () {
-        $(location).prop("href","${basePath}/role/toRecove.do");
     });
 
 </script>

@@ -132,6 +132,7 @@ body{
     left: 220px;
     overflow: hidden;
     z-index: 1;
+    height: calc(100% - 46px);
 }
 .page-content-bg{
     position: absolute;

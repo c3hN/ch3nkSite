@@ -61,10 +61,7 @@
 </div>
 <div class="content">
     <div class="operations">
-        <div class="btn-group">
-            <button class="btn btn-default btn-sm" id="addMenuBtn">新增</button>
-            <button class="btn btn-default btn-sm" onclick="window.location.reload(true)">刷新</button>
-        </div>
+        <button class="btn btn-default btn-sm" id="addMenuBtn">新增</button>
     </div>
     <div class="menu-list">
         <table id="menus">
