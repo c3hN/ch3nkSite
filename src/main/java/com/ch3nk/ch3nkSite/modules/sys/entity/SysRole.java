@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class SysRole implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -58,6 +59,10 @@ public class SysRole implements Serializable{
      * 删除标记 0：deleted
      */
     private String deleteFlag;
+    /**
+     * 菜单列表
+     */
+//    private List<SysMenu> menus;
 
 
     public String getRoleId() {
@@ -147,4 +152,12 @@ public class SysRole implements Serializable{
     public void setDeleteFlag(String deleteFlag) {
         this.deleteFlag = deleteFlag;
     }
+
+//    public List<SysMenu> getMenus() {
+//        return menus;
+//    }
+//
+//    public void setMenus(List<SysMenu> menus) {
+//        this.menus = menus;
+//    }
 }

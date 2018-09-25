@@ -56,7 +56,7 @@
     </style>
 </head>
 <body>
-<div class="position" style="width: 100%; height: 50px; background-color: #FFFFFF; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
+<div class="position" style="border-bottom:1px solid #dbdbdb; width: 100%; height: 50px; background-color: #FFFFFF; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
     <div class="postion-content"><i class="fa fa-bars"></i>&nbsp;菜单列表</div>
 </div>
 <div class="content">

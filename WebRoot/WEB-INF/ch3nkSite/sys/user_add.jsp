@@ -18,14 +18,6 @@
         .content .form-content{
             width: 100%;
         }
-        .form-group button{
-            width: 34px;
-            height: 34px;
-            position: absolute;
-            top: 0px;
-            left: 251px;
-            padding: 0;
-        }
         .title{
             border-bottom: 1px solid #dbdbdb;
             /*width: 100%;*/
@@ -40,13 +32,18 @@
         .modal-dialog-custom{
             width: 400px;
         }
-        .btn-content{
-            margin-top: 30px;
+        .position{
+            border-bottom: 1px solid #dbdbdb;
+            height: 50px;
+            background-color: #FFFFFF;
+            margin-bottom: 40px;
+            line-height: 50px;
+            padding: 0 0 0 20px;
         }
     </style>
 </head>
 <body>
-<div class="position" style="width: 100%; height: 50px; background-color: #FFFFFF; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
+<div class="position">
     <div class="postion-content"><i class="fa fa-user"></i>&nbsp;用户管理</div>
     <div class="operations" style="display: inline-block">
         <button class="btn btn-default" id="goBackBtn" onclick="javascript:history.back(-1);"><i class="fa fa-reply" aria-hidden="true"></i></button>

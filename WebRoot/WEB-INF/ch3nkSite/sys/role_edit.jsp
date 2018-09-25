@@ -18,14 +18,6 @@
         .content .form-content{
             width: 100%;
         }
-        .form-group button{
-            width: 34px;
-            height: 34px;
-            position: absolute;
-            top: 0px;
-            left: 251px;
-            padding: 0;
-        }
         .title{
             border-bottom: 1px solid #dbdbdb;
             /*width: 100%;*/
@@ -40,13 +32,18 @@
         .modal-dialog-custom{
             width: 400px;
         }
-        .btn-content{
-            margin-top: 30px;
+        .position{
+            border-bottom: 1px solid #dbdbdb;
+            height: 50px;
+            background-color: #FFFFFF;
+            margin-bottom: 40px;
+            line-height: 50px;
+            padding: 0 0 0 20px;
         }
     </style>
 </head>
 <body>
-<div class="position" style="width: 100%; height: 50px; background-color: #FFFFFF; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
+<div class="position">
     <div class="postion-content"><i class="fa fa-id-card-o"></i>&nbsp;角色管理</div>
     <div class="operations" style="display: inline-block">
         <button class="btn btn-default" id="goBackBtn" onclick="javascript:history.back(0);"><i class="fa fa-reply" aria-hidden="true"></i></button>
@@ -64,13 +61,17 @@
                     <input type="text" name="roleId" style="display: none" value="${sysRole.roleId}">
                     <input type="text" name="department.deptId" style="display: none" id="deptId" value="${sysDept.deptId}">
                     <div class="form-group">
-                        <label  class="col-sm-2 control-label">
+                        <label class="col-sm-2 control-label">
                             <span>所属部门</span>
                             <span style="color: red;">*</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control"  id="deptName" value="${sysDept.deptName}" >
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></button>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="department.deptName" id="deptName" value="${sysDept.deptName}" >
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">&nbsp;<i class="fa fa-search"></i>&nbsp;</button>
+                                </span>
+                            </div>
                         </div>
                         <label for="name" class="col-sm-2 control-label">
                             <span>角色名称</span>
@@ -102,10 +103,23 @@
                     </div>
                     <div class="form-group">
                         <label for="remark" class="col-sm-2 control-label">
+                            <span>资源配置</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" class="form-control">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">&nbsp;<i class="fa fa-bars"></i>&nbsp;</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="remark" class="col-sm-2 control-label">
                             <span>备注</span>
                         </label>
                         <div class="col-sm-8">
-                            <textarea name="remark" id="remark" cols="30" rows="3" class="form-control">${sysRole.remark}</textarea>
+                            <textarea name="remark" id="remark" style="resize:none" cols="30" rows="3" class="form-control">${sysRole.remark}</textarea>
                         </div>
                     </div>
                     <div class="col-sm-1 col-sm-offset-5">
@@ -144,6 +158,7 @@
 <script src="${basePath}/static/plugins/nice-validator/jquery.validator.min.js"></script>
 <script src="${basePath}/static/plugins/nice-validator/local/zh-CN.js"></script>
 <script src="${basePath}/static/plugins/ztree/js/jquery.ztree.core.min.js"></script>
+<script src="${basePath}/static/plugins/layer/layer.js"></script>
 <script>
     <%--模态框树--%>
     var setting = {
@@ -163,9 +178,8 @@
             onClick:clickNode
         }
     };
-    var detps = $.fn.zTree.init($("#depts"), setting,  ${nodes});
+    var detps = $.fn.zTree.init($("#depts"), setting,  ${nodes1});
     detps.expandNode(detps.getNodes()[0]);    //展开第一层
-
     function clickNode(event, treeId, treeNode) {
         $("input[id='deptId']").attr("value",treeNode.deptId);
         $("input[id='deptName']").attr("value",treeNode.deptName);

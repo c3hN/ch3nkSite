@@ -29,6 +29,7 @@
             border-radius: 2px;
         }
         .position{
+            border-bottom: 1px solid #dbdbdb;
             height: 50px;
             background-color: #FFFFFF;
             margin-bottom: 40px;

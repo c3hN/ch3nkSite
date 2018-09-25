@@ -1,8 +1,10 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysDepartment;
+import com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysRole;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysDeptService;
+import com.ch3nk.ch3nkSite.modules.sys.service.ISysMenuService;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysRoleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +33,10 @@ public class RoleController {
     @Qualifier("sysDeptServiceImpl")
     @Autowired
     private ISysDeptService sysDeptService;
+
+    @Qualifier("sysMenuServiceImpl")
+    @Autowired
+    private ISysMenuService sysMenuService;
 
     @RequestMapping(value = "/tolist")
     public String toList(Model model) throws JsonProcessingException {
@@ -77,10 +83,14 @@ public class RoleController {
     public String toAddOrEdit(@RequestParam(required = false) String deptId,
                               @RequestParam(required = false) String roleId,Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        SysDepartment sysDepartment1 = new SysDepartment();
-        List<SysDepartment> departmentList = sysDeptService.findBy(sysDepartment1);
-        String value = mapper.writeValueAsString(departmentList);
-        model.addAttribute("nodes",value);
+        SysDepartment department1 = new SysDepartment();
+        department1.setState("1");
+        SysMenu menu = new SysMenu();
+        menu.setDeleteFlag("1");
+        List<SysDepartment> by = sysDeptService.findBy(department1);
+        model.addAttribute("nodes1",mapper.writeValueAsString(by));
+        List<SysMenu> by1 = sysMenuService.findBy(menu);
+        model.addAttribute("nodes2",mapper.writeValueAsString(by1));
         if (StringUtils.isNotEmpty(roleId)) {
             SysRole sysRole = new SysRole();
             sysRole.setRoleId(roleId);

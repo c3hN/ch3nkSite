@@ -18,14 +18,6 @@
         .content .form-content{
             width: 100%;
         }
-        .form-group button{
-            width: 34px;
-            height: 34px;
-            position: absolute;
-            top: 0px;
-            left: 251px;
-            padding: 0;
-        }
         .title{
             border-bottom: 1px solid #dbdbdb;
             /*width: 100%;*/
@@ -40,13 +32,18 @@
         .modal-dialog-custom{
             width: 400px;
         }
-        .btn-content{
-            margin-top: 30px;
+        .position{
+            border-bottom: 1px solid #dbdbdb;
+            height: 50px;
+            background-color: #FFFFFF;
+            margin-bottom: 40px;
+            line-height: 50px;
+            padding: 0 0 0 20px;
         }
     </style>
 </head>
 <body>
-<div class="position" style="width: 100%; height: 50px; background-color: #FFFFFF; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
+<div class="position">
     <div class="postion-content"><i class="fa fa-square-o"></i>&nbsp;部门管理</div>
     <div class="operations" style="display: inline-block">
         <button class="btn btn-default" id="goBackBtn" onclick="javascript:history.back(-1);"><i class="fa fa-reply" aria-hidden="true"></i></button>
@@ -68,8 +65,12 @@
                             <span>上级菜单</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="parentName" value="${parentDept.deptName}" onfocus="this.blur()">
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></button>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="parentName" value="${parentDept.deptName}" onfocus="this.blur()">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">&nbsp;<i class="fa fa-search"></i>&nbsp;</button>
+                                </span>
+                            </div>
                         </div>
                         <label for="deptName" class="col-sm-2 control-label">
                             <span>部门名称</span>

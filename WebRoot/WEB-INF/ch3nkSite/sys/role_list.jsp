@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="${basePath}/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
     <style>
         body,html{
+            font-size: 10px;
             margin: 0;
             padding: 0;
         }
@@ -28,6 +29,14 @@
         .treeContent{
             height: 700px;
             overflow: auto;
+        }
+        .position{
+            border-bottom: 1px solid #dbdbdb;
+            height: 50px;
+            background-color: #FFFFFF;
+            margin-bottom: 40px;
+            line-height: 50px;
+            padding: 0 0 0 20px;
         }
     </style>
 </head>
@@ -51,7 +60,7 @@
                     </div>
                 </div>
                 <div class="table-content">
-                    <table id="roles"></table>
+                    <table class="table-condensed" id="roles"></table>
                 </div>
             </div>
         </div>

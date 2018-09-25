@@ -18,14 +18,6 @@
         .content .form-content{
             width: 100%;
         }
-        .form-group button{
-            width: 34px;
-            height: 34px;
-            position: absolute;
-            top: 0px;
-            left: 251px;
-            padding: 0;
-        }
         .title{
             border-bottom: 1px solid #dbdbdb;
             /*width: 100%;*/
@@ -40,13 +32,18 @@
         .modal-dialog-custom{
             width: 400px;
         }
-        .btn-content{
-            margin-top: 30px;
+        .position{
+            border-bottom: 1px solid #dbdbdb;
+            height: 50px;
+            background-color: #FFFFFF;
+            margin-bottom: 40px;
+            line-height: 50px;
+            padding: 0 0 0 20px;
         }
     </style>
 </head>
 <body>
-<div class="position" style="width: 100%; height: 50px; background-color: #FFFFFF; margin-bottom: 40px;line-height: 50px;padding: 0 0 0 20px;">
+<div class="position">
     <div class="postion-content"><i class="fa fa-bars"></i>&nbsp;菜单管理</div>
     <div class="operations" style="display: inline-block">
         <button class="btn btn-default" id="goBackBtn" onclick="javascript:history.back(-1);"><i class="fa fa-reply" aria-hidden="true"></i></button>
@@ -67,8 +64,12 @@
                             <span>上级菜单</span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="parentName" onfocus="this.blur()">
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#parents_tree"><i class="fa fa-search"></i></button>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="parentName" onfocus="this.blur()">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#parents_tree">&nbsp;<i class="fa fa-search"></i>&nbsp;</button>
+                                </span>
+                            </div>
                         </div>
                         <label  class="col-sm-2 control-label">
                             <span>类别</span>
@@ -133,7 +134,7 @@
                             <span>备注</span>
                         </label>
                         <div class="col-sm-8">
-                            <textarea name="remark" id="remark" cols="30" rows="3" class="form-control"></textarea>
+                            <textarea name="remark" id="remark" style="resize:none" cols="30" rows="3" class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="col-sm-1 col-sm-offset-5">
