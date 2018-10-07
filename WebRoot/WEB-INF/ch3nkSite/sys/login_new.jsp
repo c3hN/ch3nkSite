@@ -42,7 +42,8 @@
 <script>
     $(function () {
         $("form input:eq(0)").focus();
-
+        $("input[name='account']").val("18913339867");
+        $("input[name='userPwd']").val("123");
     })
 </script>
 </body>

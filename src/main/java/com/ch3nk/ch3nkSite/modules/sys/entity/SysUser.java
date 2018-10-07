@@ -61,6 +61,10 @@ public class SysUser implements Serializable {
      * 角色列表
      */
     private List<SysRole> roles;
+    /**
+     * 用户所属部门
+     */
+    private SysDepartment department;
 
     /**
      * 模糊查询字段
@@ -174,5 +178,13 @@ public class SysUser implements Serializable {
 
     public void setLikeCreateTime(String likeCreateTime) {
         this.likeCreateTime = likeCreateTime;
+    }
+
+    public SysDepartment getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(SysDepartment department) {
+        this.department = department;
     }
 }

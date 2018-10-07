@@ -11,30 +11,60 @@
         <result column="UPDATETIME" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="LOGINFLAG" jdbcType="VARCHAR" property="loginFlag" />
         <result column="DELETEFLAG" jdbcType="VARCHAR" property="deleteFlag" />
-        <collection property="roles" ofType="sysUser">
-            <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
-            <result column="OFFICE_ID" jdbcType="VARCHAR" property="officerId" />
-            <result column="ZH_NAME" jdbcType="VARCHAR" property="name" />
-            <result column="EN_NAME" jdbcType="VARCHAR" property="eName" />
-            <result column="USEABLE_FLAG" jdbcType="INTEGER" property="useAbleFlag" />
-            <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+        <association property="department" column="DEPT_ID" javaType="sysDepartment">
+            <id column="DEPT_ID" jdbcType="VARCHAR" property="deptId" />
+            <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
+            <result column="DEPT_NUM" jdbcType="VARCHAR" property="deptNum" />
+            <result column="DEPT_ABBR" jdbcType="VARCHAR" property="deptAbbr" />
+            <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
             <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
-            <result column="UPDATE_BY" jdbcType="TIMESTAMP" property="updateBy" />
             <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
-            <result column="REMARK" jdbcType="VARCHAR" property="remark" />
-            <result column="DELETE_FLAG" jdbcType="INTEGER" property="deleteFlag" />
+            <result column="STATE" jdbcType="VARCHAR" property="state" />
+            <result column="HAS_BRANCH" jdbcType="VARCHAR" property="hasBranch" />
+        </association>
+        <collection property="roles" ofType="sysRole">
+            <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
-        USER_ID,
-        ACCOUNT,
-        NICKNAME,
-        USERPWD,
-        USERPHOTO,
-        CREATETIME,
-        UPDATETIME,
-        LOGINFLAG,
-        DELETEFLAG
+        u.USER_ID,
+        u.ACCOUNT,
+        u.DEPT_ID,
+        u.NICKNAME,
+        u.USERPWD,
+        u.USERPHOTO,
+        u.CREATETIME,
+        u.UPDATETIME,
+        u.LOGINFLAG,
+        u.DELETEFLAG
+    </sql>
+    <sql id="left_join_columns">
+        u.USER_ID,
+        u.ACCOUNT,
+        u.DEPT_ID,
+        u.NICKNAME,
+        u.USERPWD,
+        u.USERPHOTO,
+        u.CREATETIME,
+        u.UPDATETIME,
+        u.LOGINFLAG,
+        u.DELETEFLAG,
+        sd.DEPT_ID,
+        sd.DEPT_NAME,
+        sd.DEPT_NUM,
+        sd.DEPT_ABBR,
+        sd.PARENT_ID,
+        sd.CREATE_DATE,
+        sd.UPDATE_DATE,
+        sd.`STATE`,
+        sd.HAS_BRANCH,
+        ur.ROLE_ID
+    </sql>
+    <sql id="left_join_dept">
+        left join sys_department sd on u.DEPT_ID = sd.DEPT_ID
+    </sql>
+    <sql id="left_join_user_role">
+        left join sys_user_role ur on u.USER_ID = ur.USER_ID
     </sql>
     <insert id="insert" parameterType="sysUser">
         insert into sys_user (USER_ID, ACCOUNT, NICKNAME,
@@ -114,67 +144,74 @@
     <update id="updateByPKSelective" parameterType="sysUser">
         update sys_user
         <set>
-            <if test="account != null">ACCOUNT = #{account,jdbcType=VARCHAR}</if>
-            <if test="nickName != null">NICKNAME = #{nickName,jdbcType=VARCHAR}</if>
-            <if test="userPwd != null">USERPWD = #{userPwd,jdbcType=VARCHAR}</if>
-            <if test="userPhoto != null">USERPHOTO = #{userPhoto,jdbcType=VARCHAR}</if>
-            <if test="createTime != null">CREATETIME = #{createTime,jdbcType=TIMESTAMP}</if>
-            <if test="updateTime != null">UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
-            <if test="loginFlag != null">LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
+            <if test="account != null">ACCOUNT = #{account,jdbcType=VARCHAR},</if>
+            <if test="nickName != null">NICKNAME = #{nickName,jdbcType=VARCHAR},</if>
+            <if test="userPwd != null and userPwd != ''">USERPWD = #{userPwd,jdbcType=VARCHAR},</if>
+            <if test="userPhoto != null">USERPHOTO = #{userPhoto,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">CREATETIME = #{createTime,jdbcType=TIMESTAMP},</if>
+            <if test="updateTime != null">UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},</if>
+            <if test="loginFlag != null">LOGINFLAG = #{loginFlag,jdbcType=VARCHAR},</if>
             <if test="deleteFlag != null">DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
         </set>
         where USER_ID = #{userId,jdbcType=VARCHAR}
     </update>
 
-    <select id="selectCountBy" parameterType="sysUser">
+    <select id="selectCountBy" parameterType="sysUser" resultType="int">
         select count(1)
         from sys_user
         <where>
             <if test="account != null">ACCOUNT = #{account,jdbcType=VARCHAR}</if>
-            <if test="nickName != null">NICKNAME = #{nickName,jdbcType=VARCHAR}</if>
-            <if test="userPwd != null">USERPWD = #{userPwd,jdbcType=VARCHAR}</if>
-            <if test="userPhoto != null">USERPHOTO = #{userPhoto,jdbcType=VARCHAR}</if>
-            <if test="createTime != null">CREATETIME = #{createTime,jdbcType=TIMESTAMP}</if>
-            <if test="updateTime != null">UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
-            <if test="loginFlag != null">LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
-            <if test="deleteFlag != null">DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
-            <if test="likeAccount != null">ACCOUNT = #{likeAccount,jdbcType=VARCHAR} escape '/' </if>
-            <if test="likeNickName != null">NICKNAME = #{likeNickName,jdbcType=VARCHAR} escape '/' </if>
-            <if test="likeCreateTime != null">CREATETIME = #{likeCreateTime,jdbcType=VARCHAR} escape '/' </if>
+            <if test="nickName != null">and NICKNAME = #{nickName,jdbcType=VARCHAR}</if>
+            <if test="userPwd != null">and USERPWD = #{userPwd,jdbcType=VARCHAR}</if>
+            <if test="userPhoto != null">and USERPHOTO = #{userPhoto,jdbcType=VARCHAR}</if>
+            <if test="createTime != null">and CREATETIME = #{createTime,jdbcType=TIMESTAMP}</if>
+            <if test="updateTime != null">and UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
+            <if test="loginFlag != null">and LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
+            <if test="deleteFlag != null">and DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
+            <if test="likeAccount != null">and ACCOUNT like #{likeAccount,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeNickName != null">and NICKNAME like #{likeNickName,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeCreateTime != null">and CREATETIME like #{likeCreateTime,jdbcType=VARCHAR} escape '/' </if>
         </where>
     </select>
 
     <select id="selectAllBy" parameterType="sysUser" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
-        from sys_user
+        <include refid="left_join_columns"/>
+        from sys_user u
+        <include refid="left_join_dept"/>
+        <include refid="left_join_user_role"/>
         <where>
-            <if test="account != null">ACCOUNT = #{account,jdbcType=VARCHAR}</if>
-            <if test="nickName != null">NICKNAME = #{nickName,jdbcType=VARCHAR}</if>
-            <if test="userPwd != null">USERPWD = #{userPwd,jdbcType=VARCHAR}</if>
-            <if test="userPhoto != null">USERPHOTO = #{userPhoto,jdbcType=VARCHAR}</if>
-            <if test="createTime != null">CREATETIME = #{createTime,jdbcType=TIMESTAMP}</if>
-            <if test="updateTime != null">UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
-            <if test="loginFlag != null">LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
-            <if test="deleteFlag != null">DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
-            <if test="likeAccount != null">ACCOUNT = #{likeAccount,jdbcType=VARCHAR} escape '/' </if>
-            <if test="likeNickName != null">NICKNAME = #{likeNickName,jdbcType=VARCHAR} escape '/' </if>
-            <if test="likeCreateTime != null">CREATETIME = #{likeCreateTime,jdbcType=VARCHAR} escape '/' </if>
+            <if test="userId != null">u.USER_ID = #{userId,jdbcType=VARCHAR}</if>
+            <if test="account != null">and u.ACCOUNT = #{account,jdbcType=VARCHAR}</if>
+            <if test="nickName != null">and u.NICKNAME = #{nickName,jdbcType=VARCHAR}</if>
+            <if test="userPwd != null">and u.USERPWD = #{userPwd,jdbcType=VARCHAR}</if>
+            <if test="userPhoto != null">and u.USERPHOTO = #{userPhoto,jdbcType=VARCHAR}</if>
+            <if test="createTime != null">and u.CREATETIME = #{createTime,jdbcType=TIMESTAMP}</if>
+            <if test="updateTime != null">and u.UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
+            <if test="loginFlag != null">and u.LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
+            <if test="deleteFlag != null">and u.DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
+            <if test="likeAccount != null">and u.ACCOUNT like #{likeAccount,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeNickName != null">and u.NICKNAME like #{likeNickName,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeCreateTime != null">and u.CREATETIME like #{likeCreateTime,jdbcType=VARCHAR} escape '/' </if>
         </where>
         order by CREATETIME desc
     </select>
 
     <select id="selectByPK" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from sys_user
-        where USER_ID = #{userId,jdbcType=VARCHAR}
+        <include refid="left_join_columns"/>
+        from sys_user u
+        <include refid="left_join_dept"/>
+        <include refid="left_join_user_role"/>
+        where u.USER_ID = #{userId,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from sys_user
-        where ACCOUNT = #{account,jdbcType=VARCHAR}
+        <include refid="left_join_columns"/>
+        from sys_user u
+        <include refid="left_join_dept"/>
+        <include refid="left_join_user_role"/>
+        where u.ACCOUNT = #{account,jdbcType=VARCHAR}
     </select>
 </mapper>

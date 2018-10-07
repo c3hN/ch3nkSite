@@ -60,6 +60,23 @@
                 <form action="${basePath}/user/saveOrUpdate.do" class="form-horizontal" id="userForm" method="post">
                     <input type="text" name="userId" style="display: none" value="${sysUser.userId}">
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">所属部门</label>
+                        <div class="col-sm-3">
+                            <div class="form-control">${sysUser.department.deptName}</div>
+                        </div>
+                        <label class="col-sm-2 control-label">
+                            <span>账号状态</span>
+                        </label>
+                        <div class="col-sm-5">
+                            <label class="radio-inline">
+                                <input type="radio" name="loginFlag" value="1" <c:if test="${sysUser.loginFlag == '1'}">checked</c:if>>启用
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="loginFlag" value="0" <c:if test="${sysUser.loginFlag == '0'}">checked</c:if>>禁用
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="account" class="col-sm-2 control-label">
                             <span>用户账号</span>
                             <span style="color: red;">*</span>
@@ -82,17 +99,6 @@
                         <div class="col-sm-3">
                             <input type="password" class="form-control" id="userPwd" name="userPwd">
                         </div>
-                        <label class="col-sm-2 control-label">
-                            <span>账号状态</span>
-                        </label>
-                        <div class="col-sm-5">
-                            <label class="radio-inline">
-                                <input type="radio" name="loginFlag" value="1" <c:if test="${sysUser.loginFlag == '1'}">checked</c:if>>启用
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="loginFlag" value="0" <c:if test="${sysUser.loginFlag == '0'}">checked</c:if>>禁用
-                            </label>
-                        </div>
                     </div>
                     <div class="form-group">
                         <label for="checkPwd" class="col-sm-2 control-label">
@@ -100,14 +106,6 @@
                         </label>
                         <div class="col-sm-3">
                             <input type="password" class="form-control" name="checkPwd" id="checkPwd">
-                        </div>
-                        <label  class="col-sm-2 control-label">
-                            <span>角色列表</span>
-                            <span style="color: red;">*</span>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" name="department.deptName" id="deptName" value="${sysDept.deptName}" >
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#roles"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
                     <div class="col-sm-1 col-sm-offset-5">
@@ -170,7 +168,6 @@
                 url = "${basePath}/user/formCheck.do";
                 var account = element.value;
                 var userId = $("input[name="+param[0]+"]").attr("value");
-                console.log(userId);
                 return $.ajax({
                     url: url,
                     type: 'post',

@@ -62,7 +62,7 @@ public class SysRole implements Serializable{
     /**
      * 菜单列表
      */
-//    private List<SysMenu> menus;
+    private List<SysMenu> menus;
 
 
     public String getRoleId() {
@@ -153,11 +153,11 @@ public class SysRole implements Serializable{
         this.deleteFlag = deleteFlag;
     }
 
-//    public List<SysMenu> getMenus() {
-//        return menus;
-//    }
-//
-//    public void setMenus(List<SysMenu> menus) {
-//        this.menus = menus;
-//    }
+    public List<SysMenu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<SysMenu> menus) {
+        this.menus = menus;
+    }
 }

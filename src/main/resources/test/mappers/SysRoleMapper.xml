@@ -288,9 +288,18 @@
             #{menuId})
         </foreach>
     </insert>
-    <!--删除角色-菜单记录-->
     <delete id="deleteRoleMenus">
         delete from sys_role_menu
         where ROLE_ID = #{roleId}
+        and MENU_ID in
+        <foreach collection="menuIds" item="menuId" index="index" open="(" close=")" separator=",">
+            #{menuId}
+        </foreach>
     </delete>
+
+    <select id="selectRoleMenus" parameterType="java.lang.String" resultMap="com.ch3nk.ch3nkSite.modules.sys.mapper.SysMenuMapper.BaseResultMap">
+        select MENU_ID
+        from sys_role_menu
+        where ROLE_ID = #{roleId}
+    </select>
 </mapper>

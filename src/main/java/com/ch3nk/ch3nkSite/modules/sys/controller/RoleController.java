@@ -1,5 +1,6 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysDepartment;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysRole;
@@ -16,7 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +43,12 @@ public class RoleController {
     public String toList(Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         SysDepartment department = new SysDepartment();
+        SysMenu menu = new SysMenu();
+        menu.setDeleteFlag("1");
         List<SysDepartment> departmentList = sysDeptService.findBy(department);
-        String value = mapper.writeValueAsString(departmentList);
-        model.addAttribute("nodes",value);
+        model.addAttribute("nodes",mapper.writeValueAsString(departmentList));
+        List<SysMenu> by = sysMenuService.findBy(menu);
+        model.addAttribute("menus",mapper.writeValueAsString(by));
         return "sys/role_list";
     }
 
@@ -53,6 +57,8 @@ public class RoleController {
     public Map<String,Object> list(String order, String deptId) {
         jsonResult = new HashMap<String,Object>();
         if (StringUtils.isEmpty(deptId)) {
+            List<SysRole> by = sysRoleService.findBy(new SysRole());
+            jsonResult.put("data",by);
             return jsonResult;
         }
         SysDepartment department = new SysDepartment();
@@ -111,6 +117,37 @@ public class RoleController {
         return "sys/role_add";
     }
 
+    @RequestMapping(value = "/toAddMenus")
+    public String toAddMenus(String roleId,Model model) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        SysRole byRoleId = sysRoleService.findByRoleId(roleId);
+        model.addAttribute("role",byRoleId);
+        SysMenu menu = new SysMenu();
+        menu.setDeleteFlag("1");
+        List<SysMenu> by = sysMenuService.findBy(menu);
+        model.addAttribute("menus",mapper.writeValueAsString(by));
+        List<SysMenu> menusByRoleId = sysRoleService.findMenusByRoleId(roleId);
+        model.addAttribute("checkedMenus",menusByRoleId);
+        return "sys/role_toAddMenus";
+    }
+
+
+    @RequestMapping(value = "/toRecove")
+    public String toRecove() {
+        return "sys/role_recove";
+    }
+
+    @RequestMapping(value = "/listRolesDeleted")
+    @ResponseBody
+    public Map<String,Object> listRolesDeleted(@RequestParam(required = false) String order) {
+        jsonResult = new HashMap<String, Object>();
+        SysRole sysRole = new SysRole();
+        sysRole.setDeleteFlag("0");
+        List<SysRole> by = sysRoleService.findBy(sysRole);
+        jsonResult.put("data",by);
+        return jsonResult;
+    }
+
     @RequestMapping(value = "/logicalDelete")
     @ResponseBody
     public Map<String,Object> logicalDelete(String roleId) {
@@ -139,21 +176,6 @@ public class RoleController {
         return "forward:/role/tolist.do";
     }
 
-    @RequestMapping(value = "/toRecove")
-    public String toRecove() {
-        return "sys/role_recove";
-    }
-
-    @RequestMapping(value = "/listRolesDeleted")
-    @ResponseBody
-    public Map<String,Object> listRolesDeleted(@RequestParam(required = false) String order) {
-        jsonResult = new HashMap<String, Object>();
-        SysRole sysRole = new SysRole();
-        sysRole.setDeleteFlag("0");
-        List<SysRole> by = sysRoleService.findBy(sysRole);
-        jsonResult.put("data",by);
-        return jsonResult;
-    }
 
     @RequestMapping(value = "/delete")
     @ResponseBody
@@ -211,6 +233,16 @@ public class RoleController {
             jsonResult.put("error","已经被使用");
         }
         return jsonResult;
+    }
+
+    @RequestMapping(value = "/saveRoleMenus")
+    @ResponseBody
+    public String saveRoleMenus(String roleId, @RequestParam(value = "ids[]",required = false) String[] menuIds) throws IOException {
+        sysRoleService.deleteRoleMenus(roleId);
+        if (menuIds != null && menuIds.length != 0) {
+            sysRoleService.saveRoleMenus(roleId,menuIds);
+        }
+        return "success";
     }
 
 }

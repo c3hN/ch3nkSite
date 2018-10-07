@@ -58,6 +58,32 @@
         <div class="container">
             <div class="row">
                 <form action="${basePath}/user/saveOrUpdate.do" class="form-horizontal" id="userForm" method="post">
+                    <input type="text" name="department.deptId" id="deptId" style="display: none" value="${dept.deptId}">
+                    <div class="form-group">
+                        <label for="deptName" class="col-sm-2 control-label">
+                            <span>所属部门</span>
+                            <span style="color: red;">*</span>
+                        </label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="deptName" value="${dept.deptName}" onfocus="this.blur()">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#depts_modal">&nbsp;<i class="fa fa-search"></i>&nbsp;</button>
+                                </span>
+                            </div>
+                        </div>
+                        <label class="col-sm-2 control-label">
+                            <span>账号状态</span>
+                        </label>
+                        <div class="col-sm-5">
+                            <label class="radio-inline">
+                                <input type="radio" name="loginFlag" value="1" checked>启用
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="loginFlag" value="0">禁用
+                            </label>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="account" class="col-sm-2 control-label">
                             <span>用户账号</span>
@@ -82,17 +108,7 @@
                         <div class="col-sm-3">
                             <input type="password" class="form-control" id="userPwd" name="userPwd">
                         </div>
-                        <label class="col-sm-2 control-label">
-                            <span>账号状态</span>
-                        </label>
-                        <div class="col-sm-5">
-                            <label class="radio-inline">
-                                <input type="radio" name="loginFlag" value="1" checked>启用
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="loginFlag" value="0">禁用
-                            </label>
-                        </div>
+
                     </div>
                     <div class="form-group">
                         <label for="checkPwd" class="col-sm-2 control-label">
@@ -101,14 +117,6 @@
                         </label>
                         <div class="col-sm-3">
                             <input type="password" class="form-control" name="checkPwd" id="checkPwd">
-                        </div>
-                        <label  class="col-sm-2 control-label">
-                            <span>角色列表</span>
-                            <span style="color: red;">*</span>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" name="department.deptName" id="deptName" >
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#roles"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
                     <div class="col-sm-1 col-sm-offset-5">
@@ -119,6 +127,24 @@
                     </div>
                 </form>
 
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="depts_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-custom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                部门
+            </div>
+            <div class="modal-body">
+                <ul id="depts" class="ztree"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
     </div>
@@ -176,7 +202,36 @@
             'checkPwd':'cusMatch(userPwd)'
         }
     });
+    <%--模态框树--%>
+    var setting1 = {
+        data:{
+            simpleData:{
+                enable:true,
+                idKey:"deptId",
+                pIdKey:"parentId",
+                rootPid:null
+            },
+            key:{
+                name:"deptName",
+                title:"deptName"
+            }
+        },
+        callback:{
+            onClick:clickNode
+        }
+    };
+    var deptsObj = $.fn.zTree.init($("#depts"), setting1,  ${deptsNodes});
+    // detpsObj.expandNode(detpsObj.getNodes()[0]);    //展开第一层
+    var depts = deptsObj.getNodes();
+    $.each(depts,function (index,value) {
+       deptsObj.expandNode(depts[index]);
+    });
 
+    function clickNode(event, treeId, treeNode) {
+        $("input[id='deptId']").attr("value",treeNode.deptId);
+        $("input[id='deptName']").attr("value",treeNode.deptName);
+        $("#depts_modal").modal('hide');
+    };
 </script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.ch3nk.ch3nkSite.modules.sys.service;
 
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysDepartment;
+import com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysRole;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
 import com.ch3nk.ch3nkSite.modules.sys.mapper.SysRoleMapper;
@@ -55,6 +56,11 @@ public class SysRoleServiceImpl implements ISysRoleService {
     }
 
     @Override
+    public SysRole findByRoleId(String roleId) {
+        return sysRoleMapper.selectByPrimaryKey(roleId);
+    }
+
+    @Override
     public List<SysRole> findByPage(SysRole sysRole, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<SysRole> sysRoles = sysRoleMapper.selectBy(sysRole);
@@ -77,4 +83,21 @@ public class SysRoleServiceImpl implements ISysRoleService {
     public int findCountBy(SysRole sysRole) {
         return sysRoleMapper.selectCountBy(sysRole);
     }
+
+    @Override
+    public int saveRoleMenus(String roleId, String[] menuIds) {
+        return sysRoleMapper.insertRoleMenus(roleId,menuIds);
+    }
+
+    @Override
+    public void deleteRoleMenus(String roleId) {
+        sysRoleMapper.deleteRoleMenus(roleId);
+    }
+
+    @Override
+    public List<SysMenu> findMenusByRoleId(String roleId) {
+//        return sysRoleMapper.selectRoleMenus(roleId);
+        return null;
+    }
+
 }

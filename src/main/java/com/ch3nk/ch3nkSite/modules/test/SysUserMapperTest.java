@@ -38,10 +38,12 @@ public class SysUserMapperTest {
     public void test_1() {
         SysUser sysUser = new SysUser();
         sysUser.setDeleteFlag("1");
+        sysUser.setUserId("234f3486a9f44bf9a98dfbcee379d3d5");
         session= session = sqlSessionFactory.openSession();
         SysUserMapper mapper = session.getMapper(SysUserMapper.class);
-        List<SysUser> sysUsers = mapper.selectAllBy(sysUser);
-
+//        List<SysUser> sysUsers = mapper.selectAllBy(sysUser);
+//        SysUser sysUser1 = mapper.selectByPK("234f3486a9f44bf9a98dfbcee379d3d5");
+        SysUser sysUser1 = mapper.selectByAccount("18913339867");
     }
 
 

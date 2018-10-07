@@ -1,6 +1,5 @@
-package com.ch3nk.ch3nkSite.modules.sys.mapper;
+package test.mappers;
 
-import com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysRole;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,8 +22,6 @@ public interface SysRoleMapper {
 
     int selectCountBy(SysRole sysRole);
 
-    int insertRoleMenus(@Param("roleId")String roleId,@Param("menuIds") String[] menuIds);
-
-    void deleteRoleMenus(@Param("roleId")String roleId);
+    int insertRoleMenus(@Param("roleId") String roleId, @Param("menuIds") String[] menuIds);
 
 }

@@ -13,13 +13,13 @@
     </bean>
 
     <!-- 缓存管理器开始 -->
-    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-        <property name="cacheManager" ref="ehCacheManager"/>
-    </bean>
-    <bean id="ehCacheManager" class ="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="configLocation" value="classpath:ch3nkSiteCfgs/spring/shiro-ehcatch.xml" />
-        <property name="shared" value="true"></property>
-    </bean>
+    <!--<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">-->
+        <!--<property name="cacheManager" ref="ehCacheManager"/>-->
+    <!--</bean>-->
+    <!--<bean id="ehCacheManager" class ="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">-->
+        <!--<property name="configLocation" value="classpath:ch3nkSiteCfgs/spring/shiro-ehcatch.xml" />-->
+        <!--<property name="shared" value="true"></property>-->
+    <!--</bean>-->
 
     <!--配置自定义realm-->
     <bean id="systemRealm" class="com.ch3nk.ch3nkSite.common.shiro.realm.SystemRealm">
@@ -30,7 +30,7 @@
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="systemRealm"/>
         <!--给shiro添加缓存机制-->
-        <property name="cacheManager" ref="cacheManager"></property>
+        <!--<property name="cacheManager" ref="cacheManager"></property>-->
     </bean>
 
     <!--配置认证过滤器-->

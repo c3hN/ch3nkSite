@@ -82,7 +82,7 @@ public class DeptController {
             SysDepartment parent = sysDeptService.findByDeptId(parentId);
             model.addAttribute("parentDept",parent);
             model.addAttribute("sysDept",byDeptId);
-            return "sys/dept_edit";
+             return "sys/dept_edit";
         }else{      //新增
             String value = mapper.writeValueAsString(list);
             model.addAttribute("nodes",value);

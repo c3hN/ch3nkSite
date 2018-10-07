@@ -103,19 +103,6 @@
                     </div>
                     <div class="form-group">
                         <label for="remark" class="col-sm-2 control-label">
-                            <span>资源配置</span>
-                        </label>
-                        <div class="col-sm-8">
-                            <div class="input-group">
-                                <input type="text" class="form-control">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">&nbsp;<i class="fa fa-bars"></i>&nbsp;</button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="remark" class="col-sm-2 control-label">
                             <span>备注</span>
                         </label>
                         <div class="col-sm-8">

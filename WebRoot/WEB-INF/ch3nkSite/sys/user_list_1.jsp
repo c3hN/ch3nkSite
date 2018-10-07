@@ -48,7 +48,7 @@
 </head>
 <body>
 <div class="position">
-    <div class="postion-content"><i class="fa fa-id-card-o"></i>&nbsp;角色列表</div>
+    <div class="postion-content"><i class="fa fa-user"></i>&nbsp;用户列表</div>
 </div>
 <div class="content">
     <div class="container costom-container">
@@ -61,12 +61,12 @@
             <div class="col-md-10">
                 <div id="table_operations">
                     <div class="btn-group">
-                        <button class="btn btn-default btn-sm" id="roleAddBtn">新增</button>
+                        <button class="btn btn-default btn-sm" id="userAddBtn">新增</button>
                         <button class="btn btn-warning btn-sm" id="toRecoveBtn">回收站</button>
                     </div>
                 </div>
                 <div class="table-content">
-                    <table id="roles"></table>
+                    <table id="users"></table>
                 </div>
             </div>
         </div>
@@ -79,26 +79,26 @@
 <script src="${basePath}/static/plugins/ztree/js/jquery.ztree.core.min.js"></script>
 <script src="${basePath}/static/plugins/layer/layer.js"></script>
 <script>
-    table = $("#roles").bootstrapTable({
-        url:'${basePath}/role/list.do',
+    table = $("#users").bootstrapTable({
+        url:'${basePath}/user/list.do',
         height:549,
         undefinedText:'暂无',
         pagination:true,    //分页
         pageNumber:1,
         pageSize:10,
-        pageList:[10,20],
+        pageList:[10,20,30],
         paginationLoop:false,
         sortOrder:'desc',
         toolbar:'#table_operations',
         columns:[
             {title:'序号',formatter:'numFormatter', align:'center',width:'30'},
-            {field:'name',title:'名称',align:'center',width:'100'},
-            {field:'eName',title:'编号',align:'center',width:'100'},
+            {field:'account',title:'登录账号',align:'center',width:'100'},
+            {field:'nickName',title:'用户昵称',align:'center',width:'100'},
             {field:'department.deptName',title:'所属部门',align:'center',width:'100'},
-            {field:'useFlag',title:'状态',align:'center',width:'100',formatter:'stateFormatter'},
-            {field:'createDate',title:'创建时间',align:'center',width:'100'},
-            {field:'remark',title:'备注',align:'center',width:'100'},
-            {title:'操作',events:'roleOperateEvents',formatter:'operateFormatter',align:'center',width:'150'}
+            {field:'createTime',title:'注册时间',align:'center',width:'100'},
+            {field:'updateTime',title:'上次登录时间',align:'center',width:'100'},
+            {field:'loginFlag',title:'允许登录',align:'center',width:'100',formatter:'stateFormatter'},
+            {title:'操作',events:'userOperateEvents',formatter:'operateFormatter',align:'center',width:'150'}
         ]
     });
     function numFormatter(value, row, index) {
@@ -107,43 +107,42 @@
     //表格操作
     function operateFormatter(value, row, index) {
         return [
-            '<button class="btn btn-default btn-xs" id="addMenus">权限分配</button> ',
-            '<button class="btn btn-default btn-xs" id="editRole">编辑</button> ',
-            '<button class="btn btn-default btn-xs btn-danger" id="logiDeleteRole">删除</button> '
+            '<button class="btn btn-default btn-xs" id="userDetail">查看</button> ',
+            '<button class="btn btn-default btn-xs" id="editUser">编辑</button> ',
+            '<button class="btn btn-default btn-xs btn-danger" id="logiDeleteUser">删除</button> '
         ].join('');
     }
-    window.roleOperateEvents = {
-        "click #addMenus":function (e,value,row,index) {
-            $(location).prop('href', '${basePath}/role/toAddMenus.do?roleId='+row.roleId);
+    window.userOperateEvents = {
+        "click #userDetail":function (e,value,row,index) {
+            $(location).prop('href', '${basePath}/role/toAddMenus.do?roleId='+row.userId);
         },
-        "click #editRole":function (e,value, row, index) {
-            $(location).prop('href', '${basePath}/role/toAddOrEdit.do?roleId='+row.roleId);
+        "click #editUser":function (e,value, row, index) {
+            $(location).prop('href', '${basePath}/user/toAddOrEdit.do?userId='+row.userId);
         },
-        "click #logiDeleteRole":function (e,value, row, index) {
-            layer.confirm('确定删除该角色?',{btn:['确定','取消'],icon:3},
-            function (index,layero) {
-                $.post("${basePath}/role/logicalDelete.do",{"roleId":row.roleId},function (data) {
-                    if (data.data == "success") {
-                        layer.msg("角色已被移入回收站，可在回收站中还原");
-                        table.bootstrapTable('refresh',{silent: true,url:'${basePath}/role/list?deptId='+row.department.deptId});//重载表格
-
-                    }else if (data.data == "error"){
-                        layer.alert("该角色被使用，删除失败",{icon:2});
-                    }
+        "click #logiDeleteUser":function (e,value, row, index) {
+            layer.confirm('确定删除该用户?',{btn:['确定','取消'],icon:3},
+                function (index,layero) {
+                    $.post("${basePath}/user/logicalDel.do",{"userId":row.userId},function (data) {
+                        if (data.msg == "success") {
+                            layer.msg("用户已被移入回收站，可在回收站中还原");
+                            table.bootstrapTable('refresh',{silent: true,url:'${basePath}/user/list?deptId='+row.department.deptId});//重载表格
+                        }else if (data.msg == "error"){
+                            layer.alert("删除失败",{icon:2});
+                        }
+                    });
+                    layer.close(index);
+                },
+                function (index,layero) {
+                    layer.close(index);
                 });
-                layer.close(index);
-            },
-            function (index,layero) {
-                layer.close(index);
-            });
         }
     }
-    //表格状态字段格式化
+    //表格字段格式化
     function stateFormatter(value, row, index) {
         if (value == '1') {
-            return '启用';
+            return '是';
         }else if (value == '0') {
-            return '禁用';
+            return '否';
         }
     }
     var setting = {
@@ -161,27 +160,26 @@
         },
         callback:{
             onClick:function (event, treeId, treeNode, clickFlag) {
-                table.bootstrapTable('refresh',{silent: true,url:'${basePath}/role/list?deptId='+treeNode.deptId});
+                table.bootstrapTable('refresh',{silent: true,url:'${basePath}/user/list?deptId='+treeNode.deptId});
             }
         }
     };
-    var deptTreeObj = $.fn.zTree.init($("#dept_tree"), setting,  ${nodes});
-    // deptTree.expandNode(deptTree.getNodes()[0]);    //展开第一层
+    var deptTreeObj = $.fn.zTree.init($("#dept_tree"), setting,  ${deptsNodes});
     var depts = deptTreeObj.getNodes();
     $.each(depts,function (index,value) {
-       deptTreeObj.expandNode(depts[index]);
+        deptTreeObj.expandNode(depts[index]);
     });
 
-    $("#roleAddBtn").click(function () {
+    $("#userAddBtn").click(function () {
         var nodes = deptTreeObj.getSelectedNodes();
         if (nodes.length > 0) {
-            $(location).prop("href","${basePath}/role/toAddOrEdit.do?deptId="+nodes[0].deptId);
+            $(location).prop("href","${basePath}/user/toAddOrEdit.do?deptId="+nodes[0].deptId);
         }else{
-            $(location).prop("href","${basePath}/role/toAddOrEdit.do");
+            $(location).prop("href","${basePath}/user/toAddOrEdit.do");
         }
     });
     $("#toRecoveBtn").click(function () {
-        $(location).prop("href","${basePath}/role/toRecove.do");
+        $(location).prop("href","${basePath}/user/toRecove.do");
     });
 
 </script>

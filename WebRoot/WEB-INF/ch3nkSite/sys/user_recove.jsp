@@ -21,18 +21,11 @@
         .content{
             width: 100%;
         }
-        .costom-container{
-            width: 100%;
-        }
-        .treeContent{
-            height: 700px;
-            overflow: auto;
-        }
     </style>
 </head>
 <body>
 <div class="position">
-    <div class="postion-content"><i class="fa fa-id-card-o"></i>&nbsp;用户回收站</div>
+    <div class="postion-content"><i class="fa fa-user"></i>&nbsp;用户回收站</div>
     <div class="operations">
         <button class="btn btn-default" id="goback"><i class="fa fa-reply"></i></button>
     </div>
@@ -60,8 +53,9 @@
         columns:[
             {field:'account',title:'登录账号',align:'center',width:'100'},
             {field:'nickName',title:'用户昵称',align:'center',width:'100'},
+            {field:'department.deptName',title:'所属部门',align:'center',width:'100'},
             {field:'createTime',title:'注册时间',align:'center',width:'100'},
-            {field:'updateTime',title:'删除时间',align:'center',width:'100',formatter:'stateFormatter'},
+            {field:'updateTime',title:'删除时间',align:'center',width:'100'},
             {title:'操作',events:'roleOperateEvents',formatter:'operateFormatter',align:'center',width:'100'}
         ]
     });
@@ -74,12 +68,11 @@
     }
     window.roleOperateEvents = {
         "click #recoveUser":function (e,value, row, index) {
-            console.log(row)
             layer.confirm("确认还原该用户？",{btn:['确定','取消'],icon:3},
             function (index,layero) {
                 $.post("${basePath}/user/recoveUser.do",{"userId":row.userId},function (data) {
                     if (data.msg=="success"){
-                       layer.alert("还原成功");
+                       layer.alert("还原成功,用户已还原至 "+row.department.deptName+" 下");
                        table.bootstrapTable('refresh',{silent: true,url:'${basePath}/user/listUsersDeleted.do'});//重载表格
                     }else{
                         layer.alert("还原失败，请重试");
@@ -96,7 +89,7 @@
             function (index,layero) {
                 $.post("${basePath}/user/delete.do",{"userId":row.userId},function (data) {
                     if (data.msg == "success") {
-                        layer.alert("角色已被彻底删除");
+                        layer.alert("用户已被彻底删除");
                         table.bootstrapTable('refresh',{silent: true,url:'${basePath}/user/listUsersDeleted.do'});//重载表格
                     }else if (data.data == "error"){
                         layer.alert("删除失败",{icon:2});

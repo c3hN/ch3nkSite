@@ -1,7 +1,9 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
+import com.ch3nk.ch3nkSite.modules.sys.entity.SysDepartment;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysRole;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
+import com.ch3nk.ch3nkSite.modules.sys.service.ISysDeptService;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysRoleService;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysUserService;
 import com.ch3nk.ch3nkSite.modules.utils.SQLUtil;
@@ -36,6 +38,10 @@ public class UserController  {
     @Autowired
     private ISysRoleService sysRoleService;
 
+    @Qualifier("sysDeptServiceImpl")
+    @Autowired
+    private ISysDeptService sysDeptService;
+
 //    @RequestMapping(value = "/register")
 //    public String register(SysUser sysUser,Model model){
 //        int result = sysUserService.saveUser(sysUser);
@@ -50,8 +56,11 @@ public class UserController  {
 //    }
 
     @RequestMapping(value = "/tolist")
-    public String tolist(){
-        return "sys/user_list";
+    public String tolist(Model model) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<SysDepartment> by = sysDeptService.findBy(new SysDepartment());
+        model.addAttribute("deptsNodes",mapper.writeValueAsString(by));
+        return "sys/user_list_1";
     }
 
     @RequestMapping(value = "/saveOrUpdate",method = RequestMethod.POST)
@@ -66,15 +75,21 @@ public class UserController  {
 
 
     @RequestMapping(value = "toAddOrEdit")
-    public String toAdd(@RequestParam(required = false)String userId,Model model)
+    public String toAdd(@RequestParam(required = false)String deptId,
+                        @RequestParam(required = false)String userId,
+                        Model model)
             throws JsonProcessingException {
-        SysRole role = new SysRole();
-        role.setUseFlag("1");
-        role.setDeleteFlag("1");
-        List<SysRole> list = sysRoleService.findBy(role);
+        //点击新增时选择的部门
+        if (StringUtils.isNotEmpty(deptId)) {
+            SysDepartment byDeptId = sysDeptService.findByDeptId(deptId);
+            model.addAttribute("dept",byDeptId);
+        }
         ObjectMapper mapper = new ObjectMapper();
-        String value = mapper.writeValueAsString(list);
-        model.addAttribute("nodes",value);
+        //启用的部门
+        SysDepartment department = new SysDepartment();
+        department.setState("1");
+        List<SysDepartment> by = sysDeptService.findBy(department);
+        model.addAttribute("deptsNodes",mapper.writeValueAsString(by));
         if (StringUtils.isNotEmpty(userId)) {
             SysUser userById = sysUserService.findUserById(userId);
             model.addAttribute("sysUser",userById);
@@ -126,16 +141,44 @@ public class UserController  {
     }
 
 
+//    @RequestMapping(value = "/list")
+//    @ResponseBody
+//    public Map<String, Object> list(@RequestParam(value = "page",defaultValue = "1") int pageNum,
+//                                    @RequestParam(value = "limit",defaultValue = "10") int pageSize,
+//                                    @RequestParam(required = false)String likeAccount,
+//                                    @RequestParam(required = false)String likeNickName,
+//                                    @RequestParam(required = false)String likeCreateTime) throws ParseException {
+//        jsonResult = new HashMap<String,Object>();
+//        SysUser user = new SysUser();
+//        user.setDeleteFlag("1");
+//        if (StringUtils.isNotEmpty(likeAccount)) {
+//            user.setLikeAccount(SQLUtil.escapeLike(likeAccount));
+//        }
+//        if (StringUtils.isNotEmpty(likeNickName)) {
+//            user.setLikeNickName(SQLUtil.escapeLike(likeNickName));
+//        }
+//        if (StringUtils.isNotEmpty(likeCreateTime)) {
+//            user.setLikeCreateTime(SQLUtil.escapeLike(likeCreateTime));
+//        }
+//        List<SysUser> userByPage = sysUserService.findUserByPage(pageNum, pageSize, user);
+//        int count = sysUserService.findUserCount(user);
+//        jsonResult.put("code",0);
+//        jsonResult.put("msg","操作成功");
+//        jsonResult.put("count",count);
+//        jsonResult.put("data",userByPage);
+//        return jsonResult;
+//    }
+
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Map<String, Object> list(@RequestParam(value = "page",defaultValue = "1") int pageNum,
-                                    @RequestParam(value = "limit",defaultValue = "10") int pageSize,
-                                    @RequestParam(required = false)String likeAccount,
-                                    @RequestParam(required = false)String likeNickName,
-                                    @RequestParam(required = false)String likeCreateTime) throws ParseException {
-        jsonResult = new HashMap<String,Object>();
+    public Map<String,Object> list_1( @RequestParam(required = false)String deptId,
+                                      @RequestParam(required = false)String likeAccount,
+                                      @RequestParam(required = false)String likeNickName,
+                                      @RequestParam(required = false)String likeCreateTime) {
+        jsonResult = new HashMap<String, Object>();
         SysUser user = new SysUser();
         user.setDeleteFlag("1");
+        //处理模糊查询
         if (StringUtils.isNotEmpty(likeAccount)) {
             user.setLikeAccount(SQLUtil.escapeLike(likeAccount));
         }
@@ -145,14 +188,16 @@ public class UserController  {
         if (StringUtils.isNotEmpty(likeCreateTime)) {
             user.setLikeCreateTime(SQLUtil.escapeLike(likeCreateTime));
         }
-        List<SysUser> userByPage = sysUserService.findUserByPage(pageNum, pageSize, user);
-        int count = sysUserService.findUserCount(user);
-        jsonResult.put("code",0);
-        jsonResult.put("msg","操作成功");
-        jsonResult.put("count",count);
-        jsonResult.put("data",userByPage);
+        if (StringUtils.isNotEmpty(deptId)) {
+            SysDepartment department = new SysDepartment();
+            department.setDeptId(deptId);
+            user.setDepartment(department);
+        }
+        List<SysUser> allBy = sysUserService.findAllBy(user);
+        jsonResult.put("data",allBy);
         return jsonResult;
     }
+
 
     @RequestMapping(value = "/importUsers")
     @ResponseBody

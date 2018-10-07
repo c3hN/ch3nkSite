@@ -68,8 +68,8 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" name="department.deptName" id="deptName" value="${sysDept.deptName}">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#dept_tree">&nbsp;<i class="fa fa-search"></i>&nbsp;</button>
-                                </span>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#dept_tree">&nbsp;<i class="fa fa-search"></i>&nbsp;</button>
+                        </span>
                             </div>
                         </div>
                         <label for="name" class="col-sm-2 control-label">
@@ -102,19 +102,6 @@
                     </div>
                     <div class="form-group">
                         <label for="remark" class="col-sm-2 control-label">
-                            <span>资源配置</span>
-                        </label>
-                        <div class="col-sm-8">
-                            <div class="input-group">
-                                <input type="text" class="form-control">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#menu_tree">&nbsp;<i class="fa fa-bars"></i>&nbsp;</button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="remark" class="col-sm-2 control-label">
                             <span>备注</span>
                         </label>
                         <div class="col-sm-8">
@@ -122,14 +109,12 @@
                         </div>
                     </div>
                     <div class="col-sm-1 col-sm-offset-5">
-                        <button type="submit" class="btn btn-primary btn-block btn-content" id="saveOrEdit">保存</button>
+                        <button type="submit" class="btn btn-primary" id="saveOrEdit">保存</button>
                     </div>
                     <div class="col-sm-1">
-                        <button type="button" class="btn btn-primary btn-block btn-content" onclick="javascript:history.back(-1);">取消</button>
-                        <button type="button" class="btn btn-primary btn-block btn-content" id="check">sss</button>
+                        <button type="button" class="btn btn-primary " onclick="javascript:history.back(-1);">取消</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -146,24 +131,6 @@
             </div>
             <div class="modal-body">
                 <ul id="depts" class="ztree"></ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="menu_tree" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-custom">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                菜单
-            </div>
-            <div class="modal-body">
-                <ul id="menus" class="ztree"></ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -220,17 +187,10 @@
                 title:"name"
             }
         },
-        check:{
-            enable:true,
-            chkStyle:"checkbox",
-            chkboxType:{  "N": "s" }    //取消勾选操作，只影响子级节点
-        },
-        callback:{
-            onCheck:function (event,treeId,treeNode) {
-              console.log(event);
-              console.log(treeId);
-              console.log(treeNode);
-            },
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            chkboxType: {"N": "s"}    //取消勾选操作，只影响子级节点
         }
     };
     var menuTreeObj = $.fn.zTree.init($("#menus"),setting2,${nodes2});
@@ -238,13 +198,6 @@
     $.each(menus,function (index,value) {   //循环展开第一级
         menuTreeObj.expandNode(menus[index]);
     });
-
-
-
-
-$("#check").click(function () {
-    console.log(menuTreeObj.getCheckedNodes(true));
-});
 
 
 
