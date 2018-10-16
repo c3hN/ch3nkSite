@@ -6,23 +6,19 @@ import com.ch3nk.ch3nkSite.modules.sys.entity.SysDic;
 import java.util.List;
 
 public interface ISysDicService {
-    /**
-     * 查询所有未删除的父节点
-     * @return
-     */
-    List<SysDic> findAllParentNod();
+    int saveDic(SysDic sysDic);
 
-    /**
-     * 根据父节点查询子节点
-     * @param parentId
-     * @return
-     */
-    List<SysDic> findNodeByParentId(String parentId);
+    void deleteByDicId(String dicId);
 
-    /**
-     * 查询所有节点
-     * @return
-     */
-    List<SysDic> findAllNodes();
+    int updateDic(SysDic sysDic);
 
+    SysDic findByDicId(String dicId);
+
+    List<SysDic> findAll();
+
+    List<SysDic> findParents();
+
+    List<SysDic> findByParentId(String parentId);
+
+    List<SysDic> findByParentType(String dicType);
 }

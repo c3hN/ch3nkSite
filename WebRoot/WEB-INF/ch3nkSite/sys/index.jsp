@@ -58,6 +58,11 @@
                             <cite>角色管理</cite>
                         </a>
                     </li >
+                    <li>
+                        <a _href="${basePath}/dic/tolist.do"><i class="fa fa-book"></i>
+                            <cite>字典维护</cite>
+                        </a>
+                    </li >
                 </ul>
             </li>
         </ul>

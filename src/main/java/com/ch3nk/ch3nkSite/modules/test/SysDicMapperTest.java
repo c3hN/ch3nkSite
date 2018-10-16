@@ -34,10 +34,6 @@ public class SysDicMapperTest {
     public void test_1() {
         session = sqlSessionFactory.openSession();
         SysDicMapper mapper = session.getMapper(SysDicMapper.class);
-        List<SysDic> sysDicList = mapper.selectParentNodes();
-        for (SysDic sysDic : sysDicList) {
-            System.out.println(sysDic);
-        }
     }
 
     @Test

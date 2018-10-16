@@ -166,7 +166,6 @@
         }
     };
     var deptTreeObj = $.fn.zTree.init($("#dept_tree"), setting,  ${nodes});
-    // deptTree.expandNode(deptTree.getNodes()[0]);    //展开第一层
     var depts = deptTreeObj.getNodes();
     $.each(depts,function (index,value) {
        deptTreeObj.expandNode(depts[index]);

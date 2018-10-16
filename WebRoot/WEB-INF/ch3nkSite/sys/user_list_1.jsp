@@ -124,8 +124,8 @@
                 function (index,layero) {
                     $.post("${basePath}/user/logicalDel.do",{"userId":row.userId},function (data) {
                         if (data.msg == "success") {
-                            layer.msg("用户已被移入回收站，可在回收站中还原");
                             table.bootstrapTable('refresh',{silent: true,url:'${basePath}/user/list?deptId='+row.department.deptId});//重载表格
+                            layer.msg("用户已被移入回收站，可在回收站中还原");
                         }else if (data.msg == "error"){
                             layer.alert("删除失败",{icon:2});
                         }

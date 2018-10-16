@@ -12,9 +12,6 @@ public class SysDic implements Serializable {
     /**
      * 字典主键
      */
-    private Integer id;
-
-
     private String dicId;
 
     /**
@@ -26,6 +23,9 @@ public class SysDic implements Serializable {
 
     private String dicEname;
 
+    private String dicCode;
+
+    private String dicType;
     /**
      * 描述
      */
@@ -33,41 +33,7 @@ public class SysDic implements Serializable {
     /**
      * 排序
      */
-    private Integer dicSort;
-
-    /**
-     * 创建者
-     */
-    private String createBy;
-
-    /**
-     * 创建时间
-     */
-    private Date createDate;
-
-    /**
-     * 更新者
-     */
-    private Date updateBy;
-
-    /**
-     * 更新者
-     */
-    private Date updateDate;
-
-    /**
-     * 删除标记：0：deleted
-     */
-    private Integer deleteFlag;
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private String dicSort;
 
     public String getDicId() {
         return dicId;
@@ -97,6 +63,22 @@ public class SysDic implements Serializable {
         return dicEname;
     }
 
+    public String getDicCode() {
+        return dicCode;
+    }
+
+    public void setDicCode(String dicCode) {
+        this.dicCode = dicCode;
+    }
+
+    public String getDicType() {
+        return dicType;
+    }
+
+    public void setDicType(String dicType) {
+        this.dicType = dicType;
+    }
+
     public void setDicEname(String dicEname) {
         this.dicEname = dicEname;
     }
@@ -109,51 +91,11 @@ public class SysDic implements Serializable {
         this.remark = remark;
     }
 
-    public Integer getDicSort() {
+    public String getDicSort() {
         return dicSort;
     }
 
-    public void setDicSort(Integer dicSort) {
+    public void setDicSort(String dicSort) {
         this.dicSort = dicSort;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Date updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public Integer getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(Integer deleteFlag) {
-        this.deleteFlag = deleteFlag;
     }
 }

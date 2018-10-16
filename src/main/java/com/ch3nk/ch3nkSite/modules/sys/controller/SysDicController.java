@@ -1,9 +1,13 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
+import com.ch3nk.ch3nkSite.modules.sys.entity.SysDic;
 import com.ch3nk.ch3nkSite.modules.sys.service.ISysDicService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,12 +25,13 @@ public class SysDicController {
     /**
      *加载字典树
      */
-    @RequestMapping("loadTree")
-    @ResponseBody
-    public List list(String dicId) {
-        return  sysDicService.findAllNodes();
+    @RequestMapping("tolist")
+    public String toList(Model model) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<SysDic> all = sysDicService.findAll();
+        model.addAttribute("dicNodes",mapper.writeValueAsString(all));
+         return "sys/dic_list";
     }
-
 
 
 
