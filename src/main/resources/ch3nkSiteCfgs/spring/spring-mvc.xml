@@ -52,7 +52,10 @@
 
 
     <!-- 开启aop，对类代理 -->
-    <aop:config proxy-target-class="true"></aop:config>
+    <aop:config proxy-target-class="true"/>
+    <!--声明自动为spring容器中那些配置@aspectJ切面的bean创建代理，织入切面  -->
+    <aop:aspectj-autoproxy/>
+
     <!-- 开启shiro注解支持 -->
     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager" />
