@@ -171,7 +171,9 @@ public class UserController  {
 
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Map<String,Object> list_1( @RequestParam(required = false)String deptId,
+    public Map<String,Object> list( @RequestParam(required = false)String deptId,
+                                      @RequestParam("offset")int pageNum,
+                                      @RequestParam("limit")int pageSize,
                                       @RequestParam(required = false)String likeAccount,
                                       @RequestParam(required = false)String likeNickName,
                                       @RequestParam(required = false)String likeCreateTime) {
@@ -193,8 +195,11 @@ public class UserController  {
             department.setDeptId(deptId);
             user.setDepartment(department);
         }
-        List<SysUser> allBy = sysUserService.findAllBy(user);
-        jsonResult.put("data",allBy);
+//        List<SysUser> allBy = sysUserService.findAllBy(user);
+        int userCount = sysUserService.findUserCount(user);
+        List<SysUser> userByPage = sysUserService.findUserByPage(pageNum, pageSize, user);
+        jsonResult.put("rows",userByPage);
+        jsonResult.put("total",userCount);
         return jsonResult;
     }
 

@@ -84,6 +84,7 @@
         height:549,
         undefinedText:'暂无',
         pagination:true,    //分页
+        sidePagination:'server',
         pageNumber:1,
         pageSize:10,
         pageList:[10,20,30],
@@ -114,7 +115,7 @@
     }
     window.userOperateEvents = {
         "click #userDetail":function (e,value,row,index) {
-            $(location).prop('href', '${basePath}/role/toAddMenus.do?roleId='+row.userId);
+            $(location).prop('href', '${basePath}/user/toAddMenus.do?userId='+row.userId);
         },
         "click #editUser":function (e,value, row, index) {
             $(location).prop('href', '${basePath}/user/toAddOrEdit.do?userId='+row.userId);
@@ -144,7 +145,7 @@
         }else if (value == '0') {
             return '否';
         }
-    }
+    };
     var setting = {
         data:{
             simpleData:{
