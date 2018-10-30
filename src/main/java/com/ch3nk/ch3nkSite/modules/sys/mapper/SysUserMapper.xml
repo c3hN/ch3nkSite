@@ -174,7 +174,7 @@
             <if test="updateTime != null">and UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
             <if test="loginFlag != null">and LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
             <if test="deleteFlag != null">and DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
-            <if test="department != null department.deptId != null">and DEPT_ID = #{department.deptId,jdbcType=VARCHAR}</if>
+            <if test="department != null and department.deptId != null">and DEPT_ID = #{department.deptId,jdbcType=VARCHAR}</if>
             <if test="likeAccount != null">and ACCOUNT like #{likeAccount,jdbcType=VARCHAR} escape '/' </if>
             <if test="likeNickName != null">and NICKNAME like #{likeNickName,jdbcType=VARCHAR} escape '/' </if>
             <if test="likeCreateTime != null">and CREATETIME like #{likeCreateTime,jdbcType=VARCHAR} escape '/' </if>
