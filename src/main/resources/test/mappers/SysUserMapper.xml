@@ -23,7 +23,7 @@
             <result column="HAS_BRANCH" jdbcType="VARCHAR" property="hasBranch" />
         </association>
         <collection property="roles" ofType="sysRole">
-            <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+            <id column="ROLE _ID" jdbcType="VARCHAR" property="roleId" />
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
@@ -69,24 +69,26 @@
     <insert id="insert" parameterType="sysUser">
         insert into sys_user (USER_ID, ACCOUNT, NICKNAME,
         USERPWD, USERPHOTO, CREATETIME,
-        UPDATETIME, LOGINFLAG, DELETEFLAG
+        UPDATETIME, LOGINFLAG, DELETEFLAG,DEPT_ID
         )
         values (#{userId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR},
         #{userPwd,jdbcType=VARCHAR}, #{userPhoto,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-        #{updateTime,jdbcType=TIMESTAMP}, #{loginFlag,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=VARCHAR}
+        #{updateTime,jdbcType=TIMESTAMP}, #{loginFlag,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=VARCHAR},
+        #{department.deptId}
         )
     </insert>
 
     <insert id="insertBatch" parameterType="sysUser">
         insert into sys_user (USER_ID, ACCOUNT, NICKNAME,
         USERPWD, USERPHOTO, CREATETIME,
-        UPDATETIME, LOGINFLAG, DELETEFLAG
+        UPDATETIME, LOGINFLAG, DELETEFLAG,DEPT_ID
         ) values
         <foreach collection="list" item="user" separator=",">
             <trim prefix="(" suffix=")" suffixOverrides=",">
                 #{user.userId,jdbcType=VARCHAR}, #{user.account,jdbcType=VARCHAR}, #{user.nickName,jdbcType=VARCHAR},
                 #{user.userPwd,jdbcType=VARCHAR}, #{user.userPhoto,jdbcType=VARCHAR}, #{user.createTime,jdbcType=TIMESTAMP},
-                #{user.updateTime,jdbcType=TIMESTAMP}, #{user.loginFlag,jdbcType=VARCHAR}, #{user.deleteFlag,jdbcType=VARCHAR}
+                #{user.updateTime,jdbcType=TIMESTAMP}, #{user.loginFlag,jdbcType=VARCHAR}, #{user.deleteFlag,jdbcType=VARCHAR},
+                #{user.department.deptId,jdbcType=VARCHAR}
             </trim>
         </foreach>
     </insert>
@@ -103,6 +105,7 @@
             <if test="updateTime != null">UPDATETIME,</if>
             <if test="loginFlag != null">LOGINFLAG,</if>
             <if test="deleteFlag != null">DELETEFLAG,</if>
+            <if test="department != null and department.deptId != null">DEPT_ID</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">#{userId,jdbcType=VARCHAR},</if>
@@ -114,6 +117,7 @@
             <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
             <if test="loginFlag != null">#{loginFlag,jdbcType=VARCHAR},</if>
             <if test="deleteFlag != null">#{deleteFlag,jdbcType=VARCHAR},</if>
+            <if test="department != null and department.deptId != null">#{department.deptId,jdbcType=VARCHAR}</if>
         </trim>
     </insert>
 
@@ -138,6 +142,7 @@
         UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},
         LOGINFLAG = #{loginFlag,jdbcType=VARCHAR},
         DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}
+        DEPT_ID = #{department.deptId,jdbcType=VARCHAR}
         where USER_ID = #{userId,jdbcType=VARCHAR}
     </update>
 
@@ -152,6 +157,7 @@
             <if test="updateTime != null">UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},</if>
             <if test="loginFlag != null">LOGINFLAG = #{loginFlag,jdbcType=VARCHAR},</if>
             <if test="deleteFlag != null">DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
+            <if test="department != null and department.deptId != null">DEPT_ID = #{department.deptId,jdbcType=VARCHAR}</if>
         </set>
         where USER_ID = #{userId,jdbcType=VARCHAR}
     </update>
@@ -168,6 +174,7 @@
             <if test="updateTime != null">and UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
             <if test="loginFlag != null">and LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
             <if test="deleteFlag != null">and DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
+            <if test="department != null and department.deptId != null">and DEPT_ID = #{department.deptId,jdbcType=VARCHAR}</if>
             <if test="likeAccount != null">and ACCOUNT like #{likeAccount,jdbcType=VARCHAR} escape '/' </if>
             <if test="likeNickName != null">and NICKNAME like #{likeNickName,jdbcType=VARCHAR} escape '/' </if>
             <if test="likeCreateTime != null">and CREATETIME like #{likeCreateTime,jdbcType=VARCHAR} escape '/' </if>
@@ -190,6 +197,7 @@
             <if test="updateTime != null">and u.UPDATETIME = #{updateTime,jdbcType=TIMESTAMP}</if>
             <if test="loginFlag != null">and u.LOGINFLAG = #{loginFlag,jdbcType=VARCHAR}</if>
             <if test="deleteFlag != null">and u.DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
+            <if test="department != null and department.deptId != null">and u.DEPT_ID = #{department.deptId,jdbcType=VARCHAR}</if>
             <if test="likeAccount != null">and u.ACCOUNT like #{likeAccount,jdbcType=VARCHAR} escape '/' </if>
             <if test="likeNickName != null">and u.NICKNAME like #{likeNickName,jdbcType=VARCHAR} escape '/' </if>
             <if test="likeCreateTime != null">and u.CREATETIME like #{likeCreateTime,jdbcType=VARCHAR} escape '/' </if>

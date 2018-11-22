@@ -3,7 +3,9 @@ package com.ch3nk.ch3nkSite.modules.sys.mapper;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface SysUserMapper {
     /**
@@ -66,6 +68,8 @@ public interface SysUserMapper {
      * @return
      */
     List<SysUser> selectAllBy(SysUser sysUser);
+
+    List<SysUser> selectUserByPage(@Param("sysUser")SysUser sysUser,@Param("pageNum")int pageNum,@Param("pageSize")int pageSize);
 
     /**
      * 根据主键查找

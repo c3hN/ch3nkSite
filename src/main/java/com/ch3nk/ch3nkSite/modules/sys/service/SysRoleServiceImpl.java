@@ -62,9 +62,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     @Override
     public List<SysRole> findByPage(SysRole sysRole, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<SysRole> sysRoles = sysRoleMapper.selectBy(sysRole);
-        return sysRoles;
+        return  sysRoleMapper.selectByPage(sysRole,pageNum,pageSize);
     }
 
     @Override

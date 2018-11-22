@@ -14,6 +14,7 @@
         <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysDic" alias="sysDic"/>
         <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu" alias="sysMenu"/>
         <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysDepartment" alias="sysDepartment"/>
+        <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysOperation" alias="sysOperation"/>
 
     </typeAliases>
     <environments default="development">
@@ -32,6 +33,7 @@
         <mapper resource="test/mappers/SysDicMapper.xml"/>
         <mapper resource="test/mappers/SysMenuMapper.xml"/>
         <mapper resource="test/mappers/SysRoleMapper.xml"/>
+        <mapper resource="test/mappers/SysOperationMapper.xml"/>
     </mappers>
 
 </configuration>

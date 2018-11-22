@@ -24,9 +24,7 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Override
     public List<SysUser> findUserByPage(int pageNum, int pageSize, SysUser sysUser) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<SysUser> list = sysUserMapper.selectAllBy(sysUser);
-        return list;
+        return sysUserMapper.selectUserByPage(sysUser,pageNum,pageSize);
     }
 
     @Override

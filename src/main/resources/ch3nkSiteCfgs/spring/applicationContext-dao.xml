@@ -5,16 +5,30 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--配置dataSource-->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+        <!--<property name="driverClassName" value="${jdbc.driver}"/>-->
+        <!--<property name="url" value="${jdbc.url}"/>-->
+        <!--<property name="username" value="${jdbc.username}"/>-->
+        <!--<property name="password" value="${jdbc.password}"/>-->
+        <!--<property name="initialSize" value="${jdbc.initialSize}"/>-->
+        <!--<property name="maxActive" value="${jdbc.maxActive}"/>-->
+        <!--<property name="maxIdle" value="${jdbc.maxIdle}"/>-->
+        <!--<property name="minIdle" value="${jdbc.minIdle}"/>-->
+        <!--<property name="maxWait" value="${jdbc.maxWait}"/>-->
+    <!--</bean>-->
+    <!-- 使用druid -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driver}"/>
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
         <property name="initialSize" value="${jdbc.initialSize}"/>
         <property name="maxActive" value="${jdbc.maxActive}"/>
-        <property name="maxIdle" value="${jdbc.maxIdle}"/>
+        <!--<property name="maxIdle" value="${jdbc.maxIdle}"/> druid不再使用maxIdle-->
         <property name="minIdle" value="${jdbc.minIdle}"/>
         <property name="maxWait" value="${jdbc.maxWait}"/>
+        <!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->
+        <property name="filters" value="stat,wall,log4j" />
     </bean>
     <!--配置mybatis-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -23,17 +37,17 @@
         <!--配置mybatis全局文件-->
         <property name="configLocation" value="classpath:ch3nkSiteCfgs/mybatis/sqlMapperConfig.xml"/>
         <!--配置mybatis分页插件-->
-        <property name="plugins">
-            <array>
-                <bean class="com.github.pagehelper.PageInterceptor">
-                    <property name="properties">
-                        <value>
-                            supportMethodsArguments=true
-                        </value>
-                    </property>
-                </bean>
-            </array>
-        </property>
+        <!--<property name="plugins">-->
+            <!--<array>-->
+                <!--<bean class="com.github.pagehelper.PageInterceptor">-->
+                    <!--<property name="properties">-->
+                        <!--<value>-->
+                            <!--supportMethodsArguments=true-->
+                        <!--</value>-->
+                    <!--</property>-->
+                <!--</bean>-->
+            <!--</array>-->
+        <!--</property>-->
     </bean>
     <!--添加扫描器，将mybatis接口的实现加入到IOC容器中-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

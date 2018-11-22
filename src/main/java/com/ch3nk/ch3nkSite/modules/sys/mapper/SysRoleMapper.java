@@ -21,6 +21,8 @@ public interface SysRoleMapper {
 
     List<SysRole> selectBy(SysRole sysRole);
 
+    List<SysRole> selectByPage(@Param("sysRole") SysRole sysRole,@Param("pageNum") int pageNum,@Param("pageSize") int pageSize);
+
     int selectCountBy(SysRole sysRole);
 
     int insertRoleMenus(@Param("roleId")String roleId,@Param("menuIds") String[] menuIds);

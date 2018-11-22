@@ -23,6 +23,7 @@
                 <shiro:principal property="nickName"/>
             </a>
             <dl class="layui-nav-child">
+                <dd><a href="${basePath}/demo.jsp">安全设置</a></dd>
                 <dd><a href="${basePath}/logout">退出</a></dd>
             </dl>
         </li>
@@ -130,7 +131,6 @@
                 $(this).siblings().removeClass('open');
             }
         }else{
-
             var url = $(this).children('a').attr('_href');
             var title = $(this).find('cite').html();
             var index  = $('.left-nav #nav li').index($(this));

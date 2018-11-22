@@ -8,7 +8,7 @@
         <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
         <result column="CATEGORY" jdbcType="VARCHAR" property="category" />
         <result column="HREF" jdbcType="VARCHAR" property="href" />
-        <result column="ICON" jdbcType="VARCHAR" property="menuIcon" />
+        <result column="MENU_ICON" jdbcType="VARCHAR" property="menuIcon" />
         <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
         <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
         <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
@@ -17,10 +17,11 @@
         <result column="REMARK" jdbcType="VARCHAR" property="remark" />
         <result column="PERMISSION" jdbcType="VARCHAR" property="permission" />
         <result column="HASBRANCH" jdbcType="VARCHAR" property="hasBranch" />
+        <result column="SEQ" jdbcType="VARCHAR" property="seq" />
     </resultMap>
     <sql id="Base_Column_List">
-        MENU_ID, ZH_NAME, MENU_CODE, PARENT_ID, CATEGORY, HREF, ICON, CREATE_BY, CREATE_DATE,
-        UPDATE_BY,UPDATE_DATE, DELETE_FLAG, REMARK, PERMISSION, HASBRANCH
+        MENU_ID, ZH_NAME, MENU_CODE, PARENT_ID, CATEGORY, HREF, MENU_ICON, CREATE_BY, CREATE_DATE,
+        UPDATE_BY,UPDATE_DATE, DELETE_FLAG, REMARK, PERMISSION, HASBRANCH,SEQ
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -39,7 +40,7 @@
             <if test="parentId != null and parentId != ''">and PARENT_ID = #{parentId}</if>
             <if test="category != null and category != ''">and CATEGORY = #{category}</if>
             <if test="href != null and href != ''">and HREF = #{href}</if>
-            <if test="menuIcon != null and menuIcon != ''">and ICON = #{menuIcon}</if>
+            <if test="menuIcon != null and menuIcon != ''">and MENU_ICON = #{menuIcon}</if>
             <if test="createBy != null and createBy != ''">and CREATE_BY = #{createBy}</if>
             <if test="createDate != null and createDate != ''">and CREATE_DATE = #{createDate}</if>
             <if test="updateBy != null and updateBy != ''">and UPDATE_BY = #{updateBy}</if>
@@ -48,8 +49,9 @@
             <if test="remark != null and remark != ''">and REMARK = #{remark}</if>
             <if test="permission != null and permission != ''">and PERMISSION = #{permission}</if>
             <if test="hasBranch != null and hasBranch != ''">and HASBRANCH = #{hasBranch}</if>
+            <if test="seq != null and seq != ''">and SEQ = #{seq}</if>
         </where>
-        order by CREATE_DATE desc
+        order by CREATE_DATE asc,SEQ asc
     </select>
     <select id="selectCountSelective" parameterType="sysMenu" resultType="int">
         select
@@ -62,7 +64,7 @@
             <if test="parentId != null and parentId != ''">and PARENT_ID = #{parentId}</if>
             <if test="category != null and category != ''">and CATEGORY = #{category}</if>
             <if test="href != null and href != ''">and HREF = #{href}</if>
-            <if test="menuIcon != null and menuIcon != ''">and ICON = #{menuIcon}</if>
+            <if test="menuIcon != null and menuIcon != ''">and MENU_ICON = #{menuIcon}</if>
             <if test="createBy != null and createBy != ''">and CREATE_BY = #{createBy}</if>
             <if test="createDate != null and createDate != ''">and CREATE_DATE = #{createDate}</if>
             <if test="updateBy != null and updateBy != ''">and UPDATE_BY = #{updateBy}</if>
@@ -71,6 +73,7 @@
             <if test="remark != null and remark != ''">and REMARK = #{remark}</if>
             <if test="permission != null and permission != ''">and PERMISSION = #{permission}</if>
             <if test="hasBranch != null and hasBranch != ''">and HASBRANCH = #{hasBranch}</if>
+            <if test="seq != null and seq != ''">and SEQ = #{seq}</if>
         </where>
     </select>
     <select id="selectRoots" resultMap="BaseResultMap">
@@ -78,7 +81,7 @@
         <include refid="Base_Column_List"/>
         from sys_menu
         where PARENT_ID IS NULL OR PARENT_ID = ''
-        ORDER BY CREATE_DATE DESC
+        ORDER BY CREATE_DATE asc,SEQ asc
     </select>
     
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
@@ -94,7 +97,7 @@
     <insert id="insert" parameterType="sysMenu">
         insert into sys_menu (MENU_ID, ZH_NAME, MENU_CODE,
         PARENT_ID, CATEGORY, HREF,
-        ICON, CREATE_BY,CREATE_BY, CREATE_DATE,
+        MENU_ICON, CREATE_BY,CREATE_BY, CREATE_DATE,
         UPDATE_BY, UPDATE_DATE, DELETE_FLAG,
         REMARK, PERMISSION)
         values (#{menuId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{menuCode,jdbcType=VARCHAR},
@@ -112,7 +115,7 @@
             <if test="parentId != null and parentId != ''">PARENT_ID,</if>
             <if test="category != null">CATEGORY,</if>
             <if test="href != null">HREF,</if>
-            <if test="menuIcon != null">ICON,</if>
+            <if test="menuIcon != null">MENU_ICON,</if>
             <if test="createBy != null">CREATE_BY,</if>
             <if test="createDate != null">CREATE_DATE,</if>
             <if test="updateBy != null">UPDATE_BY,</if>
@@ -121,6 +124,7 @@
             <if test="remark != null">REMARK,</if>
             <if test="permission != null">PERMISSION,</if>
             <if test="hasBranch != null">HASBRANCH,</if>
+            <if test="seq != null and seq != ''">SEQ</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="menuId != null">#{menuId,jdbcType=VARCHAR},</if>
@@ -138,6 +142,7 @@
             <if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
             <if test="permission != null">#{permission,jdbcType=VARCHAR},</if>
             <if test="hasBranch != null">#{HASBRANCH,jdbcType=VARCHAR},</if>
+            <if test="seq != null and seq != ''">#{SEQ,jdbcType=VARCHAR},</if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="sysMenu">
@@ -148,7 +153,7 @@
             <if test="parentId != null ">PARENT_ID = #{parentId,jdbcType=VARCHAR},</if>
             <if test="category != null">CATEGORY = #{category,jdbcType=VARCHAR},</if>
             <if test="href != null">HREF = #{href,jdbcType=VARCHAR},</if>
-            <if test="menuIcon != null">ICON = #{menuIcon,jdbcType=VARCHAR},</if>
+            <if test="menuIcon != null">MENU_ICON = #{menuIcon,jdbcType=VARCHAR},</if>
             <if test="createBy != null">CREATE_BY = #{createBy,jdbcType=VARCHAR},</if>
             <if test="createDate != null">CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},</if>
             <if test="updateBy != null">UPDATE_BY = #{updateBy,jdbcType=VARCHAR},</if>
@@ -157,6 +162,7 @@
             <if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR},</if>
             <if test="permission != null">PERMISSION = #{permission,jdbcType=VARCHAR},</if>
             <if test="hasBranch != null">HASBRANCH = #{hasBranch,jdbcType=VARCHAR}</if>
+            <if test="seq != null and seq != ''">SEQ = #{seq,jdbcType=VARCHAR}</if>
         </set>
         where MENU_ID = #{menuId,jdbcType=VARCHAR}
     </update>
@@ -167,7 +173,7 @@
         PARENT_ID = #{parentId,jdbcType=VARCHAR},
         CATEGORY = #{category,jdbcType=VARCHAR},
         HREF = #{href,jdbcType=VARCHAR},
-        ICON = #{menuIcon,jdbcType=VARCHAR},
+        MENU_ICON = #{menuIcon,jdbcType=VARCHAR},
         CREATE_BY = #{createBy,jdbcType=VARCHAR},
         CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
         UPDATE_BY = #{updateBy,jdbcType=VARCHAR},
@@ -188,7 +194,7 @@
                 <if test="menu.parentId != null">PARENT_ID = #{menu.parentId,jdbcType=VARCHAR}</if>
                 <if test="menu.category != null">CATEGORY = #{menu.category,jdbcType=VARCHAR}</if>
                 <if test="menu.href != null">HREF = #{menu.href,jdbcType=VARCHAR}</if>
-                <if test="menu.menuIcon != null">ICON = #{menu.menuIcon,jdbcType=VARCHAR}</if>
+                <if test="menu.menuIcon != null">MENU_ICON = #{menu.menuIcon,jdbcType=VARCHAR}</if>
                 <if test="menu.createBy != null">CREATE_BY = #{menu.createBy,jdbcType=VARCHAR}</if>
                 <if test="menu.createDate != null">CREATE_DATE = #{menu.createDate,jdbcType=TIMESTAMP}</if>
                 <if test="menu.updateBy != null">UPDATE_BY = #{menu.updateBy,jdbcType=VARCHAR}</if>
@@ -197,6 +203,7 @@
                 <if test="menu.remark != null">REMARK = #{menu.remark,jdbcType=VARCHAR}</if>
                 <if test="menu.permission != null">PERMISSION = #{menu.permission,jdbcType=VARCHAR}</if>
                 <if test="menu.hasBranch != null">HASBRANCH = #{menu.hasBranch,jdbcType=VARCHAR}</if>
+                <if test="menu.seq != null and menu.seq != ''">SEQ = #{menu.seq,jdbcType=VARCHAR}</if>
             </foreach>
         </set>
         <where>

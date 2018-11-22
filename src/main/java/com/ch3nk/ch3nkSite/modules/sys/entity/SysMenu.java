@@ -66,6 +66,8 @@ public class SysMenu implements Serializable {
 
     private String hasBranch;
 
+    private String seq;
+
     public String getMenuId() {
         return menuId;
     }
@@ -118,7 +120,7 @@ public class SysMenu implements Serializable {
         return menuIcon;
     }
 
-    public void setMenuIcon(String icon) {
+    public void setMenuIcon(String menuIcon) {
         this.menuIcon = menuIcon;
     }
 
@@ -184,5 +186,13 @@ public class SysMenu implements Serializable {
 
     public void setHasBranch(String hasBranch) {
         this.hasBranch = hasBranch;
+    }
+
+    public String getSeq() {
+        return seq;
+    }
+
+    public void setSeq(String seq) {
+        this.seq = seq;
     }
 }

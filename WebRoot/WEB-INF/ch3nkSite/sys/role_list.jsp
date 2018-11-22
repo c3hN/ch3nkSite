@@ -84,6 +84,7 @@
         height:549,
         undefinedText:'暂无',
         pagination:true,    //分页
+        sidePagination:'server',
         pageNumber:1,
         pageSize:10,
         pageList:[10,20],
@@ -102,7 +103,10 @@
         ]
     });
     function numFormatter(value, row, index) {
-        return index+1;
+        // return index+1;
+        var pageSize = $('#roles').bootstrapTable('getOptions').pageSize;     //通过table的#id 得到每页多少条
+        var pageNumber = $('#roles').bootstrapTable('getOptions').pageNumber; //通过table的#id 得到当前第几页
+        return pageSize * (pageNumber - 1) + index + 1;    // 返回每条的序号： 每页条数 *（当前页 - 1 ）+ 序号
     }
     //表格操作
     function operateFormatter(value, row, index) {

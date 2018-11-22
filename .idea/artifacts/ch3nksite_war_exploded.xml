@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="ch3nksite:war exploded">
-    <output-path>$PROJECT_DIR$/out/artifacts/ch3nksite_war_exploded</output-path>
+    <output-path>$PROJECT_DIR$/target/ch3nksite</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -25,8 +25,7 @@
           <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:1.0" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:1.2.2" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.30" />
-          <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.2.2" />
-          <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.3" />
+          <element id="library" level="project" name="Maven: com.alibaba:druid:1.1.12" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
           <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.1.41" />
@@ -74,13 +73,19 @@
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.6" />
           <element id="library" level="project" name="Maven: org.activiti:activiti-spring:5.22.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-orm:4.1.5.RELEASE" />
+          <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
+          <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.4" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi:3.17" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml:3.17" />
           <element id="library" level="project" name="Maven: com.github.virtuald:curvesapi:1.04" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml-schemas:3.17" />
           <element id="library" level="project" name="Maven: org.apache.xmlbeans:xmlbeans:2.6.0" />
           <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
+          <element id="library" level="project" name="Maven: eu.bitwalker:UserAgentUtils:1.20" />
         </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/ch3nksite/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="ch3nksite/web/Web" />
     </root>

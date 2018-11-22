@@ -205,6 +205,31 @@
         order by CREATETIME desc
     </select>
 
+    <select id="selectUserByPage"  resultMap="BaseResultMap">
+        select
+        <include refid="left_join_columns"/>
+        from sys_user u
+        <include refid="left_join_dept"/>
+        <include refid="left_join_user_role"/>
+        <where>
+            <if test="sysUser.userId != null">u.USER_ID = #{sysUser.userId,jdbcType=VARCHAR}</if>
+            <if test="sysUser.account != null">and u.ACCOUNT = #{sysUser.account,jdbcType=VARCHAR}</if>
+            <if test="sysUser.nickName != null">and u.NICKNAME = #{sysUser.nickName,jdbcType=VARCHAR}</if>
+            <if test="sysUser.userPwd != null">and u.USERPWD = #{sysUser.userPwd,jdbcType=VARCHAR}</if>
+            <if test="sysUser.userPhoto != null">and u.USERPHOTO = #{sysUser.userPhoto,jdbcType=VARCHAR}</if>
+            <if test="sysUser.createTime != null">and u.CREATETIME = #{sysUser.createTime,jdbcType=TIMESTAMP}</if>
+            <if test="sysUser.updateTime != null">and u.UPDATETIME = #{sysUser.updateTime,jdbcType=TIMESTAMP}</if>
+            <if test="sysUser.loginFlag != null">and u.LOGINFLAG = #{sysUser.loginFlag,jdbcType=VARCHAR}</if>
+            <if test="sysUser.deleteFlag != null">and u.DELETEFLAG = #{sysUser.deleteFlag,jdbcType=VARCHAR}</if>
+            <if test="sysUser.department != null and sysUser.department.deptId != null">and u.DEPT_ID = #{sysUser.department.deptId,jdbcType=VARCHAR}</if>
+            <if test="sysUser.likeAccount != null">and u.ACCOUNT like #{sysUser.likeAccount,jdbcType=VARCHAR} escape '/' </if>
+            <if test="sysUser.likeNickName != null">and u.NICKNAME like #{sysUser.likeNickName,jdbcType=VARCHAR} escape '/' </if>
+            <if test="sysUser.likeCreateTime != null">and u.CREATETIME like #{sysUser.likeCreateTime,jdbcType=VARCHAR} escape '/' </if>
+        </where>
+        order by CREATETIME desc
+        limit #{pageNum} , #{pageSize}
+    </select>
+
     <select id="selectByPK" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="left_join_columns"/>

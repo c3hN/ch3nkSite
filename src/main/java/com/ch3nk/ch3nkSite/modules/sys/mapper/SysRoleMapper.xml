@@ -105,7 +105,48 @@
         </where>
         order by r.CREATE_DATE desc
     </select>
-
+    <select id="selectByPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,rm.MENU_ID as `menus.MENU_ID`
+        from sys_role r
+        <include refid="left_join_dept"/>
+        <include refid="left_join_role_menu"/>
+        <where>
+            <if test="sysRole.name != null">
+                and r.ZH_NAME = #{sysRole.name,jdbcType=VARCHAR}
+            </if>
+            <if test="sysRole.eName != null">
+                and r.EN_NAME = #{sysRole.eName,jdbcType=VARCHAR}
+            </if>
+            <if test="sysRole.department!= null and sysRole.department.deptId != null">
+                and r.DEPT_ID = #{sysRole.department.deptId,jdbcType=VARCHAR}
+            </if>
+            <if test="sysRole.useFlag != null">
+                and r.USEABLE_FLAG = #{sysRole.useFlag,jdbcType=VARCHAR}
+            </if>
+            <if test="sysRole.createBy != null">
+                and r.CREATE_BY = #{sysRole.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="sysRole.createDate != null">
+                and r.CREATE_DATE = #{sysRole.createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="sysRole.updateBy != null">
+                and r.UPDATE_BY = #{sysRole.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="sysRole.updateDate != null">
+                and r.UPDATE_DATE = #{sysRole.updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="sysRole.remark != null">
+                and r.REMARK = #{sysRole.remark,jdbcType=VARCHAR}
+            </if>
+            <if test="sysRole.deleteFlag != null">
+                and r.DELETE_FLAG = #{sysRole.deleteFlag,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by r.CREATE_DATE desc
+        limit #{pageNum} , #{pageSize}
+    </select>
     <select id="selectCountBy" resultType="int">
         select count(1) from sys_role r
         <where>

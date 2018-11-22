@@ -54,11 +54,16 @@ public class RoleController {
 
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Map<String,Object> list(String order, String deptId) {
+    public Map<String,Object> list(String order, String deptId,
+                                   @RequestParam("offset") int pageNum,
+                                   @RequestParam("limit")int pageSize) {
         jsonResult = new HashMap<String,Object>();
         if (StringUtils.isEmpty(deptId)) {
-            List<SysRole> by = sysRoleService.findBy(new SysRole());
-            jsonResult.put("data",by);
+            SysRole sysRole = new SysRole();
+            int countBy = sysRoleService.findCountBy(sysRole);
+            List<SysRole> by = sysRoleService.findByPage(sysRole,pageNum,pageSize);
+            jsonResult.put("rows",by);
+            jsonResult.put("total",countBy);
             return jsonResult;
         }
         SysDepartment department = new SysDepartment();
@@ -66,9 +71,11 @@ public class RoleController {
         SysRole sysRole = new SysRole();
         sysRole.setDepartment(department);
         sysRole.setDeleteFlag("1");
-        List<SysRole> list = sysRoleService.findBy(sysRole);
+        int countBy = sysRoleService.findCountBy(sysRole);
+        List<SysRole> byPage = sysRoleService.findByPage(sysRole, pageNum, pageSize);
         int count = sysRoleService.findCountBy(sysRole);
-        jsonResult.put("data",list);
+        jsonResult.put("rows",byPage);
+        jsonResult.put("total",countBy);
         return jsonResult;
     }
 
