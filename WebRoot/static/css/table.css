@@ -1,0 +1,16 @@
+.general-table {
+    font-size: 14px;
+}
+/*修改表格工具条宽度*/
+.fixed-table-toolbar .bs-bars {
+    width: 100%;
+}
+.table_operations div {
+    float: left;!important;
+}
+.table_operations > .search_operations {
+    float: right;!important;
+}
+.search_operations .form-inline {
+    margin-right: 10px;
+}

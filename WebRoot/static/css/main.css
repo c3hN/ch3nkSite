@@ -2,15 +2,9 @@
     margin: 0;
     padding: 0;
 }
-a {
+a,a:hover,a:link,a:visited,a:active {
     text-decoration: none;
-}
-a:link {
-    color: #000000;
-}
-a:visited {
-    color: #000000;
-    text-decoration: none;
+    color:inherit;
 }
 .left-wrap , .main {
     float: left;
@@ -26,6 +20,9 @@ a:visited {
     height: 45px;
     /*background-color: #3c8dbc;*/
     background-color: #3c8dbc;
+}
+.main-top {
+    min-width: 900px;
 }
 .menus-wrap {
     height: calc(100% - 45px);
@@ -85,39 +82,72 @@ a:visited {
     list-style: none;
     cursor: pointer;
 }
-/*.main-top-right>ul>li:hover {*/
-    /*background-color: #337ab7;*/
-/*}*/
-.principal-info {
-    padding: 5px 15px 5px 5px;
-    line-height: 35px;
+.right-item_1,.right-item_2 {
+    height: 45px;
+    line-height: 45px;
 }
-.principal-info:hover {
+.right-item_1:hover{
     background-color: #337ab7;
 }
+.right-item_2:hover{
+    background-color: #337ab7;
+}
+.principal-info,.notice {
+    padding: 5px 15px 5px 15px;
+    line-height: 35px;
+    display: flex;
+    align-items: center;
+}
+/*.principal-info:hover,.notice:hover {*/
+    /*background-color: #337ab7;*/
+/*}*/
 .principal-info>img {
     float: left;
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    margin-right: 10px;
 }
 .principal-info>span {
     color: #fff;
     font-size: 14px;
+    padding-left: 5px;
 }
 .principal-operate {
     background-color: #3c8dbc;
     list-style: none;
-    display: none;
     position: relative;
+    top:5px;
+}
+.principal-info-show {
+    display: block;!important;
 }
 .principal-operate>li {
     padding: 10px 0 10px 20px;
 }
-.principal-operate>li>span{
-    padding-left: 13px;
-}
 .principal-operate>li:hover {
     background-color: #337ab7;
+}
+.principal-operate>li>a {
+    font-size: 14px;
+    color:#fff;
+}
+.principal-operate>li>a>span {
+    padding-left: 13px;
+}
+.num {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-color: #c9302c;
+    border-radius: 10px;
+}
+.num:empty {
+    display: none;
 }
