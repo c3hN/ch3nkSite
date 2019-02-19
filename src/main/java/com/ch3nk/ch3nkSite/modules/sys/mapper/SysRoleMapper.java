@@ -19,9 +19,15 @@ public interface SysRoleMapper {
 
     int updateByPrimaryKey(SysRole record);
 
+    int updateStateBatch(@Param("roleIds")String[] roleIds,@Param("deleteFag") String deleteFlag,@Param("useFlag") String useFlag);
+
     List<SysRole> selectBy(SysRole sysRole);
 
     List<SysRole> selectByPage(@Param("sysRole") SysRole sysRole,@Param("pageNum") int pageNum,@Param("pageSize") int pageSize);
+
+    List<SysMenu> selectMenusForRole(@Param("roleId")String roleId);
+
+    List<SysMenu> selectMenusForRoles(@Param("roleIds")String[] roleIds);
 
     int selectCountBy(SysRole sysRole);
 

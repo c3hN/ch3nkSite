@@ -36,6 +36,7 @@
         <property name="dataSource" ref="dataSource"/>
         <!--配置mybatis全局文件-->
         <property name="configLocation" value="classpath:ch3nkSiteCfgs/mybatis/sqlMapperConfig.xml"/>
+        <property name="mapperLocations" value="classpath:mappers/*.xml"/>
         <!--配置mybatis分页插件-->
         <!--<property name="plugins">-->
             <!--<array>-->
@@ -52,7 +53,7 @@
     <!--添加扫描器，将mybatis接口的实现加入到IOC容器中-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!--扫描mapper映射文件，放到IOC容器中-->
-        <property name="basePackage" value="com.ch3nk.ch3nkSite.modules"/>
+        <property name="basePackage" value="com.ch3nk.ch3nkSite.modules.sys.mappers"/>
         <!--<property name="basePackage" value="com.ch3nk.ch3nkSite.modules.*.mapper"/> &lt;!&ndash;此方式无效&ndash;&gt;-->
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>

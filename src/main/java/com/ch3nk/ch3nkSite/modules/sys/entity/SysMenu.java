@@ -1,198 +1,59 @@
 package com.ch3nk.ch3nkSite.modules.sys.entity;
 
-import com.ch3nk.ch3nkSite.common.processor.JsonDate2StringProcessor;
+import com.ch3nk.ch3nkSite.common.base.entity.BaseEntity;
+import com.ch3nk.ch3nkSite.common.serializer.JsonDateSerializer;
+import com.ch3nk.ch3nkSite.modules.utils.UUIDutil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.shiro.SecurityUtils;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class SysMenu implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Getter
+@Setter
+@SuppressWarnings("unused")
+public class SysMenu extends BaseEntity {
 
     private String menuId;
-
-    /**
-     * 菜单名称
-     */
+    private String type;
     private String name;
-
-    /**
-     * 英文名称
-     */
-    private String menuCode;
-
-    /**
-     * 父菜单id
-     */
+    private String code;
     private String parentId;
-
-    /**
-     * 类别 0:管理菜单 1:操作权限
-     */
-    private String category;
-
-    /**
-     * 资源路径
-     */
     private String href;
-
-    /**
-     * 图标路径/名称
-     */
-    private String menuIcon;
-
-    private String createBy;
-
+    private SysAccount createBy;
+    @JsonSerialize(using = JsonDateSerializer.class)
     private Date createDate;
+    private SysAccount modifyBy;
+    @JsonSerialize(using = JsonDateSerializer.class)
+    private Date modifyDate;
+    private Integer modifyNum;
+    private String isDeleted;
 
-    private String updateBy;
+    private String level;
+    private String isLeaf;
+    private String expanded;
+    private List<SysMenu> children;
 
-    private Date updateDate;
-
-    /**
-     * 删除标记 0：deleted
-     */
-    private String deleteFlag;
-
-    /**
-     * 备注
-     */
-    private String remark;
-
-    /**
-     * shiro权限表达式
-     */
-    private String permission;
-
-    private String hasBranch;
-
-    private String seq;
-
-    public String getMenuId() {
-        return menuId;
+    public void beforeInsert() {
+        SysAccount sysAccount = (SysAccount) SecurityUtils.getSubject().getPrincipal();
+        Date currentDate = new Date();
+        setCreateDate(currentDate);
+        setModifyDate(currentDate);
+        setCreateBy(sysAccount);
+        setModifyBy(sysAccount);
+        setModifyNum(0);
+        setIsDeleted("0");
+        setMenuId(UUIDutil.getUUID());
+    }
+    public void beforeUpdate(SysMenu sysMenu) {
+        SysAccount sysAccount = (SysAccount) SecurityUtils.getSubject().getPrincipal();
+        Date currentDate = new Date();
+        setModifyBy(sysAccount);
+        setModifyNum(sysMenu.getModifyNum()+1);
     }
 
-    public void setMenuId(String menuId) {
-        this.menuId = menuId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMenuCode() {
-        return menuCode;
-    }
-
-    public void setMenuCode(String menuCode) {
-        this.menuCode = menuCode;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(String href) {
-        this.href = href;
-    }
-
-    public String getMenuIcon() {
-        return menuIcon;
-    }
-
-    public void setMenuIcon(String menuIcon) {
-        this.menuIcon = menuIcon;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-    @JsonSerialize(using = JsonDate2StringProcessor.class)
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-    @JsonSerialize(using = JsonDate2StringProcessor.class)
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public String getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(String deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
-
-    public void setPermission(String permission) {
-        this.permission = permission;
-    }
-
-    public String getHasBranch() {
-        return hasBranch;
-    }
-
-    public void setHasBranch(String hasBranch) {
-        this.hasBranch = hasBranch;
-    }
-
-    public String getSeq() {
-        return seq;
-    }
-
-    public void setSeq(String seq) {
-        this.seq = seq;
-    }
 }

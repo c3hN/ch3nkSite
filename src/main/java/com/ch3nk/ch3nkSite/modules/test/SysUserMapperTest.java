@@ -37,15 +37,10 @@ public class SysUserMapperTest {
 
     @Test
     public void test_1() {
-        SysUser sysUser = new SysUser();
-        sysUser.setDeleteFlag("1");
-        sysUser.setUserId("234f3486a9f44bf9a98dfbcee379d3d5");
-        session= session = sqlSessionFactory.openSession();
+        session = sqlSessionFactory.openSession();
         SysUserMapper mapper = session.getMapper(SysUserMapper.class);
-        SysDepartment department = new SysDepartment();
-        department.setDeptId("11111111111111111");
-//        sysUser.setDepartment(department);
-        int i = mapper.selectCountBy(sysUser);
+        String [] userIds = {"234f3486a9f44bf9a98dfbcee379d3d5","23fbb4f832e54d2f9dee8b101e54a7ca"};
+        int i = mapper.updateStateByPkBatch(userIds,"0");
         System.out.println(i);
     }
 

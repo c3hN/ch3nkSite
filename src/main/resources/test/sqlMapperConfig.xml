@@ -10,6 +10,7 @@
     <typeAliases>
         <!--<package name="com.ch3nk.ch3nkSite.modules.sys.entity"/>-->
         <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysUser" alias="sysUser"/>
+        <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysUser" alias="sysAccount"/>
         <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysRole" alias="sysRole"/>
         <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysDic" alias="sysDic"/>
         <typeAlias type="com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu" alias="sysMenu"/>
@@ -22,18 +23,20 @@
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/ch3nkSite"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/ch3nkSite_1"/>
                 <property name="username" value="root"/>
                 <property name="password" value="root"/>
             </dataSource>
         </environment>
     </environments>
     <mappers>
-        <mapper resource="test/mappers/SysUserMapper.xml"/>
-        <mapper resource="test/mappers/SysDicMapper.xml"/>
+        <mapper resource="test/mappers/SysAccountMapper.xml"/>
         <mapper resource="test/mappers/SysMenuMapper.xml"/>
-        <mapper resource="test/mappers/SysRoleMapper.xml"/>
-        <mapper resource="test/mappers/SysOperationMapper.xml"/>
+        <!--<mapper resource="test/mappers/SysUserMapper.xml"/>-->
+        <!--<mapper resource="test/mappers/SysDicMapper.xml"/>-->
+        <!--<mapper resource="test/mappers/SysMenuMapper.xml"/>-->
+        <!--<mapper resource="test/mappers/SysRoleMapper.xml"/>-->
+        <!--<mapper resource="test/mappers/SysOperationMapper.xml"/>-->
     </mappers>
 
 </configuration>

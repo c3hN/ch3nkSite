@@ -25,7 +25,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-4 col-md-offset-3">
-                            <input type="password" name="userPwd" placeholder="手机号" class="form-control" data-rule="required">
+                            <input type="password" name="password" placeholder="密码" class="form-control" data-rule="required">
                         </div>
                     </div>
                     <div class="form-group">
@@ -43,7 +43,7 @@
     $(function () {
         $("form input:eq(0)").focus();
         $("input[name='account']").val("18913339867");
-        $("input[name='userPwd']").val("123");
+        $("input[name='password']").val("123");
     })
 </script>
 </body>

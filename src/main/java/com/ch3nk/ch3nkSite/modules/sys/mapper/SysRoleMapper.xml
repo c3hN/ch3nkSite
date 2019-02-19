@@ -1,148 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ch3nk.ch3nkSite.modules.sys.mapper.SysRoleMapper">
-    <resultMap id="BaseResultMap" type="sysRole">
+    <resultMap id="BaseResultMap" type="com.ch3nk.ch3nkSite.modules.sys.entity.SysRole">
         <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
-        <result column="ZH_NAME" jdbcType="VARCHAR" property="name" />
+        <result column="ROLE_NAME" jdbcType="VARCHAR" property="name" />
         <result column="EN_NAME" jdbcType="VARCHAR" property="eName" />
         <result column="USEABLE_FLAG" jdbcType="VARCHAR" property="useFlag" />
-        <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
-        <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
-        <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
-        <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
-        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
-        <result column="DELETE_FLAG" jdbcType="VARCHAR" property="deleteFlag" />
+        <result column="ROLE_CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+        <result column="ROLE_CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="ROLE_UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
+        <result column="ROLE_UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="ROLE_REMARK" jdbcType="VARCHAR" property="remark" />
+        <result column="ROLE_DELETE_FLAG" jdbcType="VARCHAR" property="deleteFlag" />
         <association property="department" javaType="com.ch3nk.ch3nkSite.modules.sys.entity.SysDepartment">
             <id column="DEPT_ID" jdbcType="VARCHAR" property="deptId" />
             <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
             <result column="DEPT_NUM" jdbcType="VARCHAR" property="deptNum" />
             <result column="DEPT_ABBR" jdbcType="VARCHAR" property="deptAbbr" />
             <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
-            <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
-            <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+            <result column="DEPT_CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+            <result column="DEPT_UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
             <result column="STATE" jdbcType="VARCHAR" property="state" />
             <result column="HAS_BRANCH" jdbcType="VARCHAR" property="hasBranch" />
         </association>
-        <collection property="menus" ofType="sysMenu">
-            <id property="menuId" column="menus.MENU_ID"></id>
-        </collection>
     </resultMap>
-    <sql id="Base_Column_List">
+    <sql id="base_colums">
         r.ROLE_ID,
         r.DEPT_ID,
-        r.ZH_NAME,
+        r.ZH_NAME       as ROLE_NAME, <!-- 使用别名解决和菜单表字段重名问题 -->
         r.EN_NAME,
         r.USEABLE_FLAG,
-        r.CREATE_BY,
-        r.CREATE_DATE,
-        r.UPDATE_BY,
-        r.UPDATE_DATE,
-        r.REMARK,
-        r.DELETE_FLAG ,
+        r.CREATE_BY     as ROLE_CREATE_BY,
+        r.CREATE_DATE   as ROLE_CREATE_DATE,
+        r.UPDATE_BY     as ROLE_UPDATE_BY,
+        r.UPDATE_DATE   as ROLE_UPDATE_DATE,
+        r.REMARK        as ROLE_REMARK,
+        r.DELETE_FLAG   as ROLE_DELETE_FLAG,
+        d.DEPT_ID,
         d.DEPT_NAME,
         d.DEPT_NUM,
         d.DEPT_ABBR,
         d.PARENT_ID,
-        d.CREATE_DATE,
-        d.UPDATE_DATE,
-        d.STATE,
+        d.CREATE_DATE   as DEPT_CREATE_DATE,
+        d.UPDATE_DATE   as DEPT_UPDATE_DATE,
+        d.`STATE`,
         d.HAS_BRANCH
     </sql>
+    <!--<sql id="left_join_dept">-->
+    <!--left join sys_department d on r.DEPT_ID = d.DEPT_ID-->
+    <!--</sql>-->
     <sql id="left_join_dept">
         left join sys_department d on r.DEPT_ID = d.DEPT_ID
     </sql>
-    <sql id="left_join_role_menu">
-        left join sys_role_menu rm on r.ROLE_ID = rm.ROLE_ID
-    </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
-        ,rm.MENU_ID as `menus.MENU_ID`
+        <include refid="base_colums" />
         from sys_role r
         <include refid="left_join_dept"/>
-        <include refid="left_join_role_menu"/>
         where r.ROLE_ID = #{roleId,jdbcType=VARCHAR}
     </select>
-
     <select id="selectBy" parameterType="sysRole" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        ,rm.MENU_ID as `menus.MENU_ID`
+        <include refid="base_colums"/>
         from sys_role r
         <include refid="left_join_dept"/>
-        <include refid="left_join_role_menu"/>
         <where>
-            <if test="name != null">
-                and r.ZH_NAME = #{name,jdbcType=VARCHAR}
-            </if>
-            <if test="eName != null">
-                and r.EN_NAME = #{eName,jdbcType=VARCHAR}
-            </if>
-            <if test="department!= null and department.deptId != null">
-                and r.DEPT_ID = #{department.deptId,jdbcType=VARCHAR}
-            </if>
-            <if test="useFlag != null">
-                and r.USEABLE_FLAG = #{useFlag,jdbcType=VARCHAR}
-            </if>
-            <if test="createBy != null">
-                and r.CREATE_BY = #{createBy,jdbcType=VARCHAR}
-            </if>
-            <if test="createDate != null">
-                and r.CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
-            </if>
-            <if test="updateBy != null">
-                and r.UPDATE_BY = #{updateBy,jdbcType=VARCHAR}
-            </if>
-            <if test="updateDate != null">
-                and r.UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
-            </if>
-            <if test="remark != null">
-                and r.REMARK = #{remark,jdbcType=VARCHAR}
-            </if>
-            <if test="deleteFlag != null">
-                and r.DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR}
-            </if>
+            <if test="name != null">and r.ZH_NAME = #{name,jdbcType=VARCHAR}</if>
+            <if test="eName != null">and r.EN_NAME = #{eName,jdbcType=VARCHAR}</if>
+            <if test="department!= null and department.deptId != null">and r.DEPT_ID = #{department.deptId,jdbcType=VARCHAR}</if>
+            <if test="useFlag != null">and r.USEABLE_FLAG = #{useFlag,jdbcType=VARCHAR}</if>
+            <if test="createBy != null">and r.CREATE_BY = #{createBy,jdbcType=VARCHAR}</if>
+            <if test="createDate != null">and r.CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}</if>
+            <if test="updateBy != null">and r.UPDATE_BY = #{updateBy,jdbcType=VARCHAR}</if>
+            <if test="updateDate != null">and r.UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}</if>
+            <if test="remark != null">and r.REMARK = #{remark,jdbcType=VARCHAR}</if>
+            <if test="deleteFlag != null">and r.DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
+            <if test="likeName != null">and r.ZH_NAME like #{likeName,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeEName != null">and r.EN_NAME like #{likeEName,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeUseFlag != null">and r.USEABLE_FLAG like #{likeUseFlag,jdbcType=VARCHAR} escape '/' </if>
         </where>
         order by r.CREATE_DATE desc
     </select>
     <select id="selectByPage" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        ,rm.MENU_ID as `menus.MENU_ID`
+        <include refid="base_colums"/>
         from sys_role r
         <include refid="left_join_dept"/>
-        <include refid="left_join_role_menu"/>
         <where>
-            <if test="sysRole.name != null">
-                and r.ZH_NAME = #{sysRole.name,jdbcType=VARCHAR}
-            </if>
-            <if test="sysRole.eName != null">
-                and r.EN_NAME = #{sysRole.eName,jdbcType=VARCHAR}
-            </if>
-            <if test="sysRole.department!= null and sysRole.department.deptId != null">
-                and r.DEPT_ID = #{sysRole.department.deptId,jdbcType=VARCHAR}
-            </if>
-            <if test="sysRole.useFlag != null">
-                and r.USEABLE_FLAG = #{sysRole.useFlag,jdbcType=VARCHAR}
-            </if>
-            <if test="sysRole.createBy != null">
-                and r.CREATE_BY = #{sysRole.createBy,jdbcType=VARCHAR}
-            </if>
-            <if test="sysRole.createDate != null">
-                and r.CREATE_DATE = #{sysRole.createDate,jdbcType=TIMESTAMP}
-            </if>
-            <if test="sysRole.updateBy != null">
-                and r.UPDATE_BY = #{sysRole.updateBy,jdbcType=VARCHAR}
-            </if>
-            <if test="sysRole.updateDate != null">
-                and r.UPDATE_DATE = #{sysRole.updateDate,jdbcType=TIMESTAMP}
-            </if>
-            <if test="sysRole.remark != null">
-                and r.REMARK = #{sysRole.remark,jdbcType=VARCHAR}
-            </if>
-            <if test="sysRole.deleteFlag != null">
-                and r.DELETE_FLAG = #{sysRole.deleteFlag,jdbcType=VARCHAR}
-            </if>
+            <if test="sysRole.name != null">and r.ZH_NAME = #{sysRole.name,jdbcType=VARCHAR}</if>
+            <if test="sysRole.eName != null">and r.EN_NAME = #{sysRole.eName,jdbcType=VARCHAR}</if>
+            <if test="sysRole.department!= null and sysRole.department.deptId != null">and r.DEPT_ID = #{sysRole.department.deptId,jdbcType=VARCHAR}</if>
+            <if test="sysRole.useFlag != null">and r.USEABLE_FLAG = #{sysRole.useFlag,jdbcType=VARCHAR}</if>
+            <if test="sysRole.createBy != null">and r.CREATE_BY = #{sysRole.createBy,jdbcType=VARCHAR}</if>
+            <if test="sysRole.createDate != null">and r.CREATE_DATE = #{sysRole.createDate,jdbcType=TIMESTAMP}</if>
+            <if test="sysRole.updateBy != null">and r.UPDATE_BY = #{sysRole.updateBy,jdbcType=VARCHAR}</if>
+            <if test="sysRole.updateDate != null">and r.UPDATE_DATE = #{sysRole.updateDate,jdbcType=TIMESTAMP}</if>
+            <if test="sysRole.remark != null">and r.REMARK = #{sysRole.remark,jdbcType=VARCHAR}</if>
+            <if test="sysRole.deleteFlag != null">and r.DELETE_FLAG = #{sysRole.deleteFlag,jdbcType=VARCHAR}</if>
+            <if test="sysRole.likeName != null">and r.ZH_NAME like #{sysRole.likeName,jdbcType=VARCHAR} escape '/' </if>
+            <if test="sysRole.likeEName != null">and r.EN_NAME like #{sysRole.likeEName,jdbcType=VARCHAR} escape '/' </if>
+            <if test="sysRole.likeUseFlag != null">and r.USEABLE_FLAG like #{sysRole.likeUseFlag,jdbcType=VARCHAR} escape '/' </if>
         </where>
         order by r.CREATE_DATE desc
         limit #{pageNum} , #{pageSize}
@@ -150,39 +107,38 @@
     <select id="selectCountBy" resultType="int">
         select count(1) from sys_role r
         <where>
-            <if test="name != null">
-                r.ZH_NAME = #{name,jdbcType=VARCHAR}
-            </if>
-            <if test="eName != null">
-                and r.EN_NAME = #{eName,jdbcType=VARCHAR}
-            </if>
-            <if test="department!= null and department.deptId != null">
-                and r.DEPT_ID = #{department.deptId,jdbcType=VARCHAR}
-            </if>
-            <if test="useFlag != null">
-                and r.USEABLE_FLAG = #{useFlag,jdbcType=VARCHAR}
-            </if>
-            <if test="createBy != null">
-                and r.CREATE_BY = #{createBy,jdbcType=VARCHAR}
-            </if>
-            <if test="createDate != null">
-                and r.CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
-            </if>
-            <if test="updateBy != null">
-                and r.UPDATE_BY = #{updateBy,jdbcType=VARCHAR}
-            </if>
-            <if test="updateDate != null">
-                and r.UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
-            </if>
-            <if test="remark != null">
-                and r.REMARK = #{remark,jdbcType=VARCHAR}
-            </if>
-            <if test="deleteFlag != null">
-                and r.DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR}
-            </if>
+            <if test="name != null">r.ZH_NAME = #{name,jdbcType=VARCHAR}</if>
+            <if test="eName != null">and r.EN_NAME = #{eName,jdbcType=VARCHAR}</if>
+            <if test="department!= null and department.deptId != null">and r.DEPT_ID = #{department.deptId,jdbcType=VARCHAR}</if>
+            <if test="useFlag != null">and r.USEABLE_FLAG = #{useFlag,jdbcType=VARCHAR}</if>
+            <if test="createBy != null">and r.CREATE_BY = #{createBy,jdbcType=VARCHAR}</if>
+            <if test="createDate != null">and r.CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}</if>
+            <if test="updateBy != null">and r.UPDATE_BY = #{updateBy,jdbcType=VARCHAR}</if>
+            <if test="updateDate != null">and r.UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}</if>
+            <if test="remark != null">and r.REMARK = #{remark,jdbcType=VARCHAR}</if>
+            <if test="deleteFlag != null">and r.DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
+            <if test="likeName != null">and r.ZH_NAME like #{likeName,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeEName != null">and r.EN_NAME like #{likeEName,jdbcType=VARCHAR} escape '/' </if>
+            <if test="likeUseFlag != null">and r.USEABLE_FLAG like #{likeUseFlag,jdbcType=VARCHAR} escape '/' </if>
         </where>
     </select>
-
+    <select id="selectMenusForRole" parameterType="java.lang.String" resultMap="com.ch3nk.ch3nkSite.modules.sys.mapper.SysMenuMapper.BaseResultMap">
+        select
+        m.MENU_ID, m.ZH_NAME, m.MENU_CODE, m.PARENT_ID, m.CATEGORY, m.HREF, m.MENU_ICON, m.CREATE_BY, m.CREATE_DATE,
+        m.UPDATE_BY,m.UPDATE_DATE, m.DELETE_FLAG, m.REMARK, m.PERMISSION, m.HASBRANCH,m.SEQ
+        from sys_role_menu rm , sys_menu m where rm.menu_id = m.menu_id
+        and rm.role_id = #{roleId}
+    </select>
+    <select id="selectMenusForRoles" parameterType="java.util.Arrays" resultMap="com.ch3nk.ch3nkSite.modules.sys.mapper.SysMenuMapper.BaseResultMap">
+        select DISTINCT
+        m.MENU_ID, m.ZH_NAME, m.MENU_CODE, m.PARENT_ID, m.CATEGORY, m.HREF, m.MENU_ICON, m.CREATE_BY, m.CREATE_DATE,
+        m.UPDATE_BY,m.UPDATE_DATE, m.DELETE_FLAG, m.REMARK, m.PERMISSION, m.HASBRANCH,m.SEQ
+        from sys_role_menu rm , sys_menu m where rm.menu_id = m.menu_id
+        and rm.role_id in
+        <foreach collection="roleIds" item="roleId" separator="," index="index" open="(" close=")">
+            #{roleId}
+        </foreach>
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete from sys_role
         where ROLE_ID = #{roleId,jdbcType=VARCHAR}
@@ -279,7 +235,7 @@
             <if test="eName != null">
                 EN_NAME = #{eName,jdbcType=VARCHAR},
             </if>
-            <if test="department!= null and department.deptId != null">
+            <if test="department!= null and department.deptId != null and department.deptId != ''">
                 DEPT_ID = #{department.deptId,jdbcType=VARCHAR},
             </if>
             <if test="useFlag != null">
@@ -319,6 +275,14 @@
         REMARK = #{remark,jdbcType=VARCHAR},
         DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR}
         where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateStateBatch">
+        update sys_role
+        set USEABLE_FLAG = #{userFlag},deleteFlag = #{deleteFlag}
+        where ROLE_ID in
+        <foreach collection="roleIds" index="index" item="roleId" separator="," open="(" close=")">
+            #{roleId}
+        </foreach>
     </update>
     <!--插入角色-菜单记录-->
     <insert id="insertRoleMenus">

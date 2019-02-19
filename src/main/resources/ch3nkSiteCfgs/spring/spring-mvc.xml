@@ -28,7 +28,6 @@
         </property>
     </bean>
 
-
     <!--配置视图解析器-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!--//视图前缀-->

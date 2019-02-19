@@ -37,10 +37,6 @@ public class SysOperationMapperTest {
 
     @Test
     public void test_1() {
-        session= session = sqlSessionFactory.openSession();
-        SysOperationMapper mapper = session.getMapper(SysOperationMapper.class);
-        SysOperation sysOperation = new SysOperation();
-        sysOperation.setId(UUIDutil.getUUID());
 
 
 

@@ -22,9 +22,6 @@
             <result column="STATE" jdbcType="VARCHAR" property="state" />
             <result column="HAS_BRANCH" jdbcType="VARCHAR" property="hasBranch" />
         </association>
-        <collection property="roles" ofType="sysRole">
-            <id column="ROLE _ID" jdbcType="VARCHAR" property="roleId" />
-        </collection>
     </resultMap>
     <sql id="Base_Column_List">
         u.USER_ID,
@@ -57,14 +54,10 @@
         sd.CREATE_DATE,
         sd.UPDATE_DATE,
         sd.`STATE`,
-        sd.HAS_BRANCH,
-        ur.ROLE_ID
+        sd.HAS_BRANCH
     </sql>
     <sql id="left_join_dept">
         left join sys_department sd on u.DEPT_ID = sd.DEPT_ID
-    </sql>
-    <sql id="left_join_user_role">
-        left join sys_user_role ur on u.USER_ID = ur.USER_ID
     </sql>
     <insert id="insert" parameterType="sysUser">
         insert into sys_user (USER_ID, ACCOUNT, NICKNAME,
@@ -120,7 +113,14 @@
             <if test="department != null and department.deptId != null">#{department.deptId,jdbcType=VARCHAR}</if>
         </trim>
     </insert>
-
+    <insert id="insertRolesForUser">
+        insert into sys_user_role(USER_ROLE_ID,USER_ID,ROLE_ID) values
+        <foreach collection="roleIds" item="roleId" separator="," index="index">
+            ( (select replace(uuid(),'-','')),
+            #{userId},
+            #{roleId} )
+        </foreach>
+    </insert>
     <delete id="deleteByPK" parameterType="java.lang.String">
         delete from sys_user where USER_ID = #{userId,jdbcType=VARCHAR}
     </delete>
@@ -130,7 +130,10 @@
             #{userId,jdbcType=VARCHAR}
         </foreach>
     </delete>
-
+    <delete id="deleteRolesForUser">
+        delete from sys_user_role
+        where USER_ID = #{userId}
+    </delete>
     <update id="updateByPK" parameterType="sysUser">
         update sys_user
         set
@@ -157,11 +160,18 @@
             <if test="updateTime != null">UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},</if>
             <if test="loginFlag != null">LOGINFLAG = #{loginFlag,jdbcType=VARCHAR},</if>
             <if test="deleteFlag != null">DELETEFLAG = #{deleteFlag,jdbcType=VARCHAR}</if>
-            <if test="department != null and department.deptId != null">DEPT_ID = #{department.deptId,jdbcType=VARCHAR}</if>
+            <if test="department != null and department.deptId != null and department.deptId != ''">DEPT_ID = #{department.deptId,jdbcType=VARCHAR}</if>
         </set>
         where USER_ID = #{userId,jdbcType=VARCHAR}
     </update>
-
+    <update id="updateStateByPkBatch">
+        update sys_user
+        set DELETEFLAG = #{deleteFlag}
+        where USER_ID in
+        <foreach collection="userIds" index="index" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </update>
     <select id="selectCountBy" parameterType="sysUser" resultType="int">
         select count(1)
         from sys_user
@@ -186,7 +196,6 @@
         <include refid="left_join_columns"/>
         from sys_user u
         <include refid="left_join_dept"/>
-        <include refid="left_join_user_role"/>
         <where>
             <if test="userId != null">u.USER_ID = #{userId,jdbcType=VARCHAR}</if>
             <if test="account != null">and u.ACCOUNT = #{account,jdbcType=VARCHAR}</if>
@@ -210,7 +219,6 @@
         <include refid="left_join_columns"/>
         from sys_user u
         <include refid="left_join_dept"/>
-        <include refid="left_join_user_role"/>
         <where>
             <if test="sysUser.userId != null">u.USER_ID = #{sysUser.userId,jdbcType=VARCHAR}</if>
             <if test="sysUser.account != null">and u.ACCOUNT = #{sysUser.account,jdbcType=VARCHAR}</if>
@@ -229,13 +237,17 @@
         order by CREATETIME desc
         limit #{pageNum} , #{pageSize}
     </select>
-
+    <select id="selectRolesForUser" parameterType="java.lang.String" resultMap="com.ch3nk.ch3nkSite.modules.sys.mapper.SysRoleMapper.BaseResultMap">
+        select
+        <include refid="com.ch3nk.ch3nkSite.modules.sys.mapper.SysRoleMapper.base_colums"/>
+        from sys_user_role ur ,sys_role r,sys_department d where ur.ROLE_ID = r.ROLE_ID and r.DEPT_ID = d.DEPT_ID and
+        ur.USER_ID = #{userId}
+    </select>
     <select id="selectByPK" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="left_join_columns"/>
         from sys_user u
         <include refid="left_join_dept"/>
-        <include refid="left_join_user_role"/>
         where u.USER_ID = #{userId,jdbcType=VARCHAR}
     </select>
 
@@ -244,7 +256,6 @@
         <include refid="left_join_columns"/>
         from sys_user u
         <include refid="left_join_dept"/>
-        <include refid="left_join_user_role"/>
         where u.ACCOUNT = #{account,jdbcType=VARCHAR}
     </select>
 </mapper>

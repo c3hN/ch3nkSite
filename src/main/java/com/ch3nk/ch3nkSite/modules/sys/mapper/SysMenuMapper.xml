@@ -51,7 +51,7 @@
             <if test="hasBranch != null and hasBranch != ''">and HASBRANCH = #{hasBranch}</if>
             <if test="seq != null and seq != ''">and SEQ = #{seq}</if>
         </where>
-        order by CREATE_DATE asc,SEQ asc
+        ORDER BY SEQ asc,CREATE_DATE asc
     </select>
     <select id="selectCountSelective" parameterType="sysMenu" resultType="int">
         select
@@ -81,7 +81,7 @@
         <include refid="Base_Column_List"/>
         from sys_menu
         where PARENT_ID IS NULL OR PARENT_ID = ''
-        ORDER BY CREATE_DATE asc,SEQ asc
+        ORDER BY SEQ asc,CREATE_DATE asc
     </select>
     
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
@@ -150,7 +150,7 @@
         <set>
             <if test="name != null">ZH_NAME = #{name,jdbcType=VARCHAR},</if>
             <if test="menuCode != null">MENU_CODE = #{menuCode,jdbcType=VARCHAR},</if>
-            <if test="parentId != null ">PARENT_ID = #{parentId,jdbcType=VARCHAR},</if>
+            <if test="parentId != null and parentId != ''">PARENT_ID = #{parentId,jdbcType=VARCHAR},</if>
             <if test="category != null">CATEGORY = #{category,jdbcType=VARCHAR},</if>
             <if test="href != null">HREF = #{href,jdbcType=VARCHAR},</if>
             <if test="menuIcon != null">MENU_ICON = #{menuIcon,jdbcType=VARCHAR},</if>
@@ -191,7 +191,7 @@
             <foreach collection="list" item="menu" separator=",">
                 <if test="menu.name != null">ZH_NAME = #{menu.name,jdbcType=VARCHAR}</if>
                 <if test="menu.menuCode != null">MENU_CODE = #{menu.menuCode,jdbcType=VARCHAR}</if>
-                <if test="menu.parentId != null">PARENT_ID = #{menu.parentId,jdbcType=VARCHAR}</if>
+                <if test="menu.parentId != null and menu.parentId != ''">PARENT_ID = #{menu.parentId,jdbcType=VARCHAR}</if>
                 <if test="menu.category != null">CATEGORY = #{menu.category,jdbcType=VARCHAR}</if>
                 <if test="menu.href != null">HREF = #{menu.href,jdbcType=VARCHAR}</if>
                 <if test="menu.menuIcon != null">MENU_ICON = #{menu.menuIcon,jdbcType=VARCHAR}</if>

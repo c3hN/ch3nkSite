@@ -1,7 +1,8 @@
 package com.ch3nk.ch3nkSite.modules.sys.controller;
 
+import com.ch3nk.ch3nkSite.common.base.baseService.BaseService;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu;
-import com.ch3nk.ch3nkSite.modules.sys.service.ISysMenuService;
+import com.ch3nk.ch3nkSite.modules.sys.service.SysMenuService;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,18 +23,22 @@ import java.util.List;
 @Controller
 public class LoginController {
 
-    @Qualifier("sysMenuServiceImpl")
     @Autowired
-    private ISysMenuService menuServiceImpl;
+    private SysMenuService sysMenuService;
+
 
     @RequestMapping("/main")
-    public String main(Model model){
-        SysMenu menu = new SysMenu();
-        menu.setDeleteFlag("1");
-        List<SysMenu> menuList = menuServiceImpl.findBy(menu);
-        model.addAttribute("menus",menuList);
+    public ModelAndView main(Model model){
+//        SysMenu menu = new SysMenu();
+//        menu.setDeleteFlag("1");
+//        List<SysMenu> menuList = menuServiceImpl.findBy(menu);
+//        model.addAttribute("menus",menuList);
 //        return "sys/index";
-        return "sys/main";
+        SysMenu menu = new SysMenu();
+        menu.setIsDeleted("0");
+        List<SysMenu> sysMenus = sysMenuService.find(menu);
+        model.addAttribute("menus",sysMenus);
+        return new ModelAndView("sys/main");
     }
 
     @RequestMapping("/login")

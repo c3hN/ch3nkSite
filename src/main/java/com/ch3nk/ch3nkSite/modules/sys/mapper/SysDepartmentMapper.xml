@@ -28,7 +28,7 @@
       <if test="deptName != null">and DEPT_NAME = #{deptName}</if>
       <if test="deptNum != null">and DEPT_NUM = #{deptNum}</if>
       <if test="deptAbbr != null">and DEPT_ABBR = #{deptAbbr}</if>
-      <if test="parentId != null">and PARENT_ID = #{parentId}</if>
+      <if test="parentId != null and parentId != ''">and PARENT_ID = #{parentId}</if>
       <if test="createDate != null">and CREATE_DATE = #{createDate}</if>
       <if test="updateDate != null">and UPDATE_DATE = #{updateDate}</if>
       <if test="state != null">and `STATE` = #{state}</if>
@@ -44,7 +44,7 @@
       <if test="deptName != null">and DEPT_NAME = #{deptName}</if>
       <if test="deptNum != null">and DEPT_NUM = #{deptNum}</if>
       <if test="deptAbbr != null">and DEPT_ABBR = #{deptAbbr}</if>
-      <if test="parentId != null">and PARENT_ID = #{parentId}</if>
+      <if test="parentId != null and parentId != ''">and PARENT_ID = #{parentId}</if>
       <if test="createDate != null">and CREATE_DATE = #{createDate}</if>
       <if test="updateDate != null">and UPDATE_DATE = #{updateDate}</if>
       <if test="state != null">and `STATE` = #{state}</if>
@@ -87,7 +87,7 @@
       <if test="deptName != null">DEPT_NAME,</if>
       <if test="deptNum != null">DEPT_NUM,</if>
       <if test="deptAbbr != null">DEPT_ABBR,</if>
-      <if test="parentId != null">PARENT_ID,</if>
+      <if test="parentId != null and parentId != ''">PARENT_ID,</if>
       <if test="createDate != null">CREATE_DATE,</if>
       <if test="updateDate != null">UPDATE_DATE,</if>
       <if test="state != null">`STATE`,</if>
@@ -99,7 +99,7 @@
       </if>
       <if test="deptNum != null">#{deptNum,jdbcType=VARCHAR},</if>
       <if test="deptAbbr != null">#{deptAbbr,jdbcType=VARCHAR},</if>
-      <if test="parentId != null">#{parentId,jdbcType=VARCHAR},</if>
+      <if test="parentId != null and parentId != ''">#{parentId,jdbcType=VARCHAR},</if>
       <if test="createDate != null">#{createDate,jdbcType=TIMESTAMP},</if>
       <if test="updateDate != null">#{updateDate,jdbcType=TIMESTAMP},</if>
       <if test="state != null">#{state,jdbcType=VARCHAR},</if>
@@ -112,7 +112,7 @@
       <if test="deptName != null">DEPT_NAME = #{deptName,jdbcType=VARCHAR},</if>
       <if test="deptNum != null">DEPT_NUM = #{deptNum,jdbcType=VARCHAR},</if>
       <if test="deptAbbr != null">DEPT_ABBR = #{deptAbbr,jdbcType=VARCHAR},</if>
-      <if test="parentId != null">PARENT_ID = #{parentId,jdbcType=VARCHAR},</if>
+      <if test="parentId != null and parentId != ''">PARENT_ID = #{parentId,jdbcType=VARCHAR},</if>
       <if test="createDate != null">CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},</if>
       <if test="updateDate != null">UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},</if>
       <if test="state != null">`STATE` = #{state,jdbcType=VARCHAR},</if>

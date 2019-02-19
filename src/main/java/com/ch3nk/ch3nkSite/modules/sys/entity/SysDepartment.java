@@ -1,6 +1,6 @@
 package com.ch3nk.ch3nkSite.modules.sys.entity;
 
-import com.ch3nk.ch3nkSite.common.processor.JsonDate2StringProcessor;
+import com.ch3nk.ch3nkSite.common.serializer.JsonDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
@@ -77,7 +77,7 @@ public class SysDepartment {
     public void setDeptAbbr(String deptAbbr) {
         this.deptAbbr = deptAbbr;
     }
-    @JsonSerialize(using = JsonDate2StringProcessor.class)
+    @JsonSerialize(using = JsonDateSerializer.class)
     public Date getCreateDate() {
         return createDate;
     }
@@ -85,7 +85,7 @@ public class SysDepartment {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
-    @JsonSerialize(using = JsonDate2StringProcessor.class)
+    @JsonSerialize(using = JsonDateSerializer.class)
     public Date getUpdateDate() {
         return updateDate;
     }

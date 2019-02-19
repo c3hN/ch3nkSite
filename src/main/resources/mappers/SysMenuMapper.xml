@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ch3nk.ch3nkSite.modules.sys.mappers.SysMenuMapper">
+    <resultMap id="baseResultMap" type="sysMenu">
+        <id column="menu_id"  property="menuId" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+        <result column="href" property="href" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP"/>
+        <result column="modify_num" property="modifyNum" jdbcType="INTEGER"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="CHAR"/>
+        <association property="createBy" javaType="com.ch3nk.ch3nkSite.modules.sys.entity.SysAccount">
+            <id column="ac_id" property="acId" jdbcType="VARCHAR"/>
+            <result column="account" property="account" jdbcType="VARCHAR"/>
+            <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+            <result column="avator" property="avator" jdbcType="VARCHAR"/>
+            <result column="level" property="level" jdbcType="INTEGER"/>
+        </association>
+        <association property="modifyBy" javaType="com.ch3nk.ch3nkSite.modules.sys.entity.SysAccount">
+            <id column="ac_id" property="acId" jdbcType="VARCHAR"/>
+            <result column="account" property="account" jdbcType="VARCHAR"/>
+            <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+            <result column="avator" property="avator" jdbcType="VARCHAR"/>
+            <result column="level" property="level" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+    <sql id="base_columns">
+        sm.menu_id,
+        sm.`type`,
+        sm.`name`,
+        sm.`code`,
+        sm.parent_id,
+        sm.href,
+        sm.create_by,
+        sm.create_date,
+        sm.modify_by,
+        sm.modify_date,
+        sm.modify_num,
+        sm.is_deleted,
+        sa.ac_id,
+        sa.account,
+        sa.nick_name,
+        sa.avator,
+        sa.`level`
+    </sql>
+    <insert id="insertSelective" parameterType="sysMenu">
+        insert into sys_menu
+        <if test="sysBean != null">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="sysBean.menuId != null and sysBean.menuId != ''">menu_id,</if>
+                <if test="sysBean.type != null and sysBean.type != ''">type,</if>
+                <if test="sysBean.name != null and sysBean.name != ''">name,</if>
+                <if test="sysBean.code != null and sysBean.code != ''">code,</if>
+                <if test="sysBean.parentId != null and sysBean.parentId != ''">parent_id,</if>
+                <if test="sysBean.href != null and sysBean.href != ''">href,</if>
+                <if test="sysBean.createBy != null">
+                    <if test="sysBean.createBy.acId != null and sysBean.createBy.acId != ''">create_by,</if>
+                </if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">create_date,</if>
+                <if test="sysBean.modifyBy != null">
+                    <if test="sysBean.modifyBy.acId != null and sysBean.modifyBy.acId != ''">modify_by,</if>
+                </if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">modify_date,</if>
+                <if test="sysBean.modifyNum != null">modify_num,</if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">is_deleted,</if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="sysBean.menuId != null and sysBean.menuId != ''">#{sysBean.menuId},</if>
+                <if test="sysBean.type != null and sysBean.type != ''">#{sysBean.type},</if>
+                <if test="sysBean.name != null and sysBean.name != ''">#{sysBean.name},</if>
+                <if test="sysBean.code != null and sysBean.code != ''">#{sysBean.code},</if>
+                <if test="sysBean.parentId != null and sysBean.parentId != ''">#{sysBean.parentId},</if>
+                <if test="sysBean.href != null and sysBean.href != ''">#{sysBean.href},</if>
+                <if test="sysBean.createBy != null">
+                    <if test="sysBean.createBy.acId != null and sysBean.createBy.acId != ''">#{sysBean.createBy.acId},</if>
+                </if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">#{sysBean.createDate},</if>
+                <if test="sysBean.modifyBy != null">
+                    <if test="sysBean.modifyBy.acId != null and sysBean.modifyBy.acId != ''">#{sysBean.modifyBy.acId},</if>
+                </if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">#{sysBean.modifyDate},</if>
+                <if test="sysBean.modifyNum != null">#{sysBean.modifyNum},</if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">#{sysBean.isDeleted}</if>
+            </trim>
+        </if>
+    </insert>
+
+    <select id="selectBy" parameterType="sysMenu" resultMap="baseResultMap">
+        select
+        <include refid="base_columns"/>
+        from sys_menu sm
+        left join sys_account sa
+        on sm.create_by = sa.ac_id and
+        sm.modify_by = sa.ac_id
+        <where>
+            <if test="sysBean != null">
+                <if test="sysBean.menuId != null and sysBean.menuId != ''">
+                    sm.menu_id = #{sysBean.menuId,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.type != null and sysBean.type != ''">
+                    and sm.type = #{sysBean.type,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.name != null and sysBean.name != ''">
+                    and sm.name = #{sysBean.name,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.code != null and sysBean.code != ''">
+                    and sm.code = #{sysBean.code,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.parentId != null and sysBean.parentId != ''">
+                    and sm.parent_id = #{sysBean.parentId,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.href != null and sysBean.href != ''">
+                    and sm.url = #{sysBean.url,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.createBy != null">
+                    <if test="sysBean.createBy.acId != null and sysBean.createBy.acId != ''">
+                        and sm.create_by = #{sysBean.createBy.acId,jdbcType = VARCHAR}
+                    </if>
+                </if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">
+                    and sm.create_date = #{sysBean.createDate,jdbcType = TIMESTAMP}
+                </if>
+                <if test="sysBean.modifyBy != null">
+                    <if test="sysBean.modifyBy.acId != null and sysBean.modifyBy.acId != ''">
+                        and sm.modify_by = #{sysBean.modifyBy.acId,jdbcType = VARCHAR}
+                    </if>
+                </if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">
+                    and sm.modify_date = #{sysBean.modifyDate,jdbcType = TIMESTAMP}
+                </if>
+                <if test="sysBean.modifyNum != null and sysBean.modifyNum != ''">
+                    and sm.modify_num= #{sysBean.modifyNum,jdbcType = INTEGER}
+                </if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">
+                    and sm.is_deleted = #{sysBean.isDeleted,jdbcType = CHAR}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="baseResultMap">
+        select
+        <include refid="base_columns"/>
+        from sys_menu sm
+        left join sys_account sa
+        on sm.create_by = sa.ac_id and
+        sm.modify_by = sa.ac_id
+        where sm.menu_id = #{key}
+    </select>
+    <update id="updateSelective" parameterType="sysMenu">
+        update sys_menu
+        <if test="sysBean != null">
+            <set>
+                <if test="sysBean.type != null and sysBean.type != ''">type = #{sysBean.type},</if>
+                <if test="sysBean.name != null and sysBean.name != ''">name = #{sysBean.name},</if>
+                <if test="sysBean.code != null and sysBean.code != ''">code = #{sysBean.code},</if>
+                <if test="sysBean.parentId != null and sysBean.parentId != ''">parent_id = #{sysBean.parentId},</if>
+                <if test="sysBean.href != null and sysBean.href != ''">href = #{sysBean.href},</if>
+                <if test="sysBean.createBy != null">
+                    <if test="sysBean.createBy.acId != null and sysBean.createBy.acId != ''">create_by = #{sysBean.createBy.acId},</if>
+                </if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">create_date = #{sysBean.createDate},</if>
+                <if test="sysBean.modifyBy != null">
+                    <if test="sysBean.modifyBy.acId != null and sysBean.modifyBy.acId != ''">modify_by = #{sysBean.modifyBy.acId},</if>
+                </if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">modify_date = #{sysBean.modifyDate},</if>
+                <if test="sysBean.modifyNum != null">modify_num = #{sysBean.modifyNum},</if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">is_deleted = #{sysBean.isDeleted}</if>
+            </set>
+        </if>
+        where menu_id = #{sysBean.menuId}
+    </update>
+</mapper>

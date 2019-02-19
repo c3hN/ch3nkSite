@@ -13,28 +13,31 @@
     <!--事务管理器对mybatis操作数据库事务控制，spring使用jdbc的事务控制类-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <!-- 数据源
-	        dataSource在applicationContext-mapper.xml中配置了
-	 -->
+	        dataSource在applicationContext-mapper.xml中配置了-->
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
 
-    <!-- 通知 -->
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <!-- 传播行为 -->
-            <tx:method name="save*" propagation="REQUIRED"/>
-            <tx:method name="add*" propagation="REQUIRED"/>
-            <tx:method name="delete*" propagation="REQUIRED"/>
-            <tx:method name="insert*" propagation="REQUIRED"/>
-            <tx:method name="update*" propagation="REQUIRED"/>
-            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
-            <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
-            <tx:method name="select*" propagation="SUPPORTS" read-only="true"/>
-        </tx:attributes>
-    </tx:advice>
-    <!-- aop -->
-    <aop:config>
-        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.ch3nk.ch3nkSite.modules.*.service.*.*(..))"/>
-    </aop:config>
+    <!--&lt;!&ndash; 通知 &ndash;&gt;-->
+    <!--<tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+        <!--<tx:attributes>-->
+            <!--&lt;!&ndash; 传播行为 &ndash;&gt;-->
+            <!--<tx:method name="save*" propagation="REQUIRED"/>-->
+            <!--<tx:method name="add*" propagation="REQUIRED"/>-->
+            <!--<tx:method name="delete*" propagation="REQUIRED"/>-->
+            <!--<tx:method name="insert*" propagation="REQUIRED"/>-->
+            <!--<tx:method name="update*" propagation="REQUIRED"/>-->
+            <!--<tx:method name="find*" propagation="SUPPORTS" read-only="true"/>-->
+            <!--<tx:method name="get*" propagation="SUPPORTS" read-only="true"/>-->
+            <!--<tx:method name="select*" propagation="SUPPORTS" read-only="true"/>-->
+        <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+    <!--&lt;!&ndash; aop &ndash;&gt;-->
+    <!--<aop:config>-->
+        <!--<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.ch3nk.ch3nkSite.modules.*.service.*.*(..))"/>-->
+    <!--</aop:config>-->
+
+<!--使用jdk动态代理-->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="false"/>
+
 </beans>
