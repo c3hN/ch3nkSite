@@ -36,7 +36,6 @@ public class SysMenu extends BaseEntity {
     private String level;
     private String isLeaf;
     private String expanded;
-    private List<SysMenu> children;
 
     public void beforeInsert() {
         SysAccount sysAccount = (SysAccount) SecurityUtils.getSubject().getPrincipal();

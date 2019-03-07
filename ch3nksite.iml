@@ -2,7 +2,18 @@
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/activiti.cfg.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/ch3nkSiteCfgs/spring/applicationContext-cfgs.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/ch3nkSiteCfgs/spring/applicationContext-dao.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/ch3nkSiteCfgs/spring/applicationContext-service.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/ch3nkSiteCfgs/spring/applicationContext-shiro.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/ch3nkSiteCfgs/spring/applicationContext-tasks.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/ch3nkSiteCfgs/spring/applicationContext-transaction.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/ch3nkSiteCfgs/spring/spring-mvc.xml</file>
+        </fileset>
+      </configuration>
     </facet>
     <facet type="web" name="Web">
       <configuration>
@@ -19,7 +30,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
+  <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">

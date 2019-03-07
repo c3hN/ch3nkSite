@@ -3,6 +3,7 @@ package com.ch3nk.ch3nkSite.common.base.baseService;
 import com.ch3nk.ch3nkSite.common.base.entity.BaseEntity;
 import com.ch3nk.ch3nkSite.common.base.baseMapper.BaseMapper;
 import com.ch3nk.ch3nkSite.common.exception.AffectedRowIsZeroException;
+import com.ch3nk.ch3nkSite.common.exception.IllegalPasswordException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public abstract class BaseService<T extends BaseEntity> {
      * @return      插入行数
      * @throws AffectedRowIsZeroException
      */
-    public int insert(T param) throws AffectedRowIsZeroException{
+    public int insert(T param) throws AffectedRowIsZeroException, IllegalPasswordException {
         int i = mapper.insertSelective(param);
         if (i == 0) {
             throw new AffectedRowIsZeroException("0 row(s) inserted");

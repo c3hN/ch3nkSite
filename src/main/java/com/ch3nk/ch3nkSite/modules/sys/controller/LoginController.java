@@ -29,11 +29,18 @@ public class LoginController {
 
     @RequestMapping("/main")
     public ModelAndView main(Model model){
-//        SysMenu menu = new SysMenu();
-//        menu.setDeleteFlag("1");
-//        List<SysMenu> menuList = menuServiceImpl.findBy(menu);
-//        model.addAttribute("menus",menuList);
-//        return "sys/index";
+
+
+
+
+
+
+
+
+
+
+
+
         SysMenu menu = new SysMenu();
         menu.setIsDeleted("0");
         List<SysMenu> sysMenus = sysMenuService.find(menu);

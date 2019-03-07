@@ -18,7 +18,7 @@
             <a href="javascript:;">组织权限</a>
         </li>
         <li class="active">
-            <a href="javascript:;">用户管理</a>
+            <a href="javascript:;">部门管理</a>
         </li>
     </ol>
 </div>

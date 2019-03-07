@@ -16,7 +16,7 @@
                 <ul class="nav-menu">
                     <c:forEach var="menu" items="${menus}">
                         <c:if test="${menu.parentId == null}">
-                            <%--<shiro:hasPermission name="${menu.permission}">--%>
+                            <shiro:hasPermission name="${menu.code}">
                                 <li>
                                     <a href="javascript:;" _href="${menu.href}">
                                         <%--<i class="${menu.menuIcon}"></i>--%>
@@ -25,19 +25,19 @@
                                     <c:forEach var="child" items="${menus}">
                                         <c:if test="${child.parentId == menu.menuId}">
                                             <ul class="nav-sub-menu">
-                                                <%--<shiro:hasPermission name="${child.permission}">--%>
+                                                <shiro:hasPermission name="${child.code}">
                                                     <li>
                                                         <a href="javascript:;" _href="${child.href}">
                                                             <%--<i class="${child.menuIcon}"></i>--%>
                                                             <span>${child.name}</span>
                                                         </a>
                                                     </li>
-                                                <%--</shiro:hasPermission>--%>
+                                                </shiro:hasPermission>
                                             </ul>
                                         </c:if>
                                     </c:forEach>
                                 </li>
-                            <%--</shiro:hasPermission>--%>
+                            </shiro:hasPermission>
                         </c:if>
                     </c:forEach>
                 </ul>

@@ -2,6 +2,7 @@ package com.ch3nk.ch3nkSite.modules.sys.entity;
 
 import com.ch3nk.ch3nkSite.common.base.entity.BaseEntity;
 import com.ch3nk.ch3nkSite.common.serializer.JsonDateSerializer;
+import com.ch3nk.ch3nkSite.modules.utils.UUIDutil;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,12 +17,12 @@ import java.util.Date;
 @Getter
 @Setter
 @SuppressWarnings("unused")
-public class SysOperation extends BaseEntity {
+public class SysOperate extends BaseEntity {
 
     private String  opId;
     private String  name;
     private String  code;
-    private String  menuId;
+    private SysMenu  menu;
     private String  type;
     private String  url;
     private SysAccount createBy;
@@ -33,5 +34,21 @@ public class SysOperation extends BaseEntity {
     private Integer modifyNum;
     private String  isDeleted;
 
+    public void beforeInsert() {
+        Date date = new Date();
+        setOpId(UUIDutil.getUUID());
+        setCreateDate(date);
+        setModifyDate(date);
+        setCreateBy(getCurrentAccount());
+        setModifyBy(getCurrentAccount());
+        setIsDeleted("0");
+        setModifyNum(0);
+    }
+
+    public void beforeUpdate(){
+        Date date = new Date();
+        setModifyDate(date);
+        setModifyBy(getCurrentAccount());
+    }
 
 }

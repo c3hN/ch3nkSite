@@ -32,13 +32,11 @@
                     <div class="table_operations" id="table_operations">
                         <div class="btns_operations">
                             <button type="button" class="btn btn-default btn-sm" id="addBtn">新增</button>
-                            <button type="button" class="btn btn-danger btn-sm" id="deleteBatchBtn">批量删除</button>
                         </div>
                         <div class="search_operations">
                             <div class="form-inline">
-                                <input type="text" name="likeAccount" placeholder="账号" class="form-control">
-                                <input type="text" name="likeNickName" placeholder="昵称" class="form-control">
-                                <input type="text" name="likeCreateTime" readonly  id="datetimepicker" placeholder="注册时间" class="form-control">
+                                <input type="text" name="likeName" placeholder="公司名称" class="form-control">
+                                <input type="text" name="likeCode" placeholder="公司代号" class="form-control">
                             </div>
                             <div>
                                 <button type="button" class="btn btn-sm btn-default" id="tableSearchBtn">搜索</button>
@@ -61,17 +59,10 @@
 <script src="${basePath}/static/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 <script src="${basePath}/static/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="${basePath}/static/plugins/layer/layer.js"></script>
-<%--<script src="${basePath}/static/js/company_index.js"></script>--%>
 <script>
-    var basePath = "${basePath}";
     //新增
-    $("#addUserBtn").click(function () {
-        var nodes = deptTreeObj.getSelectedNodes();
-        if (nodes.length > 0) {
-            $(location).prop("href","${basePath}/user/operate.do?op=add&deptId="+nodes[0].deptId);
-        }else{
-            $(location).prop("href","${basePath}/user/operate.do?op=add");
-        }
+    $("#addBtn").click(function () {
+        $(location).prop("href","${basePath}/company/view/add.do");
     });
 
     table = $("#company").bootstrapTable({
@@ -89,7 +80,6 @@
         sortOrder:'desc',
         toolbar:'#table_operations',
         columns:[
-            {checkbox:true},
             {title:'序号',formatter:'numFormatter', align:'center',width:'30'},
             {field:'fullName',title:'公司名称',align:'center',width:'100'},
             {field:'shortName',title:'公司简称',align:'center',width:'100'},
@@ -111,31 +101,30 @@
     //表格操作
     function operateFormatter(value, row, index) {
         return [
-            '<shiro:hasPermission name="user:detail"><button class="btn btn-default btn-xs" id="userDetail">查看</button> </shiro:hasPermission>',
-            '<shiro:hasPermission name="user:addRoles"><button class="btn btn-default btn-xs" id="userAddRoles">分配角色</button> </shiro:hasPermission>',
-            '<shiro:hasPermission name="user:edit"><button class="btn btn-default btn-xs" id="editUser">编辑</button> </shiro:hasPermission>',
-            '<shiro:hasPermission name="user:abandon"><button class="btn btn-default btn-xs btn-danger" id="abandonUser">删除</button></shiro:hasPermission>'
+            '<shiro:hasPermission name="user:detail"><button class="btn btn-default btn-xs" id="detail">查看</button> </shiro:hasPermission>',
+            '<shiro:hasPermission name="user:edit"><button class="btn btn-default btn-xs" id="edit">编辑</button> </shiro:hasPermission>',
+            '<shiro:hasPermission name="user:abandon"><button class="btn btn-default btn-xs btn-danger" id="abandon">删除</button></shiro:hasPermission>'
         ].join('');
     }
     window.operateEvents = {
-        "click #userDetail":function (e,value,row,index) {
-            $(location).prop('href', '${basePath}/user/operate.do?op=detail&userId='+row.userId);
+        "click #detail":function (e,value,row,index) {
+            $(location).prop('href', '${basePath}/company/view/detail.do?id='+row.id);
         },
-        "click #userAddRoles":function (e,value,row,index) {
-            $(location).prop('href', '${basePath}/user/operate.do?op=addRoles&userId='+row.userId);
+        "click #edit":function (e,value,row,index) {
+            $(location).prop('href', '${basePath}/company/view/edit.do?id='+row.id);
         },
-        "click #editUser":function (e,value, row, index) {
-            $(location).prop('href', '${basePath}/user/operate.do?op=edit&userId='+row.userId);
+        "click #abandon":function (e,value, row, index) {
+            $(location).prop('href', '${basePath}/company/info/abandon.do?'+row.id);
         },
-        "click #abandonUser":function (e,value, row, index) {
-            layer.confirm('确定删除该用户?',{btn:['确定','取消'],icon:3},
+        "click #abandon":function (e,value, row, index) {
+            layer.confirm('确定删除该公司?',{btn:['确定','取消'],icon:3},
                 function (index,layero) {
-                    $.post("${basePath}/user/userAbandon.do",{"userId":row.userId},function (data) {
-                        if (data.msg == "success") {
-                            table.bootstrapTable('refresh',{url:'${basePath}/user/list.do?deptId='+row.department.deptId});//重载表格
-                            layer.msg("用户已移入回收站！");
-                        }else if (data.msg == "error"){
-                            layer.alert("删除失败",{icon:2});
+                    $.post("${basePath}/company/info/abandon.do",{"id":row.id},function (data) {
+                        if (data.status == "0") {
+                            table.bootstrapTable('refresh',{url:'${basePath}/company/info/query.do'});//重载表格
+                            layer.msg("已移入回收站！");
+                        }else if (data.status == "1"){
+                            layer.alert(data.msg,{icon:2});
                         }
                     });
                     layer.close(index);
@@ -156,13 +145,12 @@
     //搜索
     $("#tableSearchBtn").click(function () {
         //模糊查询条件
-        var likeAccount = $("input[name='likeAccount']").val();
-        var likeNickName = $("input[name='likeNickName']").val();
-        var likeCreateTime = $("input[name='likeCreateTime']").val();
-        if (likeAccount != '' || likeNickName != '' || likeCreateTime != '') {
-            table.bootstrapTable('refresh',{url:'${basePath}/user/list.do?likeAccount='+likeAccount+'&likeNickName='+likeNickName+'&likeCreateTime='+likeCreateTime});
+        var likeName = $("input[name='likeName']").val();
+        var likeCode = $("input[name='likeCode']").val();
+        if (likeName != '' || likeCode != '') {
+            table.bootstrapTable('refresh',{url:'${basePath}/company/info/query.do?likeFullName='+likeName+'&likeShortName'+likeName+'&likeCode='+likeCode});
         }else {
-            layer.alert('请输入搜索条件！',{icon:2});
+            layer.msg('请输入搜索条件！',{icon:2});
         }
     });
     //重置
@@ -170,7 +158,7 @@
         $("input[name='likeAccount']").val("");
         $("input[name='likeNickName']").val("");
         $("input[name='likeCreateTime']").val("");
-        table.bootstrapTable('refresh',{url:'${basePath}/user/list.do'});
+        table.bootstrapTable('refresh',{url:'${basePath}/company/info/query.do'});
     });
     /**
      * 批量删除

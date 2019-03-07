@@ -2,6 +2,7 @@ package com.ch3nk.ch3nkSite.common.shiro.realm;
 
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysAccount;
 import com.ch3nk.ch3nkSite.modules.sys.mappers.SysAccountMapper;
+import com.ch3nk.ch3nkSite.modules.sys.service.SysAccountService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -17,6 +18,8 @@ public class SystemRealm extends AuthorizingRealm {
 
     @Autowired
     private SysAccountMapper accountMapper;
+    @Autowired
+    private SysAccountService sysAccountService;
 
     @Value("${admin.account}")
     private String adminAccount;
@@ -31,37 +34,21 @@ public class SystemRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo info = null;
-//        SysUser sysUser = (SysUser) principalCollection.getPrimaryPrincipal();
-//        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-//        List<String> permission = new ArrayList<>();
-//        if (sysUser.getAccount().equals(adminAccount)) {
-//            String pwd = new SimpleHash(hashAlgorithmName, adminPwd).toHex();
-//            if (sysUser.getUserPwd().equals(pwd)) {
-//                permission.add("*:*");
-//                info.addStringPermissions(permission);
-//                return info;
-//            }
-//        }
-//        else {
-//            List<SysRole> list = sysUserMapper.selectRolesForUser(sysUser.getUserId());
-//            if (list.size() > 0) {
-//                String[] roleIds = new String[list.size()];
-//                for (int i = 0; i < list.size(); i++) {
-//                    roleIds[i] = list.get(i).getRoleId();
-//                }
-//                List<SysMenu> sysMenus = sysRoleMapper.selectMenusForRoles(roleIds);
-//                for (SysMenu m : sysMenus) {
-//                    permission.add(m.getPermission());
-//                }
-//                info.addStringPermissions(permission);
-//                return info;
-//            }
-//
-//        }
-        info = new SimpleAuthorizationInfo();
-        List<String> permission = new ArrayList<>();
-        permission.add("*:*");
-        info.addStringPermissions(permission);
+        SysAccount account = (SysAccount) principalCollection.getPrimaryPrincipal();
+        if (account.getAccount().equals(adminAccount)) {
+            List<String> permission = new ArrayList<>();
+            permission.add("*:*");
+            info= new SimpleAuthorizationInfo();
+            info.addStringPermissions(permission);
+            return info;
+        }else {
+            List<String> accountCodes = sysAccountService.findAccountCodes(account.getAcId());
+            if (accountCodes.size() != 0) {
+                info = new SimpleAuthorizationInfo();
+                info.addStringPermissions(accountCodes);
+                return info;
+            }
+        }
         return info;
     }
 

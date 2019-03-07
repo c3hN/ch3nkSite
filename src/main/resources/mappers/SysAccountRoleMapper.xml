@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ch3nk.ch3nkSite.modules.sys.mappers.SysAccountRoleMapper">
+
+
+    <resultMap id="baseResultMap" type="com.ch3nk.ch3nkSite.modules.sys.entity.SysAccountRole">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="ac_id" property="acId" jdbcType="VARCHAR"/>
+        <collection property="role" javaType="com.ch3nk.ch3nkSite.modules.sys.entity.SysRole">
+            <id column="roleId" property="menuId" jdbcType="VARCHAR"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <insert id="insertAccountRoles">
+        insert into sys_account_role(id,ac_id,role_id) values
+        <foreach collection="roleIds" item="rId" index="index" separator=",">
+            ((select replace(uuid(),'-','')),
+            #{acId},
+            #{rId})
+        </foreach>
+    </insert>
+
+    <select id="selectAccountRoles" parameterType="java.lang.String" resultMap="baseResultMap">
+        select id,ac_id,role_id from sys_account_role where ac_id = #{acId}
+    </select>
+
+
+    <delete id="deleteAccountRoles" parameterType="java.lang.String">
+        delete from sys_account_role where ac_id = #{acId}
+    </delete>
+</mapper>

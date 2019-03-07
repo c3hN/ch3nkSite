@@ -1,15 +1,15 @@
 //package com.ch3nk.ch3nkSite.modules.sys.service;
 //
-//import com.ch3nk.ch3nkSite.modules.sys.entity.SysOperation;
+//import com.ch3nk.ch3nkSite.modules.sys.entity.SysOperateMapper;
 //
 //import java.util.List;
 //
 //public interface ISysOperationService {
-//    int saveOperate(SysOperation sysOperation);
+//    int saveOperate(SysOperateMapper sysOperation);
 //
-//    SysOperation findById(String id);
+//    SysOperateMapper findById(String id);
 //
-//    List<SysOperation> findOperations(SysOperation sysOperation);
+//    List<SysOperateMapper> findOperations(SysOperateMapper sysOperation);
 //
-//    List<SysOperation> findOperationsByPage(SysOperation sysOperation, int pageNum, int pageSize);
+//    List<SysOperateMapper> findOperationsByPage(SysOperateMapper sysOperation, int pageNum, int pageSize);
 //}

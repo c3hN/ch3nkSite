@@ -1,12 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: chenkai
-  Date: 2018/12/17
-  Time: 12:21
-  To change this template use File | Settings | File Templates.
---%>
-<%--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">--%>
-<%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
@@ -38,9 +29,6 @@
                     <div class="btns_operations">
                         <shiro:hasPermission name="user:add">
                             <a role="button" type="button" class="btn btn-default btn-sm" href="${basePath}/menu/view/add.do">新增</a>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="user:recover">
-                            <a role="button" type="button" class="btn btn-info btn-sm" href="${basePath}/menu/view/recover.do">回收站</a>
                         </shiro:hasPermission>
                     </div>
                     <div class="table_wrap">

@@ -32,6 +32,10 @@ public class Company extends BaseEntity {
     private Integer modifyNum;
     private String  isDeleted;
 
+    //模糊查询字段
+    private String likeName;
+    private String likeCode;
+
     public void beforeInsert() {
         SysAccount account = (SysAccount)SecurityUtils.getSubject().getPrincipal();
         Date currentDate = new Date();

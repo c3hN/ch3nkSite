@@ -1,7 +1,7 @@
 //package com.ch3nk.ch3nkSite.modules.sys.service;
 //
-//import com.ch3nk.ch3nkSite.modules.sys.entity.SysOperation;
-//import com.ch3nk.ch3nkSite.modules.sys.mapper.SysOperationMapper;
+//import com.ch3nk.ch3nkSite.modules.sys.entity.SysOperateMapper;
+//import com.ch3nk.ch3nkSite.modules.sys.mapper.SysOperateMapper;
 //import com.ch3nk.ch3nkSite.modules.utils.UUIDutil;
 //import org.springframework.beans.factory.annotation.Autowired;
 //
@@ -11,27 +11,27 @@
 //public class SysOperationServiceImpl implements ISysOperationService {
 //
 //    @Autowired
-//    private SysOperationMapper sysOperationMapper;
+//    private SysOperateMapper sysOperationMapper;
 //
 //    @Override
-//    public int saveOperate(SysOperation sysOperation) {
+//    public int saveOperate(SysOperateMapper sysOperation) {
 //        sysOperation.setId(UUIDutil.getUUID());
 //        sysOperation.setCreateDate(new Date());
 //        return sysOperationMapper.insertSelective(sysOperation);
 //    }
 //
 //    @Override
-//    public SysOperation findById(String id) {
+//    public SysOperateMapper findById(String id) {
 //        return sysOperationMapper.selectByPrimaryKey(id);
 //    }
 //
 //    @Override
-//    public List<SysOperation> findOperations(SysOperation sysOperation) {
+//    public List<SysOperateMapper> findOperations(SysOperateMapper sysOperation) {
 //        return sysOperationMapper.selectBy(sysOperation);
 //    }
 //
 //    @Override
-//    public List<SysOperation> findOperationsByPage(SysOperation sysOperation, int pageNum, int pageSize) {
+//    public List<SysOperateMapper> findOperationsByPage(SysOperateMapper sysOperation, int pageNum, int pageSize) {
 //        return sysOperationMapper.selectByPage(sysOperation,pageNum,pageSize);
 //    }
 //

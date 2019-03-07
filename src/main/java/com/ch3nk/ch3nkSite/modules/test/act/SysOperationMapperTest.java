@@ -1,10 +1,5 @@
 package com.ch3nk.ch3nkSite.modules.test.act;
 
-import com.ch3nk.ch3nkSite.modules.sys.entity.SysOperation;
-import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
-import com.ch3nk.ch3nkSite.modules.sys.mapper.SysOperationMapper;
-import com.ch3nk.ch3nkSite.modules.sys.mapper.SysUserMapper;
-import com.ch3nk.ch3nkSite.modules.utils.UUIDutil;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -15,7 +10,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 public class SysOperationMapperTest {
 

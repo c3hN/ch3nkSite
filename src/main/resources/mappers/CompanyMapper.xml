@@ -17,14 +17,14 @@
             <id column="ac_id" property="acId" jdbcType="VARCHAR"/>
             <result column="account" property="account" jdbcType="VARCHAR"/>
             <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
-            <result column="avator" property="avator" jdbcType="VARCHAR"/>
+            <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
             <result column="level" property="level" jdbcType="INTEGER"/>
         </association>
         <association property="modifyBy" javaType="com.ch3nk.ch3nkSite.modules.sys.entity.SysAccount">
             <id column="ac_id" property="acId" jdbcType="VARCHAR"/>
             <result column="account" property="account" jdbcType="VARCHAR"/>
             <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
-            <result column="avator" property="avator" jdbcType="VARCHAR"/>
+            <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
             <result column="level" property="level" jdbcType="INTEGER"/>
         </association>
     </resultMap>
@@ -45,7 +45,7 @@
         sa.ac_id,
         sa.account,
         sa.nick_name,
-        sa.avator,
+        sa.avatar,
         sa.level
     </sql>
     <select id="selectByPage" resultMap="baseResultMap">
@@ -100,6 +100,9 @@
                 <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">
                     and co.is_deleted = #{sysBean.isDeleted,jdbcType = CHAR}
                 </if>
+                <if test="sysBean.likeName != null">and co.full_name like #{sysBean.likeName,jdbcType=VARCHAR} escape '/' </if>
+                <if test="sysBean.likeName != null">and co.short_name like #{sysBean.likeName,jdbcType=VARCHAR} escape '/' </if>
+                <if test="sysBean.likeCode != null">and co.code like #{sysBean.likeCode,jdbcType=VARCHAR} escape '/' </if>
             </if>
         </where>
         order by co.create_date desc
@@ -159,6 +162,15 @@
                 </if>
             </if>
         </where>
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="baseResultMap">
+        select
+        <include refid="base_columns"/>
+        from company co
+        left join sys_account sa on co.create_by = sa.ac_id
+        and co.modify_by = sa.ac_id
+        where co.id = #{key}
     </select>
 
     <select id="count" parameterType="company" resultType="java.lang.Integer">
@@ -263,7 +275,6 @@
         update company
         <if test="sysBean != null">
             <set>
-                <if test="sysBean.id != null and sysBean.id != ''">id = #{sysBean.id},</if>
                 <if test="sysBean.fullName != null and sysBean.fullName != ''">full_name = #{sysBean.fullName},</if>
                 <if test="sysBean.shortName != null and sysBean.shortName != ''">short_name = #{sysBean.shortName},</if>
                 <if test="sysBean.enName != null and sysBean.enName != ''">en_name = #{sysBean.enName},</if>
@@ -282,5 +293,6 @@
                 <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">is_deleted = #{sysBean.isDeleted},</if>
             </set>
         </if>
+        where id = #{sysBean.id}
     </update>
 </mapper>

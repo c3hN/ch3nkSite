@@ -40,17 +40,17 @@
             <div class="form-wrap">
                 <div class="container">
                     <div class="row">
-                        <form action="${basePath}/role/saveOrUpdate.do" method="post" class="form-horizontal" id="roleForm">
-                            <input type="text" name="department.deptId" style="display: none" id="deptId" value="${dept.deptId}">
+                        <form action="${basePath}/role/info/saveOrUpdate.do" method="post" class="form-horizontal" id="roleForm">
+                            <input type="text" name="company.id" style="display: none" id="companyId" value="${role.company.id}">
                             <input type="text" name="roleId" style="display: none" id="roleId" value="${role.roleId}">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">
-                                    <span>所属部门</span>
+                                    <span>所属公司</span>
                                     <span style="color: red;">*</span>
                                 </label>
                                 <div class="col-sm-3">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" readonly name="department.deptName" id="deptName" value="${role.department.deptName}">
+                                        <input type="text" class="form-control" readonly  id="fullName" value="${role.company.fullName}">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#dept_tree">&nbsp;<i
                                                     class="fa fa-search"></i>&nbsp;</button>
@@ -71,27 +71,27 @@
                                     <span style="color: red;">*</span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="eName" name="eName" value="${role.eName}">
+                                    <input type="text" class="form-control" id="eName" name="code" value="${role.code}">
                                 </div>
                                 <label class="col-sm-2 control-label">
-                                    <span>状态</span>
+                                    <span>角色类型</span>
                                 </label>
                                 <div class="col-sm-5">
                                     <label class="radio-inline">
-                                        <input type="radio" name="useFlag" value="1" <c:if test="${role.useFlag == null or role.useFlag == '1'}">checked</c:if>>启用
+                                        <input type="radio" name="type" value="0" <c:if test="${role.type == null or role.type == '0'}">checked</c:if>>用户角色
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="useFlag" value="0" <c:if test="${role.useFlag == '0'}">checked</c:if> >禁用
+                                        <input type="radio" name="type" value="1" <c:if test="${role.type == '1'}">checked</c:if> >系统角色
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="remark" class="col-sm-2 control-label">
+                                <label for="description" class="col-sm-2 control-label">
                                     <span>备注</span>
                                 </label>
                                 <div class="col-sm-8">
-                                    <textarea name="remark" id="remark" style="resize:none" cols="30" rows="3"
-                                              class="form-control">${role.remark}</textarea>
+                                    <textarea name="description" id="description" style="resize:none" cols="30" rows="3"
+                                              class="form-control">${role.description}</textarea>
                                 </div>
                             </div>
                             <div class="col-sm-1 col-sm-offset-5">
@@ -116,7 +116,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                部门
+                公司列表
             </div>
             <div class="modal-body">
                 <ul id="depts" class="ztree"></ul>
@@ -139,27 +139,27 @@
         data:{
             simpleData:{
                 enable:true,
-                idKey:"deptId",
-                pIdKey:"parentId",
+                idKey:"id",
+                pIdKey:null,
                 rootPid:null
             },
             key:{
-                name:"deptName",
-                title:"deptName"
+                name:"fullName",
+                title:"fullName"
             }
         },
         callback:{
             onClick:clickNode
         }
     };
-    var deptsObj = $.fn.zTree.init($("#depts"), setting1,  ${depts});
+    var deptsObj = $.fn.zTree.init($("#depts"), setting1,  ${nodes});
     var depts = deptsObj.getNodes();
     $.each(depts,function (index,value) {
        deptsObj.expandNode(depts[index]);
     });
     function clickNode(event, treeId, treeNode) {
-        $("input[id='deptId']").attr("value",treeNode.deptId);
-        $("input[id='deptName']").attr("value",treeNode.deptName);
+        $("input[id='companyId']").attr("value",treeNode.id);
+        $("input[id='fullName']").attr("value",treeNode.fullName);
         $("#dept_tree").modal('hide');
     };
 

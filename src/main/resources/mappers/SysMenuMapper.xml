@@ -16,14 +16,14 @@
             <id column="ac_id" property="acId" jdbcType="VARCHAR"/>
             <result column="account" property="account" jdbcType="VARCHAR"/>
             <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
-            <result column="avator" property="avator" jdbcType="VARCHAR"/>
+            <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
             <result column="level" property="level" jdbcType="INTEGER"/>
         </association>
         <association property="modifyBy" javaType="com.ch3nk.ch3nkSite.modules.sys.entity.SysAccount">
             <id column="ac_id" property="acId" jdbcType="VARCHAR"/>
             <result column="account" property="account" jdbcType="VARCHAR"/>
             <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
-            <result column="avator" property="avator" jdbcType="VARCHAR"/>
+            <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
             <result column="level" property="level" jdbcType="INTEGER"/>
         </association>
     </resultMap>
@@ -43,7 +43,7 @@
         sa.ac_id,
         sa.account,
         sa.nick_name,
-        sa.avator,
+        sa.avatar,
         sa.`level`
     </sql>
     <insert id="insertSelective" parameterType="sysMenu">
@@ -139,6 +139,7 @@
                 </if>
             </if>
         </where>
+        order by sm.create_date asc
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="baseResultMap">
@@ -173,4 +174,8 @@
         </if>
         where menu_id = #{sysBean.menuId}
     </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete from sys_menu where menu_id = #{key}
+    </delete>
 </mapper>

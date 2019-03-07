@@ -2,7 +2,10 @@ package com.ch3nk.ch3nkSite.modules.sys.controller;
 
 import com.ch3nk.ch3nkSite.common.base.baseController.BaseController;
 import com.ch3nk.ch3nkSite.common.exception.AffectedRowIsZeroException;
+import com.ch3nk.ch3nkSite.common.response.AjaxRespBean;
 import com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu;
+import com.ch3nk.ch3nkSite.modules.sys.entity.SysOperate;
+import com.ch3nk.ch3nkSite.modules.sys.service.OperateService;
 import com.ch3nk.ch3nkSite.modules.sys.service.SysMenuService;
 import com.ch3nk.ch3nkSite.modules.utils.UUIDutil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,11 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +33,8 @@ public class SysMenuController extends BaseController {
 
     @Autowired
     private SysMenuService sysMenuService;
+    @Autowired
+    private OperateService operateService;
 
 
     @RequestMapping("/view/index")
@@ -57,6 +64,11 @@ public class SysMenuController extends BaseController {
     public ModelAndView edit(String menuId) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         List<SysMenu> list = new ArrayList<>();
+        SysMenu parent = null;
+        String parentId = sysMenuService.findByPKey(menuId).getParentId();
+        if (StringUtils.isNotEmpty(parentId)) {
+            parent = sysMenuService.findByPKey(parentId);
+        }
         SysMenu menu = new SysMenu();
         menu.setIsDeleted("0");
         List<SysMenu> sysMenus = sysMenuService.find(menu);
@@ -65,11 +77,24 @@ public class SysMenuController extends BaseController {
                 list.add(m);
             }
         }
-
         SysMenu byPKey = sysMenuService.findByPKey(menuId);
         return new ModelAndView("/sys/menu/menu_form").
                 addObject("sysMenu",byPKey).
+                addObject("parent",parent).
                 addObject("nodes",mapper.writeValueAsString(list));
+    }
+
+    @RequestMapping("/view/detail")
+    public ModelAndView detail(String menuId) {
+        SysMenu byPKey = sysMenuService.findByPKey(menuId);
+        return new ModelAndView("sys/menu/menu_detail").
+                addObject("menu",byPKey);
+    }
+
+    @RequestMapping("/view/addOperate")
+    public ModelAndView addOperate(String menuId) {
+        return new ModelAndView("sys/menu/operateForm").
+                addObject("menuId",menuId);
     }
 
     /**
@@ -112,12 +137,7 @@ public class SysMenuController extends BaseController {
         return json;
     }
 
-    @RequestMapping("/info/detail")
-    public ModelAndView detail(String menuId) {
-        SysMenu byPKey = sysMenuService.findByPKey(menuId);
-        return new ModelAndView("sys/menu/menu_detail").
-                addObject("menu",byPKey);
-    }
+
 
     @RequestMapping("/info/saveOrUpdate")
     public ModelAndView save(SysMenu sysMenu) {
@@ -140,15 +160,69 @@ public class SysMenuController extends BaseController {
         return new ModelAndView("redirect:/menu/view/index");
     }
 
-    @RequestMapping("/info/queryDemo")
+
+    @RequestMapping("/info/delete")
     @ResponseBody
-    public Map queryDemo () {
-        Map json = new HashMap();
-        SysMenu menu = new SysMenu();
-        menu.setIsDeleted("0");
-        List<SysMenu> sysMenus = sysMenuService.find(menu);
-        json.put("rows",sysMenus);
-        return json;
+    public AjaxRespBean delete (String menuId) {
+        AjaxRespBean ajaxRespBean = null;
+        if (StringUtils.isEmpty(menuId)) {
+            ajaxRespBean = AjaxRespBean.failResponse("请求参数错误");
+            return ajaxRespBean;
+        }else {
+            SysMenu sysMenu = new SysMenu();
+            sysMenu.setParentId(menuId);
+            List<SysMenu> sysMenus = sysMenuService.find(sysMenu);
+            if (sysMenus.size() != 0) {
+                ajaxRespBean = AjaxRespBean.failResponse("存在子菜单，不能删除");
+                return ajaxRespBean;
+            }else {
+                try {
+                    sysMenuService.deleteForceByPKey(menuId);
+                } catch (Exception e) {
+                    ajaxRespBean = AjaxRespBean.failResponse("删除失败，请重试");
+                    return ajaxRespBean;
+                }
+                ajaxRespBean = AjaxRespBean.successResponse("删除成功");
+            }
+        }
+        return ajaxRespBean;
     }
 
+
+    @RequestMapping("/info/queryOperations")
+    public ModelAndView queryOperations(String menuId) {
+        List<SysOperate> operates = new ArrayList<SysOperate>();
+        if (StringUtils.isNotEmpty(menuId)) {
+            SysMenu sysMenu = new SysMenu();
+            sysMenu.setMenuId(menuId);
+            SysOperate sysOperate = new SysOperate();
+            sysOperate.setMenu(sysMenu);
+            operates = operateService.find(sysOperate);
+        }
+        return new ModelAndView("sys/menu/operate_list").
+                addObject("operates",operates);
+    }
+
+    @RequestMapping("/info/checkOperate")
+    @ResponseBody
+    public AjaxRespBean checkOperate(String menuId) {
+        AjaxRespBean ajaxRespBean = null;
+        if (StringUtils.isEmpty(menuId)) {
+            ajaxRespBean = AjaxRespBean.failResponse("请求参数错误");
+            return ajaxRespBean;
+        }else {
+            SysMenu menu = new SysMenu();
+            menu.setMenuId(menuId);
+            SysOperate sysOperate = new SysOperate();
+            sysOperate.setMenu(menu);
+            List<SysOperate> sysOperates = operateService.find(sysOperate);
+            if (sysOperates.size() == 0) {
+                ajaxRespBean = AjaxRespBean.failResponse("还未添加权限");
+                return ajaxRespBean;
+            }else {
+                ajaxRespBean = AjaxRespBean.successResponse();
+            }
+        }
+        return ajaxRespBean;
+    }
 }

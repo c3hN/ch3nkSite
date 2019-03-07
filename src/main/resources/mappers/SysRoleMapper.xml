@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ch3nk.ch3nkSite.modules.sys.mappers.SysRoleMapper">
+    <resultMap id="baseResultMap" type="com.ch3nk.ch3nkSite.modules.sys.entity.SysRole">
+        <id column="role_id"  property="roleId" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="CHAR"/>
+        <association property="company" javaType="com.ch3nk.ch3nkSite.modules.sys.entity.Company">
+            <id column="id" property="id" jdbcType="VARCHAR"/>
+            <result column="full_name" property="fullName" jdbcType="VARCHAR"/>
+        </association>
+        <association property="createBy" javaType="com.ch3nk.ch3nkSite.modules.sys.entity.SysAccount">
+            <id column="ac_id" property="acId" jdbcType="VARCHAR"/>
+            <result column="account" property="account" jdbcType="VARCHAR"/>
+            <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+            <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+            <result column="level" property="level" jdbcType="INTEGER"/>
+        </association>
+        <association property="modifyBy" javaType="com.ch3nk.ch3nkSite.modules.sys.entity.SysAccount">
+            <id column="ac_id" property="acId" jdbcType="VARCHAR"/>
+            <result column="account" property="account" jdbcType="VARCHAR"/>
+            <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+            <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+            <result column="level" property="level" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+    <sql id="base_columns">
+        sr.role_id,
+        sr.`type`,
+        sr.`name`,
+        sr.`code`,
+        sr.description,
+        sr.create_date,
+        sr.modify_date,
+        sr.is_deleted,
+        co.id,
+        co.full_name,
+        sa.ac_id,
+        sa.account,
+        sa.nick_name,
+        sa.avatar,
+        sa.level
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="baseResultMap">
+        select
+        <include refid="base_columns"/>
+        from sys_role sr
+        left join company co on sr.company_id = co.id
+        left join sys_account sa on sr.create_by = sa.ac_id and sr.modify_by = sa.ac_id
+        where sr.role_id = #{key}
+    </select>
+
+    <select id="selectBy" parameterType="com.ch3nk.ch3nkSite.modules.sys.entity.SysRole" resultMap="baseResultMap">
+        select <include refid="base_columns"/>
+        from sys_role sr
+        left join company co on sr.company_id = co.id
+        left join sys_account sa on sr.create_by = sa.ac_id and sr.modify_by = sa.ac_id
+        <where>
+            <if test="sysBean != null">
+                <if test="sysBean.roleId != null and sysBean.roleId != ''">
+                    sr.role_id = #{sysBean.roleId,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.name != null and sysBean.name != ''">
+                    and sr.`name` = #{sysBean.name,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.code != null and sysBean.code != ''">
+                    and sr.`code` = #{sysBean.code,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.type != null and sysBean.type != ''">
+                    and sr.`type` = #{sysBean.type,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.description != null and sysBean.description != ''">
+                    and sr.description = #{sysBean.description,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.company != null">
+                    <if test="sysBean.company.id != null and sysBean.company.id != ''">
+                        and sr.company_id = #{sysBean.company.id,jdbcType = VARCHAR}
+                    </if>
+                </if>
+                <if test="sysBean.createBy != null">
+                    <if test="sysBean.createBy.acId != null and sysBean.createBy.acId != ''">
+                        and sr.create_by = #{sysBean.createBy.acId,jdbcType = VARCHAR}
+                    </if>
+                </if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">
+                    and sr.create_date = #{sysBean.createDate,jdbcType = TIMESTAMP}
+                </if>
+                <if test="sysBean.modifyBy != null">
+                    <if test="sysBean.modifyBy.acId != null and sysBean.modifyBy.acId != ''">
+                        and sr.modify_by = #{sysBean.modifyBy.acId,jdbcType = VARCHAR}
+                    </if>
+                </if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">
+                    and sr.modify_date = #{sysBean.modifyDate,jdbcType = TIMESTAMP}
+                </if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">
+                    and sr.is_deleted = #{sysBean.isDeleted,jdbcType = CHAR}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByPage" resultMap="baseResultMap">
+        select
+        <include refid="base_columns"/>
+        from sys_role sr
+        left join company co on sr.company_id = co.id
+        left join sys_account sa on sr.create_by = sa.ac_id and sr.modify_by = sa.ac_id
+        <where>
+            <if test="sysBean != null">
+                <if test="sysBean.roleId != null and sysBean.roleId != ''">
+                    sr.role_id = #{sysBean.roleId,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.name != null and sysBean.name != ''">
+                    and sr.`name` = #{sysBean.name,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.code != null and sysBean.code != ''">
+                    and sr.`code` = #{sysBean.code,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.type != null and sysBean.type != ''">
+                    and sr.`type` = #{sysBean.type,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.description != null and sysBean.description != ''">
+                    and sr.description = #{sysBean.description,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.company != null">
+                    <if test="sysBean.company.id != null and sysBean.company.id != ''">
+                        and sr.company_id = #{sysBean.company.id,jdbcType = VARCHAR}
+                    </if>
+                </if>
+                <if test="sysBean.createBy != null">
+                    <if test="sysBean.createBy.acId != null and sysBean.createBy.acId != ''">
+                        and sr.create_by = #{sysBean.createBy.acId,jdbcType = VARCHAR}
+                    </if>
+                </if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">
+                    and sr.create_date = #{sysBean.createDate,jdbcType = TIMESTAMP}
+                </if>
+                <if test="sysBean.modifyBy != null">
+                    <if test="sysBean.modifyBy.acId != null and sysBean.modifyBy.acId != ''">
+                        and sr.modify_by = #{sysBean.modifyBy.acId,jdbcType = VARCHAR}
+                    </if>
+                </if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">
+                    and sr.modify_date = #{sysBean.modifyDate,jdbcType = TIMESTAMP}
+                </if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">
+                    and sr.is_deleted = #{sysBean.isDeleted,jdbcType = CHAR}
+                </if>
+                <if test="sysBean.likeName != null">and sr.name like #{sysBean.likeName,jdbcType=VARCHAR} escape '/' </if>
+                <if test="sysBean.likeCode != null">and sr.code like #{sysBean.likeCode,jdbcType=VARCHAR} escape '/' </if>
+                <if test="sysBean.likeType != null">and sr.type = #{sysBean.likeType,jdbcType=VARCHAR}</if>
+            </if>
+        </where>
+        order by sr.create_date desc
+        limit #{pageNum} , #{pageSize}
+    </select>
+
+    <select id="count" parameterType="com.ch3nk.ch3nkSite.modules.sys.entity.SysRole" resultType="int">
+        select count(1)
+        from sys_role sr
+        <where>
+            <if test="sysBean != null">
+                <if test="sysBean.roleId != null and sysBean.roleId != ''">
+                    sr.role_id = #{sysBean.roleId,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.name != null and sysBean.name != ''">
+                    and sr.`name` = #{sysBean.name,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.code != null and sysBean.code != ''">
+                    and sr.`code` = #{sysBean.code,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.type != null and sysBean.type != ''">
+                    and sr.`type` = #{sysBean.type,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.description != null and sysBean.description != ''">
+                    and sr.description = #{sysBean.description,jdbcType = VARCHAR}
+                </if>
+                <if test="sysBean.company != null">
+                    <if test="sysBean.company.id != null and sysBean.company.id != ''">
+                        and sr.company_id = #{sysBean.company.id,jdbcType = VARCHAR}
+                    </if>
+                </if>
+                <if test="sysBean.createBy != null">
+                    <if test="sysBean.createBy.acId != null and sysBean.createBy.acId != ''">
+                        and sr.create_by = #{sysBean.createBy.acId,jdbcType = VARCHAR}
+                    </if>
+                </if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">
+                    and sr.create_date = #{sysBean.createDate,jdbcType = TIMESTAMP}
+                </if>
+                <if test="sysBean.modifyBy != null">
+                    <if test="sysBean.modifyBy.acId != null and sysBean.modifyBy.acId != ''">
+                        and sr.modify_by = #{sysBean.modifyBy.acId,jdbcType = VARCHAR}
+                    </if>
+                </if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">
+                    and sr.modify_date = #{sysBean.modifyDate,jdbcType = TIMESTAMP}
+                </if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">
+                    and sr.is_deleted = #{sysBean.isDeleted,jdbcType = CHAR}
+                </if>
+            </if>
+        </where>
+    </select>
+    
+    <insert id="insertSelective" parameterType="com.ch3nk.ch3nkSite.modules.sys.entity.SysRole">
+        insert into sys_role
+        <if test="sysBean != null">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="sysBean.roleId != null and sysBean.roleId != ''">role_id,</if>
+                <if test="sysBean.name != null and sysBean.name != ''">name,</if>
+                <if test="sysBean.code != null and sysBean.code != ''">code,</if>
+                <if test="sysBean.type != null and sysBean.type != ''">type,</if>
+                <if test="sysBean.description != null and sysBean.description != ''">description,</if>
+                <if test="sysBean.company != null">
+                    <if test="sysBean.company.id != null and sysBean.company.id != ''">company_id,</if>
+                </if>
+                <if test="sysBean.createBy != null">
+                    <if test="sysBean.createBy.acId != null and sysBean.createBy.acId != ''">create_by,</if>
+                </if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">create_date,</if>
+                <if test="sysBean.modifyBy != null">
+                    <if test="sysBean.modifyBy.acId != null and sysBean.modifyBy.acId != ''">modify_by,</if>
+                </if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">modify_date,</if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">is_deleted,</if>
+            </trim>
+            <trim prefix="values(" suffix=")"  suffixOverrides=",">
+                <if test="sysBean.roleId != null and sysBean.roleId != ''">#{sysBean.roleId},</if>
+                <if test="sysBean.name != null and sysBean.name != ''">#{sysBean.name},</if>
+                <if test="sysBean.code != null and sysBean.code != ''">#{sysBean.code},</if>
+                <if test="sysBean.type != null and sysBean.type != ''">#{sysBean.type},</if>
+                <if test="sysBean.description != null and sysBean.description != ''">#{sysBean.description},</if>
+                <if test="sysBean.company != null">
+                    <if test="sysBean.company.id != null and sysBean.company.id != ''">#{sysBean.company.id},</if>
+                </if>
+                <if test="sysBean.createBy != null">
+                    <if test="sysBean.createBy.acId != null and sysBean.createBy.acId != ''">#{sysBean.createBy.acId},</if>
+                </if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">#{sysBean.createDate},</if>
+                <if test="sysBean.modifyBy != null">
+                    <if test="sysBean.modifyBy.acId != null and sysBean.modifyBy.acId != ''">#{sysBean.modifyBy.acId},</if>
+                </if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">#{sysBean.modifyDate},</if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">#{sysBean.isDeleted},</if>
+            </trim>
+        </if>
+    </insert>
+
+    <update id="updateSelective" parameterType="com.ch3nk.ch3nkSite.modules.sys.entity.SysRole">
+        update sys_role
+        <set>
+            <if test="sysBean != null">
+                <if test="sysBean.name != null and sysBean.name != ''">`name` = #{sysBean.name},</if>
+                <if test="sysBean.code != null and sysBean.code != ''">`code` = #{sysBean.code},</if>
+                <if test="sysBean.type != null and sysBean.type != ''">`type` = #{sysBean.type},</if>
+                <if test="sysBean.description != null and sysBean.description != ''">description = #{sysBean.description},</if>
+                <if test="sysBean.company != null">
+                    <if test="sysBean.company.id != null and sysBean.company.id != ''">company_id = #{sysBean.company.id},</if>
+                </if>
+                <if test="sysBean.createBy != null">
+                    <if test="sysBean.createBy.acId != null and sysBean.createBy.acId != ''">create_by = #{sysBean.createBy.acId},</if>
+                </if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">create_date = #{sysBean.createDate},</if>
+                <if test="sysBean.modifyBy != null">
+                    <if test="sysBean.modifyBy.acId != null and sysBean.modifyBy.acId != ''">modify_by = #{sysBean.modifyBy.acId},</if>
+                </if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">modify_date = #{sysBean.modifyDate},</if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">is_deleted = #{sysBean.isDeleted},</if>
+            </if>
+        </set>
+        where role_id = #{sysBean.roleId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete from sys_role where role_id = #{key}
+    </delete>
+
+    <insert id="insertRoleMenus">
+        insert into sys_role_menu(id,role_id,menu_id) values
+            <foreach collection="menuIds" item="mId" index="index" separator=",">
+                ((select replace(uuid(),'-','')),
+                #{roleId},
+                #{mId})
+            </foreach>
+    </insert>
+
+</mapper>

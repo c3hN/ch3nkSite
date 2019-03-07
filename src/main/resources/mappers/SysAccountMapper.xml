@@ -6,7 +6,7 @@
         <result column="account" property="account" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
-        <result column="avator" property="avator" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
         <result column="level" property="level" jdbcType="INTEGER"/>
         <result column="is_auth" property="isAuth" jdbcType="CHAR"/>
         <result column="type" property="type" jdbcType="VARCHAR"/>
@@ -20,7 +20,7 @@
         account,
         password,
         nick_name,
-        avator,
+        avatar,
         level,
         is_auth,
         type,
@@ -89,9 +89,6 @@
                 <if test="sysBean.isAuth != null and sysBean.isAuth != ''">
                     and is_auth = #{sysBean.isAuth}
                 </if>
-                <if test="sysBean.isAuth != null and sysBean.isAuth != ''">
-                    and isAuth = #{sysBean.isAuth}
-                </if>
                 <if test="sysBean.state != null and sysBean.state != ''">
                     and state = #{sysBean.state}
                 </if>
@@ -128,9 +125,6 @@
                 <if test="sysBean.isAuth != null and sysBean.isAuth != ''">
                     and is_auth = #{sysBean.isAuth}
                 </if>
-                <if test="sysBean.isAuth != null and sysBean.isAuth != ''">
-                    and isAuth = #{sysBean.isAuth}
-                </if>
                 <if test="sysBean.state != null and sysBean.state != ''">
                     and state = #{sysBean.state}
                 </if>
@@ -147,6 +141,12 @@
         </where>
         order by create_date desc
     </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="resultMap">
+        select
+        <include refid="base_columns"/>
+        from sys_account
+        where ac_id = #{key}
+    </select>
     <select id="selectByAccount" parameterType="java.lang.String" resultMap="resultMap">
         select
         <include refid="base_columns"/>
@@ -154,8 +154,58 @@
         where
         account = #{account}
     </select>
+    <update id="updateSelective" parameterType="com.ch3nk.ch3nkSite.modules.sys.entity.SysAccount">
+        update sys_account
+        <set>
+            <if test="sysBean != null">
+                <if test="sysBean.password != null and sysBean.password != ''">`password` = #{sysBean.password},</if>
+                <if test="sysBean.nickName != null and sysBean.nickName != ''">`nick_name` = #{sysBean.nickName},</if>
+                <if test="sysBean.avatar != null and sysBean.avatar != ''">`avatar` = #{sysBean.avatar},</if>
+                <if test="sysBean.level != null and sysBean.level != ''">`level` = #{sysBean.level},</if>
+                <if test="sysBean.isAuth != null and sysBean.isAuth != ''">`is_auth` = #{sysBean.isAuth},</if>
+                <if test="sysBean.type != null and sysBean.type != ''">`type` = #{sysBean.type},</if>
+                <if test="sysBean.state != null and sysBean.state != ''">`state` = #{sysBean.state},</if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">create_date = #{sysBean.createDate},</if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">modify_date = #{sysBean.modifyDate},</if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">is_deleted = #{sysBean.isDeleted},</if>
+            </if>
+        </set>
+        where ac_id = #{sysBean.acId}
+    </update>
 
-
+    <insert id="insertSelective" parameterType="com.ch3nk.ch3nkSite.modules.sys.entity.SysAccount">
+        insert into sys_account
+        <if test="sysBean != null">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="sysBean.acId != null and sysBean.acId != ''">ac_id,</if>
+                <if test="sysBean.account != null and sysBean.account != ''">account,</if>
+                <if test="sysBean.password != null and sysBean.password != ''">`password`,</if>
+                <if test="sysBean.nickName != null and sysBean.nickName != ''">nick_name,</if>
+                <if test="sysBean.avatar != null and sysBean.avatar != ''">avatar,</if>
+                <if test="sysBean.level != null and sysBean.level != ''">level,</if>
+                <if test="sysBean.isAuth != null and sysBean.isAuth != ''">is_auth,</if>
+                <if test="sysBean.type != null and sysBean.type != ''">type,</if>
+                <if test="sysBean.state != null and sysBean.state != ''">`state`,</if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">create_date,</if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">modify_date,</if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">is_deleted,</if>
+            </trim>
+            <trim prefix="values(" suffix=")" suffixOverrides=",">
+                <if test="sysBean.acId != null and sysBean.acId != ''">#{sysBean.acId},</if>
+                <if test="sysBean.account != null and sysBean.account != ''">#{sysBean.account},</if>
+                <if test="sysBean.password != null and sysBean.password != ''">#{sysBean.password},</if>
+                <if test="sysBean.nickName != null and sysBean.nickName != ''">#{sysBean.nickName},</if>
+                <if test="sysBean.avatar != null and sysBean.avatar != ''">#{sysBean.avatar},</if>
+                <if test="sysBean.level != null and sysBean.level != ''">#{sysBean.level},</if>
+                <if test="sysBean.isAuth != null and sysBean.isAuth != ''">#{sysBean.isAuth},</if>
+                <if test="sysBean.type != null and sysBean.type != ''">#{sysBean.type},</if>
+                <if test="sysBean.state != null and sysBean.state != ''">#{sysBean.state},</if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">#{sysBean.createDate},</if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">#{sysBean.modifyDate},</if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">#{sysBean.isDeleted},</if>
+            </trim>
+        </if>
+    </insert>
 
 
 </mapper>

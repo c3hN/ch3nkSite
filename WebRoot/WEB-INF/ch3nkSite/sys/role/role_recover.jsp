@@ -65,7 +65,7 @@
 <script src="${basePath}/static/plugins/layer/layer.js"></script>
 <script>
     table = $("#usersDeleted").bootstrapTable({
-        url:'${basePath}/role/listRolesDeleted.do',
+        url:'${basePath}/role/info/queryRecover.do',
         height:750,
         undefinedText:'暂无',
         pagination:true,    //分页
@@ -79,11 +79,11 @@
         columns:[
             {checkbox:true},
             {field:'name',title:'名称',align:'center',width:'100'},
-            {field:'eName',title:'编号',align:'center',width:'100'},
-            {field:'department.deptName',title:'所属部门',align:'center',width:'100'},
-            {field:'useFlag',title:'状态',align:'center',width:'100',formatter:'stateFormatter'},
+            {field:'code',title:'编号',align:'center',width:'100'},
+            {field:'company.fullName',title:'所属公司',align:'center',width:'100'},
+            {field:'type',title:'类型',align:'center',width:'100',formatter:'typeFormatter'},
             {field:'createDate',title:'创建时间',align:'center',width:'100'},
-            {field:'remark',title:'备注',align:'center',width:'200'},
+            {field:'description',title:'备注',align:'center',width:'200'},
             {title:'操作',events:'roleOperateEvents',formatter:'operateFormatter',align:'center',width:'100'}
         ]
     });
@@ -104,12 +104,12 @@
         "click #recoveRole":function (e,value, row, index) {
             layer.confirm("确认还原该角色？",{btn:['确定','取消'],icon:3},
                 function (index,layero) {
-                    $.post("${basePath}/role/recoveRole.do",{"roleId":row.roleId},function (data) {
-                        if (data.msg=="success"){
-                            layer.alert("还原成功,角色已还原至 "+row.department.deptName+" 下",{icon:1});
-                            table.bootstrapTable('refresh',{url:'${basePath}/role/listRolesDeleted.do'});//重载表格
-                        }else{
-                            layer.alert("还原失败，请重试");
+                    $.post("${basePath}/role/info/recover.do",{"roleId":row.roleId},function (data) {
+                        if (data.status=="0"){
+                            layer.alert(data.msg,{icon:1});
+                            table.bootstrapTable('refresh',{url:'${basePath}/role/info/queryRecover.do'});//重载表格
+                        }else if (data.status == "1") {
+                            layer.alert(data.msg);
                         }
                     });
                     layer.close(index);
@@ -121,12 +121,12 @@
         "click #deleteRole":function (e,value, row, index) {
             layer.confirm('删除后无法还原，确定删除该角色?',{btn:['确定','取消'],icon:3},
                 function (index,layero) {
-                    $.post("${basePath}/role/deleteRole.do",{"roleId":row.roleId},function (data) {
-                        if (data.msg == "success") {
-                            layer.alert("角色已被彻底删除",{icon:1});
-                            table.bootstrapTable('refresh',{url:'${basePath}/role/listRolesDeleted.do'});//重载表格
-                        }else if (data.data == "error"){
-                            layer.alert("删除失败",{icon:2});
+                    $.post("${basePath}/role/info/delete.do",{"roleId":row.roleId},function (data) {
+                        if (data.status == "0") {
+                            layer.alert(data.msg,{icon:1});
+                            table.bootstrapTable('refresh',{url:'${basePath}/role/info/queryRecover.do'});//重载表格
+                        }else if (data.status == "1"){
+                            layer.alert(data.msg,{icon:2});
                         }
                     });
                     layer.close(index);
@@ -137,11 +137,11 @@
         }
     }
     //表格状态字段格式化
-    function stateFormatter(value, row, index) {
+    function typeFormatter(value, row, index) {
         if (value == '1') {
-            return '启用';
+            return '<span style="color: #3e8f3e">系统角色</span>';
         }else if (value == '0') {
-            return '禁用';
+            return '<span style="color: #9F9F9F;">用户角色</span>';
         }
     }
     //搜索

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ch3nk.ch3nkSite.modules.sys.mappers.SysOperateMapper">
+    <resultMap id="baseResultMap" type="com.ch3nk.ch3nkSite.modules.sys.entity.SysOperate">
+        <id column="op_id" property="opId" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP"/>
+        <result column="modify_num" property="modifyNum" jdbcType="INTEGER"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="CHAR"/>
+        <association property="menu" javaType="com.ch3nk.ch3nkSite.modules.sys.entity.SysMenu">
+            <id column="menu_id" property="menuId" jdbcType="VARCHAR"/>
+            <result column="menu_name" property="name" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <sql id="base_columns">
+        so.op_id,
+        so.`name`,
+        so.`code`,
+        so.menu_id,
+        so.`type`,
+        so.url,
+        so.create_date,
+        so.modify_date,
+        so.modify_num,
+        so.is_deleted,
+        sm.menu_id,
+        sm.`name` as menu_name
+    </sql>
+    <select id="selectByMenuIds" parameterType="java.util.List" resultMap="baseResultMap">
+        select <include refid="base_columns"/>
+        from sys_operate so
+        <!--left join sys_account sa-->
+        <!--on so.create_by = sa.ac_id-->
+        <!--and so.modify_by = sa.ac_id-->
+        left join sys_menu sm on so.menu_id = sm.menu_id
+        <where>
+            so.menu_id in
+            <foreach collection="menuIds" item="mId" index="index" open="(" close=")" separator=",">
+                #{mId}
+            </foreach>
+        </where>
+        group by so.menu_id
+        order by create_date desc
+    </select>
+
+    <insert id="insertSelective" parameterType="com.ch3nk.ch3nkSite.modules.sys.entity.SysOperate">
+        insert into sys_operate
+        <if test="sysBean != null">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="sysBean.opId != null and sysBean.opId != ''">op_id,</if>
+                <if test="sysBean.name != null and sysBean.name != ''">`name`,</if>
+                <if test="sysBean.code != null and sysBean.code != ''">`code`,</if>
+                <if test="sysBean.type != null and sysBean.type != ''">`type`,</if>
+                <if test="sysBean.url != null and sysBean.url != ''">url,</if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">create_date,</if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">modify_date,</if>
+                <if test="sysBean.modifyNum != null and sysBean.modifyNum != ''">modify_num,</if>
+                <if test="sysBean.isDeleted != null and sysBean.opId != ''">is_deleted,</if>
+                <if test="sysBean.menu != null">
+                    <if test="sysBean.menu.menuId != null and sysBean.menu.menuId != ''">menu_id,</if>
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="sysBean.opId != null and sysBean.opId != ''">#{sysBean.opId},</if>
+                <if test="sysBean.name != null and sysBean.name != ''">#{sysBean.name},</if>
+                <if test="sysBean.code != null and sysBean.code != ''">#{sysBean.code},</if>
+                <if test="sysBean.type != null and sysBean.type != ''">#{sysBean.type},</if>
+                <if test="sysBean.url != null and sysBean.url != ''">#{sysBean.url},</if>
+                <if test="sysBean.createDate != null and sysBean.createDate != ''">#{sysBean.createDate},</if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate != ''">#{sysBean.modifyDate},</if>
+                <if test="sysBean.modifyNum != null and sysBean.modifyNum != ''">#{sysBean.modifyNum},</if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted != ''">#{sysBean.isDeleted},</if>
+                <if test="sysBean.menu != null">
+                    <if test="sysBean.menu.menuId != null and sysBean.menu.menuId != ''">#{sysBean.menu.menuId},</if>
+                </if>
+            </trim>
+        </if>
+    </insert>
+
+    <select id="selectBy" parameterType="com.ch3nk.ch3nkSite.modules.sys.entity.SysOperate" resultMap="baseResultMap">
+        select <include refid="base_columns"/>
+        from sys_operate so
+        left join sys_menu sm
+        on so.menu_id = sm.menu_id
+        <where>
+            <if test="sysBean != null">
+                <if test="sysBean.opId != null and sysBean.opId !=''">so.op_id = #{sysBean.opId},</if>
+                <if test="sysBean.name != null and sysBean.name !=''">so.name = #{sysBean.name},</if>
+                <if test="sysBean.code != null and sysBean.code !=''">so.code = #{sysBean.code},</if>
+                <if test="sysBean.type != null and sysBean.type !=''">so.type = #{sysBean.type},</if>
+                <if test="sysBean.url != null and sysBean.url !=''">so.url = #{sysBean.url},</if>
+                <if test="sysBean.createDate != null and sysBean.createDate !=''">so.create_date = #{sysBean.createDate},</if>
+                <if test="sysBean.modifyDate != null and sysBean.modifyDate !=''">so.modify_date = #{sysBean.modifyDate},</if>
+                <if test="sysBean.modifyNum != null and sysBean.modifyNum !=''">so.modify_num = #{sysBean.modifyNum},</if>
+                <if test="sysBean.isDeleted != null and sysBean.isDeleted !=''">so.is_deleted = #{sysBean.isDeleted},</if>
+                <if test="sysBean.menu != null">
+                    <if test="sysBean.menu.menuId != null and sysBean.menu.menuId != ''">
+                        so.menu_id = #{sysBean.menu.menuId}
+                    </if>
+                </if>
+            </if>
+        </where>
+        order by so.create_date desc
+    </select>
+
+</mapper>

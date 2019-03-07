@@ -1,9 +1,9 @@
 //package com.ch3nk.ch3nkSite.modules.test;
 //
 //import com.ch3nk.ch3nkSite.modules.sys.entity.SysDepartment;
-//import com.ch3nk.ch3nkSite.modules.sys.entity.SysOperation;
+//import com.ch3nk.ch3nkSite.modules.sys.entity.SysOperateMapper;
 //import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
-//import com.ch3nk.ch3nkSite.modules.sys.mapper.SysOperationMapper;
+//import com.ch3nk.ch3nkSite.modules.sys.mapper.SysOperateMapper;
 //import com.ch3nk.ch3nkSite.modules.sys.mapper.SysUserMapper;
 //import org.apache.ibatis.io.Resources;
 //import org.apache.ibatis.session.SqlSession;
@@ -38,8 +38,8 @@
 //    @Test
 //    public void test_1() {
 //        session= session = sqlSessionFactory.openSession();
-//        SysOperationMapper mapper = session.getMapper(SysOperationMapper.class);
-//        SysOperation sysOperation = new SysOperation();
+//        SysOperateMapper mapper = session.getMapper(SysOperateMapper.class);
+//        SysOperateMapper sysOperation = new SysOperateMapper();
 //        sysOperation.setReqIP("1111111111111111111");
 //        sysOperation.setId("idididididid");
 //        sysOperation.setBrowserName("chrome");

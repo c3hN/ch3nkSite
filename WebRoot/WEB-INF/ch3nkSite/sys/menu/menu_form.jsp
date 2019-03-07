@@ -41,7 +41,7 @@
             <div class="container">
                 <div class="row">
                     <form action="${basePath}/menu/info/saveOrUpdate.do" method="post" class="form-horizontal" id="menuForm">
-                        <input type="text" name="parentId" style="display: none">
+                        <input type="text" name="parentId" style="display: none" value="${sysMenu.parentId}">
                         <input type="text" name="menuId" style="display: none" value="${sysMenu.menuId}">
                         <div class="tab-content">
                             <div class="tab-pane fade in active" id="baseInfo">
@@ -51,7 +51,7 @@
                                     </label>
                                     <div class="col-sm-3">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="parentName" onfocus="this.blur()">
+                                            <input type="text" class="form-control" id="parentName" value="${parent.name}" onfocus="this.blur()">
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#parents_tree">&nbsp;<i class="fa fa-search"></i>&nbsp;</button>
                                             </span>
@@ -198,6 +198,7 @@
         $("input[id='parentName']").val("");
         $("#parents_tree").modal('hide');
     });
+
     //
     // //    初始化表单验证
     // $("#roleForm").validator({

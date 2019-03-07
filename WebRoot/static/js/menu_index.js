@@ -32,14 +32,10 @@ function initTable() {
             {label:'修改次数',name:'modifyNum',index:'modifyNum', width:80,align:"center"},
             {label:'操作',name:'',index:'operate', width:200,align:"center",
                 formatter:function(value, grid, rows, state) {
-                    // var menuId = rowObject.menuId;
-                    // console.log(cellvalue);
-                    // console.log(options);
-                    // console.log(rowObject);
                     return '<button class="btn btn-primary btn-xs" onclick="detail(\''+ rows.menuId+ '\');">详情</button> '+
                     '<button class="btn btn-primary btn-xs" onclick="addOperate(\''+ rows.menuId+ '\');">添加操作</button> '+
                     '<button class="btn btn-primary btn-xs" onclick="edit(\''+ rows.menuId+ '\');">编辑</button> '+
-                    '<button class="btn btn-danger btn-xs" onclick="del(\''+ rows+'\');">删除</button>';
+                    '<button class="btn btn-danger btn-xs" onclick="abandon(\''+ rows.menuId+'\');">删除</button>';
                 }
             }
         ],
@@ -63,7 +59,23 @@ function initTable() {
     // jQuery("#menu_table").jqGrid('navGrid', '#pager', {edit : false,add : false,del : false,search:false,reflash:false});
 
     window.detail = function (menuId) {
-        $(location).prop('href',basePath+'/menu/view/detail.do?menuId='+menuId);
+        $.post(
+            basePath+'/menu/info/checkOperate.do',
+            {'menuId':menuId},
+            function (resp) {
+                if (resp.status == '0') {
+                    layer.open({
+                        type: 2,
+                        title: '查看权限',
+                        shadeClose: true,
+                        // shade: 0.8,
+                        area: ['380px', '380px'],
+                        content: basePath+'/menu/info/queryOperations.do?menuId='+menuId //iframe的url
+                    });
+                } else {
+                    layer.alert(resp.msg,{'icon':2})
+                }
+            })
     };
     window.edit =function (menuId) {
         $(location).prop('href',basePath+'/menu/view/edit.do?menuId='+menuId);
@@ -71,11 +83,33 @@ function initTable() {
     window.add = function() {
         $(location).prop('href', basePath+'/menu/view/add.do');
     }
-    window.del = function(menuId) {
-        // $(location).prop('href', basePath+'/menu/info/delete.do?menuId='+menuId);
-        console.log(menuId)
+    window.abandon = function(menuId) {
+        layer.confirm('确认删除？',{btn:['确定','取消']},
+            function (index, layero) {
+                $.post(
+                    basePath+'/menu/info/delete.do?',
+                    {'menuId':menuId},
+                    function (resp) {
+                        if (resp.status == '0') {
+                            $(location).prop('href',basePath+'/menu/view/index.do')
+                        }else {
+                            layer.alert(resp.msg,{'icon':2},function () {
+                                layer.closeAll();
+                            })
+                        }
+                    });
+            },
+            function (index) {
+                layer.close(index);
+            });
     }
     window.addOperate = function (menuId) {
-        layer.msg("11111111");
+        layer.open({
+            type: 2,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['420px', '280px'], //宽高
+            content: basePath+'/menu/view/addOperate.do?menuId='+menuId
+        });
     }
+    
 };

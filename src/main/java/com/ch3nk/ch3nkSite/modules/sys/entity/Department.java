@@ -29,4 +29,8 @@ public class Department extends BaseEntity {
     private Integer modifyNum;
     private String  isDeleted;
 
+    //模糊查询字段
+    private String likeFullName;
+    private String likeShortName;
+    private String likeCode;
 }

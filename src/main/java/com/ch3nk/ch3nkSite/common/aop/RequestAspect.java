@@ -1,9 +1,9 @@
 ///*
 //package com.ch3nk.ch3nkSite.common.aop;
 //
-//import com.ch3nk.ch3nkSite.modules.sys.entity.SysOperation;
+//import com.ch3nk.ch3nkSite.modules.sys.entity.SysOperateMapper;
 //import com.ch3nk.ch3nkSite.modules.sys.entity.SysUser;
-//import com.ch3nk.ch3nkSite.modules.sys.mapper.SysOperationMapper;
+//import com.ch3nk.ch3nkSite.modules.sys.mapper.SysOperateMapper;
 //import com.ch3nk.ch3nkSite.modules.sys.service.ISysOperationService;
 //import com.ch3nk.ch3nkSite.modules.utils.UUIDutil;
 //import eu.bitwalker.useragentutils.UserAgent;
@@ -28,7 +28,7 @@
 //    private ISysOperationService sysOperationService;
 //
 //    @Autowired
-//    private SysOperationMapper sysOperationMapper;
+//    private SysOperateMapper sysOperationMapper;
 //
 //    @Pointcut("execution(public * com.ch3nk.ch3nkSite.modules.*.controller.*.*(..))")
 //    public void pointCut(){}
@@ -38,7 +38,7 @@
 //        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 //        UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
 //        SysUser sysUser = (SysUser)SecurityUtils.getSubject().getPrincipal();
-//        SysOperation sysOperation = new SysOperation();
+//        SysOperateMapper sysOperation = new SysOperateMapper();
 //        sysOperation.setId(UUIDutil.getUUID());
 //        if (sysUser != null && StringUtils.isNotEmpty(sysUser.getUserId())) {
 //            sysOperation.setUserId(sysUser.getUserId());
@@ -94,7 +94,7 @@
 //
 ////    @After("pointCut()")
 ////    public void afterHand(JoinPoint joinPoint) {
-////        sysOperation = new SysOperation();
+////        sysOperation = new SysOperateMapper();
 ////        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 ////        String uri = request.getRequestURI();
 ////        sysOperation.setReqResource(uri);
